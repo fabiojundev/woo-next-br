@@ -51,6 +51,18 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 		}
 		id
 	  }
+	  ... on WooCustProduct {
+        price
+        id
+        regularPrice
+        fabricM2Price
+        consumptionFactor
+        lineMPrice
+        mo
+        moVar
+        pvc
+        minPrice
+      }
 	}
   }
 `;

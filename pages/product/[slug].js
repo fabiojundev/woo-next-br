@@ -9,7 +9,7 @@ import Price from "../../src/components/single-product/price";
 
 export default function Product(props) {
 	const { product } = props;
-
+    //console.log(product);
     const router = useRouter()
 
     // If the page is not yet generated, this will be displayed
@@ -46,7 +46,6 @@ export default function Product(props) {
 								} }
 								className="product-description mb-5"
 							/>
-                            <Price salesPrice={product?.price} regularPrice={product?.regularPrice}/>
 							<AddToCartButton product={ product }/>
 						</div>
 					</div>
