@@ -34,9 +34,9 @@ const Nav = () => {
 							Categories
 						</a>
 					</Link>
-					<Link href="/">
+					<Link href="/blog">
 						<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-							Women
+							Blog
 						</a>
 					</Link>
 					<Link href="/">

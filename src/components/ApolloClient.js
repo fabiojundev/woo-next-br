@@ -63,7 +63,7 @@ export const afterware = new ApolloLink( ( operation, forward ) => {
 
 	} );
 } );
-
+console.log("client", `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`);
 // Apollo GraphQL client.
 const client = new ApolloClient({
 	link: middleware.concat( afterware.concat( createHttpLink({
@@ -71,6 +71,7 @@ const client = new ApolloClient({
 		fetch: fetch
 	}) ) ),
 	cache: new InMemoryCache(),
+	connectToDevTools: true,
 });
 
 export default client;
