@@ -17,13 +17,15 @@ const Price = ({ regularPrice = 0, salesPrice }) => {
             return null;
         }
 
-        const formattedRegularPrice = parseInt( regularPrice?.substring(1) );
-        const formattedSalesPrice = parseInt( salesPrice?.substring(1) );
+        const formattedRegularPrice = parseFloat( regularPrice?.substring(2) );
+        const formattedSalesPrice = parseFloat( salesPrice?.substring(2) ) - 2;
 
-        const discountPercent = ( ( formattedRegularPrice - formattedSalesPrice ) / formattedRegularPrice ) * 100;
+        let discountPercent = ( ( formattedRegularPrice - formattedSalesPrice ) / formattedRegularPrice ) * 100;
+        const numberFormatter = new Intl.NumberFormat('pt-BR', {maximumFractionDigits: 1});
+        discountPercent = numberFormatter.format( discountPercent);
 
         return {
-            discountPercent: formattedSalesPrice !== formattedRegularPrice ? `(${discountPercent.toFixed(2)}%) OFF` : null,
+            discountPercent: formattedSalesPrice !== formattedRegularPrice ? `(${discountPercent}% de desconto)` : null,
             strikeThroughClass: formattedSalesPrice < formattedRegularPrice ? 'product-regular-price mr-2 line-through text-sm text-gray-600 font-normal' : ''
         }
     }
