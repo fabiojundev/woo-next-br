@@ -8,7 +8,6 @@ import {handleRedirectsAndReturnData} from '../../src/utils/slug';
 import {GET_POSTS} from '../../src/queries/posts/get-posts';
 
 const Blog = ( { data } ) => {
-	console.log("djooow1", data);
 	const pagesCount = totalPagesCount( data?.posts?.pageInfo?.offsetPagination?.total ?? 0 );
 	return (
 		<Layout data={data}>
