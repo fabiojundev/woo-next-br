@@ -7,6 +7,7 @@ import {sanitize} from '../../utils/miscellaneous';
 import PropTypes from 'prop-types';
 
 const Layout = ( {data, isPost, children} ) => {
+	console.log("--------children", children, data, isPost);
 	const {page, post, posts, header, footer, headerMenus, footerMenus} = data || {};
 
 	// If it does not have either post or page.
@@ -43,7 +44,7 @@ const Layout = ( {data, isPost, children} ) => {
 Layout.propTypes = {
 	data: PropTypes.object,
 	isPost: PropTypes.bool,
-	children: PropTypes.object
+	children: PropTypes.any
 };
 
 Layout.defaultProps = {

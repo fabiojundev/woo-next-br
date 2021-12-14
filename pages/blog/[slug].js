@@ -1,51 +1,57 @@
 import client from '../../src/apollo/client';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 import Layout from '../../src/components/layout/index.js';
-import {FALLBACK, handleRedirectsAndReturnData} from '../../src/utils/slug';
-import {GET_POST} from '../../src/queries/posts/get-post';
-import {GET_POST_SLUGS} from '../../src/queries/posts/get-posts';
-import {sanitize} from '../../src/utils/miscellaneous';
+import { FALLBACK, handleRedirectsAndReturnData } from '../../src/utils/slug';
+import { GET_POST } from '../../src/queries/posts/get-post';
+import { GET_POST_SLUGS } from '../../src/queries/posts/get-posts';
+import { sanitize } from '../../src/utils/miscellaneous';
+import Image from '../../src/components/image';
 
-const Post = ( { data } ) => {
+const Post = ({ data }) => {
 	const router = useRouter();
 
 	// If the page is not yet generated, this will be displayed
 	// initially until getStaticProps() finishes running
-	if ( router.isFallback ) {
+	if (router.isFallback) {
 		return <div>Loading...</div>;
 	}
 
 	return (
 		<Layout data={data} isPost>
-			<div dangerouslySetInnerHTML={{__html: sanitize( data?.post?.content ?? {} )}}/>
+			<figure className="overflow-hidden mb-4">
+				<Image {...data?.post?.featuredImage?.node} width="400" height="225" layout="fill" containerClassNames="w-96 sm:-w-600px md:w-400px h-56 sm:h-338px md:h-225px" title={data?.post?.title ?? ''} />
+			</figure>
+			<h1 className="font-bold mb-3 text-lg hover:text-blue-500" dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.title ?? '') }} />
+
+			<div dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.content ?? {}) }} />
 		</Layout>
 	);
 };
 
 export default Post;
 
-export async function getStaticProps( { params } ) {
-	const { data, errors } = await client.query( {
+export async function getStaticProps({ params }) {
+	const { data, errors } = await client.query({
 		query: GET_POST,
 		variables: {
 			uri: params?.slug ?? '/',
 		},
-	} );
+	});
 
 	const defaultProps = {
 		props: {
 			data: data || {}
 		},
 		/**
-         * Revalidate means that if a new request comes to server, then every 1 sec it will check
-         * if the data is changed, if it is changed then it will update the
-         * static file inside .next folder with the new data, so that any 'SUBSEQUENT' requests should have updated data.
-         */
+		 * Revalidate means that if a new request comes to server, then every 1 sec it will check
+		 * if the data is changed, if it is changed then it will update the
+		 * static file inside .next folder with the new data, so that any 'SUBSEQUENT' requests should have updated data.
+		 */
 		revalidate: 1,
 	};
 
-	return handleRedirectsAndReturnData( defaultProps, data, errors, 'post' );
+	return handleRedirectsAndReturnData(defaultProps, data, errors, 'post');
 }
 
 /**
@@ -66,17 +72,17 @@ export async function getStaticProps( { params } ) {
  * @returns {Promise<{paths: [], fallback: boolean}>}
  */
 export async function getStaticPaths() {
-	const { data } = await client.query( {
+	const { data } = await client.query({
 		query: GET_POST_SLUGS
-	} );
+	});
 
 	const pathsData = [];
 
-	data?.posts?.nodes && data?.posts?.nodes.map( post => {
-		if ( ! isEmpty( post?.slug ) ) {
-			pathsData.push( {params: { slug: post?.slug }} );
+	data?.posts?.nodes && data?.posts?.nodes.map(post => {
+		if (!isEmpty(post?.slug)) {
+			pathsData.push({ params: { slug: post?.slug } });
 		}
-	} );
+	});
 
 	return {
 		paths: pathsData,
