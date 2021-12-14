@@ -33,6 +33,11 @@ query GET_CART {
                 title
               }
             }
+            ... on WooCustProduct {
+              nv_height
+              nv_length
+              nv_width
+            }
           }
         }
         variation {
