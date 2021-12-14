@@ -5,3 +5,4 @@ export { default as Instagram } from './Instagram'
 export { default as ShoppingCart } from './ShoppingCart'
 export { default as Twitter } from './Twitter'
 export { default as Youtube } from './Youtube'
+export { default as SearchIcon } from './SearchIcon';

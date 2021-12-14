@@ -1,6 +1,6 @@
-import client from '../../src/components/ApolloClient';
+import client from '../../src/apollo/client';
 import { GET_PAGE_BY_ID} from '../../../src/queries/pages/get-page';
-import Layout from '../../../src/components/layout/index.js';
+import Layout from '../../src/components/layout/index.js';
 import {handleRedirectsAndReturnData} from '../../../src/utils/slug';
 import {getAuthToken} from '../../../src/utils/cookies';
 import {getLoginPreviewRedirectUrl} from '../../../src/utils/redirects';

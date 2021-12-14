@@ -6,6 +6,7 @@ import ImageFragment from "../fragments/image";
 
 export const GET_POST = gql`
 	query GET_POST($uri: String) {
+      ${HeaderFooter}
 	  post: postBy(uri: $uri) {
 	    id
 	    title
