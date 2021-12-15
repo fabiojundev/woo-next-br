@@ -1,4 +1,4 @@
-import Layout from "../src/components/Layout";
+import Layout from '../src/components/layout/index.js';
 import Product from "../src/components/Product";
 import client from '../src/components/ApolloClient';
 import ParentCategoriesBlock from "../src/components/category/category-block/ParentCategoriesBlock";
@@ -7,10 +7,10 @@ import HeroCarousel from "../src/components/home/hero-carousel";
 
 export default function Home (props) {
 
-	const { products, productCategories, heroCarousel } = props || {};
+	const { data, products, productCategories, heroCarousel } = props || {};
 
 	return (
-			<Layout>
+			<Layout data={data}>
 				{/*Hero Carousel*/}
 				<HeroCarousel heroCarousel={heroCarousel}/>
 				{/*Categories*/ }
@@ -40,6 +40,7 @@ export async function getStaticProps () {
 
 	return {
 		props: {
+			data,
 			productCategories: data?.productCategories?.nodes ? data.productCategories.nodes : [],
 			products: data?.products?.nodes ? data.products.nodes : [],
 			heroCarousel: data?.heroCarousel?.nodes[0]?.children?.nodes ? data.heroCarousel.nodes[0].children.nodes : []

@@ -70,6 +70,7 @@ export async function getStaticProps(context) {
 
     return {
         props: {
+            data,
             product: data?.product || {},
         },
         revalidate: 1

@@ -2,6 +2,8 @@ import { isEmpty } from 'lodash';
 import Link from 'next/link';
 import {useState} from 'react';
 import PropTypes from 'prop-types';
+import CartIcon from "../../cart/CartIcon";
+import Image from "../../image";
 
 import { isCustomPageUri } from '../../../utils/slug';
 import NavSearch from '../../search/nav-search';
@@ -13,20 +15,16 @@ const Nav = ( {header, headerMenus, slug} ) => {
 	}
 
 	const [ isMenuVisible, setMenuVisibility ] = useState( false );
-
+console.log("header",header, "headerMenus",headerMenus, "slug:",slug);
 
 	return (
-		<nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
-			<div className="flex items-center flex-shrink-0 text-white mr-6">
+		<nav className="flex items-center justify-between flex-wrap bg-white p-6">
+			<div className="flex items-center flex-shrink-0 mr-6">			
 				<Link href="/">
 					<a>
-						<img src={header?.siteLogoUrl ?? ''} alt="" width="48" height="48" className="mr-4"/>
+						<Image src="/logo-250x100.png" alt="logo do site" width="250" height="100" className="mr-4"/>
 					</a>
 				</Link>
-				<div className="flex flex-col items-start justify-start">
-					<span className="font-semibold text-xl tracking-tight">{header?.siteTitle}</span>
-					<span>{header?.siteTagLine}</span>
-				</div>
 			</div>
 			<div className="block lg:hidden">
 				<button
@@ -62,17 +60,20 @@ const Nav = ( {header, headerMenus, slug} ) => {
 								className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
 								data-cy="nav-item"
 							>
-                Blog
+                			Blog
 							</a>
 						</Link>
-						<Link href={'/news/'}>
-							<a
-								className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-								data-cy="nav-item"
-							>
-                News
+						<div className="text-sm font-medium">
+							<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
+							<svg xmlns="http://www.w3.org/2000/svg" className="hidden lg:block m-auto" fill="none" viewBox="0 0 24 24" width="18" height="auto" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+								Profile
 							</a>
-						</Link>
+							<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
+							<svg xmlns="http://www.w3.org/2000/svg" className="hidden lg:block m-auto" fill="none" viewBox="0 0 24 24" width="18" height="auto" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+								Wishlist
+							</a>
+							<CartIcon/>
+						</div>
 					</div>
 				) : null }
 				<div className="flex-col-reverse flex lg:flex-row">
