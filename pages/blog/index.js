@@ -1,6 +1,6 @@
 
 import client from '../../src/apollo/client';
-import Layout from '../../src/components/layout/index.js';
+import Layout from '../../src/components/Layout';
 import { PER_PAGE_FIRST, totalPagesCount } from '../../src/utils/pagination';
 import Pagination from '../../src/components/blog/pagination';
 import Posts from '../../src/components/blog/posts';

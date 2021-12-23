@@ -1,4 +1,4 @@
-import Layout from '../src/components/layout/index.js';
+import Layout from '../src/components/Layout';
 import Product from "../src/components/Product";
 import client from '../src/components/ApolloClient';
 import ParentCategoriesBlock from "../src/components/category/category-block/ParentCategoriesBlock";
