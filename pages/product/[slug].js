@@ -37,8 +37,12 @@ export default function Product(props) {
 							) : null }
 						</div>
 						<div className="product-info">
-							<h4 className="products-main-title text-2xl uppercase">{ product.name }</h4>
-                            <Price salesPrice={product?.price} regularPrice={product?.regularPrice}/>
+							<h4 className="products-main-title text-3xl uppercase text-green-600">{ product.name }</h4>
+                            <Price 
+                                salesPrice={product?.price} 
+                                regularPrice={product?.regularPrice}
+                                showPercent={true}
+                            />
                             <hr className='mb-2'/>
 							<div
 
@@ -47,7 +51,10 @@ export default function Product(props) {
 								} }
 								className="product-description mb-5"
 							/>
-							<AddToCartButton product={ product }/>
+							<AddToCartButton 
+                                product={ product } 
+                                showQuantity={true}
+                            />
 						</div>
 					</div>
 

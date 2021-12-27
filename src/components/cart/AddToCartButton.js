@@ -89,7 +89,7 @@ const AddToCart = (props) => {
                         <input
                             type="number"
                             min="1"
-                            className="border border-solid rounded p-2 mr-2 w-12"
+                            className="border border-solid rounded p-2 mr-2 w-12 text-right"
                             value={quantity}
                             onChange={onChange}
                         >

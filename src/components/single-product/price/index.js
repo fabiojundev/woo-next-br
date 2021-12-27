@@ -1,9 +1,9 @@
-import {isEmpty} from "lodash";
+import { isEmpty } from "lodash";
 
-const Price = ({ regularPrice = 0, salesPrice }) => {
+const Price = ({ regularPrice = 0, salesPrice, showPercent = false }) => {
 
-    if ( isEmpty( salesPrice ) ) {
-    	return null;
+    if (isEmpty(salesPrice)) {
+        return null;
     }
 
     /**
@@ -12,17 +12,17 @@ const Price = ({ regularPrice = 0, salesPrice }) => {
      * @param {String} regularPrice
      * @param {String} salesPrice
      */
-    const discountPercent = ( regularPrice, salesPrice ) => {
-        if( isEmpty( regularPrice ) || isEmpty(salesPrice) ) {
+    const discountPercent = (regularPrice, salesPrice) => {
+        if (isEmpty(regularPrice) || isEmpty(salesPrice)) {
             return null;
         }
 
-        const formattedRegularPrice = parseFloat( regularPrice?.substring(2) );
-        const formattedSalesPrice = parseFloat( salesPrice?.substring(2) ) - 2;
+        const formattedRegularPrice = parseFloat(regularPrice?.substring(2));
+        const formattedSalesPrice = parseFloat(salesPrice?.substring(2)) - 2;
 
-        let discountPercent = ( ( formattedRegularPrice - formattedSalesPrice ) / formattedRegularPrice ) * 100;
-        const numberFormatter = new Intl.NumberFormat('pt-BR', {maximumFractionDigits: 1});
-        discountPercent = numberFormatter.format( discountPercent);
+        let discountPercent = ((formattedRegularPrice - formattedSalesPrice) / formattedRegularPrice) * 100;
+        const numberFormatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+        discountPercent = numberFormatter.format(discountPercent);
 
         return {
             discountPercent: formattedSalesPrice !== formattedRegularPrice ? `(${discountPercent}% de desconto)` : null,
@@ -30,18 +30,38 @@ const Price = ({ regularPrice = 0, salesPrice }) => {
         }
     }
 
-    const productMeta = discountPercent( regularPrice, salesPrice );
+    const productMeta = discountPercent(regularPrice, salesPrice);
 
     return (
         <h6 className="product-price text-gray-800 font-semibold mr-3 mb-5">
             {/* Regular price */}
-            { productMeta?.discountPercent ? <span className="product-price mr-2">{salesPrice}</span> : null }
+            {productMeta?.discountPercent
+                ? <span className="product-price mr-2 text-xl text-gray-700">
+                    {salesPrice}
+                </span>
+                : null
+            }
 
             {/* Discounted price */}
-            <span className={productMeta?.strikeThroughClass}>{ regularPrice }</span>
+            {(regularPrice != salesPrice)
+                && (
+                    <span
+                        className={productMeta?.strikeThroughClass}
+                    >
+                        {regularPrice}
+                    </span>
+                )
+            }
 
             {/* Discount percent */}
-            <span className="product-discount text-green-600 font-bold text-sm font-normal">{productMeta?.discountPercent}</span>
+            {showPercent
+                && (
+                    <span
+                        className="product-discount text-green-600 font-bold text-sm"
+                    >
+                        {productMeta?.discountPercent}
+                    </span>
+                )}
         </h6>
     )
 }
