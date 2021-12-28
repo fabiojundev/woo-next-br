@@ -20,7 +20,7 @@ export default function Product(props) {
 	return (
 		<Layout>
 			{ product ? (
-				<div className="single-product container mx-auto my-32 px-4 xl:px-0">
+				<div className="single-product container mx-auto my-16 px-4 xl:px-0">
 					<div className="grid md:grid-cols-2 gap-4">
 						<div className="product-images">
 
