@@ -2,13 +2,14 @@ import Layout from '../../src/components/Layout';
 import { useRouter } from 'next/router';
 import client from '../../src/components/ApolloClient';
 import AddToCartButton from '../../src/components/cart/AddToCartButton';
-import {PRODUCT_BY_SLUG_QUERY, PRODUCT_SLUGS} from '../../src/queries/product-by-slug';
+import { PRODUCT_BY_SLUG_QUERY, PRODUCT_SLUGS } from '../../src/queries/product-by-slug';
 import { isEmpty } from 'lodash';
 import GalleryCarousel from "../../src/components/single-product/gallery-carousel";
 import Price from "../../src/components/single-product/price";
+import ShippingCosts from "../../src/components/single-product/shipping-costs";
 
 export default function Product(props) {
-	const { product } = props;
+    const { product } = props;
     const router = useRouter()
 
     // If the page is not yet generated, this will be displayed
@@ -17,61 +18,64 @@ export default function Product(props) {
         return <div>Loading...</div>
     }
 
-	return (
-		<Layout>
-			{ product ? (
-				<div className="single-product container mx-auto my-16 px-4 xl:px-0">
-					<div className="grid md:grid-cols-2 gap-4">
-						<div className="product-images">
+    return (
+        <Layout>
+            {product ? (
+                <div className="single-product container mx-auto my-16 px-4 xl:px-0">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="product-images">
 
-							{ !isEmpty( product?.galleryImages?.nodes ) ? (
-                                <GalleryCarousel gallery={product?.galleryImages?.nodes}/>
-							) : !isEmpty( product.image ) ? (
+                            {!isEmpty(product?.galleryImages?.nodes) ? (
+                                <GalleryCarousel gallery={product?.galleryImages?.nodes} />
+                            ) : !isEmpty(product.image) ? (
                                 <img
-                                    src={ product?.image?.sourceUrl }
+                                    src={product?.image?.sourceUrl}
                                     alt="Product Image"
                                     width="100%"
                                     height="auto"
-                                    srcSet={ product?.image?.srcSet }
+                                    srcSet={product?.image?.srcSet}
                                 />
-							) : null }
-						</div>
-						<div className="product-info">
-							<h4 className="products-main-title text-3xl uppercase text-green-600">{ product.name }</h4>
-                            <Price 
-                                salesPrice={product?.price} 
+                            ) : null}
+                        </div>
+                        <div className="product-info">
+                            <h4 className="products-main-title text-3xl text-green-600">{product.name}</h4>
+                            <Price
+                                salesPrice={product?.price}
                                 regularPrice={product?.regularPrice}
                                 showPercent={true}
                             />
-                            <hr className='mb-2'/>
-							<div
+                            <hr className='mb-2' />
+                            <div
 
-								dangerouslySetInnerHTML={ {
-									__html: product.description,
-								} }
-								className="product-description mb-5"
-							/>
-							<AddToCartButton 
-                                product={ product } 
+                                dangerouslySetInnerHTML={{
+                                    __html: product.description,
+                                }}
+                                className="product-description mb-5"
+                            />
+                            <ShippingCosts
+                                productId={product?.productId}
+                            />
+                            <AddToCartButton
+                                product={product}
                                 showQuantity={true}
                             />
-						</div>
-					</div>
+                        </div>
+                    </div>
 
-				</div>
-			) : (
-				''
-			) }
-		</Layout>
-	);
+                </div>
+            ) : (
+                ''
+            )}
+        </Layout>
+    );
 };
 
 
 export async function getStaticProps(context) {
 
-    const {params: { slug }} = context
+    const { params: { slug } } = context
 
-    const {data} = await client.query({
+    const { data } = await client.query({
         query: PRODUCT_BY_SLUG_QUERY,
         variables: { slug }
     })
@@ -85,7 +89,7 @@ export async function getStaticProps(context) {
     };
 }
 
-export async function getStaticPaths () {
+export async function getStaticPaths() {
     const { data } = await client.query({
         query: PRODUCT_SLUGS
     })
