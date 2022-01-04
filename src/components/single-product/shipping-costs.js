@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useQuery, useLazyQuery } from '@apollo/client';
 import cx from 'classnames';
 import GET_SHIPPING_COSTS from "../../queries/get-shipping-costs";
+import Image from "../image";
 
-const ShippingCosts = ({ productId }) => {
+const ShippingCosts = ({ productId, quantity = 1 }) => {
 
     if (!productId) {
         return null;
@@ -16,7 +17,7 @@ const ShippingCosts = ({ productId }) => {
     const shippingQryInput = {
         productId,
         zipcode,
-        quantity: 1,
+        quantity: quantity,
     };
 
     const handleZipcodeChange = (event) => {
@@ -30,27 +31,30 @@ const ShippingCosts = ({ productId }) => {
         data,
         loading,
         error
-    }] = useLazyQuery(GET_SHIPPING_COSTS, {
-        variables: {
-            productId,
-            zipcode,
-            quantity: 1,
-        },
-        onCompleted: () => {
-            console.log(data);
-        },
-        onError: (error) => {
-            if (error) {
-                console.log("ERROR get shipping costs", error);
-                setRequestError(error?.graphQLErrors?.[0]?.message ?? '');
-            }
-        }
-    });
+    }] = useLazyQuery(GET_SHIPPING_COSTS);
 
     const handleGetShippingClick = async () => {
         setRequestError(null);
-        if (zipcode) {
-            await getShippingCosts();
+        if (zipcode?.length == 9) {
+            await getShippingCosts(
+                {
+                    skip: shippingQryInput?.zipcode?.length != 9,
+                    variables: {
+                        productId,
+                        zipcode,
+                        quantity,
+                    },
+                    onCompleted: () => {
+                        console.log("response", data);
+                    },
+                    onError: (error) => {
+                        if (error) {
+                            console.log("ERROR get shipping costs", error);
+                            setRequestError(error?.graphQLErrors?.[0]?.message ?? '');
+                        }
+                    }
+                }
+            );
         }
     };
 
@@ -70,19 +74,24 @@ const ShippingCosts = ({ productId }) => {
                     placeholder="00000-000"
                     autoComplete="postal-code"
                 />
-                <button
-                    disabled={loading}
-                    className={cx(
-                        'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-                        { 'hover:bg-green-600 hover:text-white hover:border-green-600': !loading },
-                        { 'opacity-50 cursor-not-allowed': loading }
-                    )}
-                    type="button"
-                    id="wppdev_wt_shipping_btn"
-                    onClick={handleGetShippingClick}
-                >
-                    Ok
-                </button>
+                {loading
+                    ? <span className="align-middle">
+                        <Image src='/cart-spinner.gif' width="54px" height="54px" />
+                    </span>
+                    : <button
+                        disabled={loading}
+                        className={cx(
+                            'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
+                            { 'hover:bg-green-600 hover:text-white hover:border-green-600': !loading },
+                            { 'opacity-50 cursor-not-allowed': loading }
+                        )}
+                        type="button"
+                        id="wppdev_wt_shipping_btn"
+                        onClick={handleGetShippingClick}
+                    >
+                        Ok
+                    </button>
+                }
             </div>
             {data?.shippingCosts && (
                 <div className="w-full block my-2 text-sm">
