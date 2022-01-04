@@ -8,6 +8,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import UPDATE_CART from "../../../mutations/update-cart";
 import GET_CART from "../../../queries/get-cart";
 import CLEAR_CART_MUTATION from "../../../mutations/clear-cart";
+import UPDATE_SHIPPING_ZIPCODE from "../../../mutations/update-shipping-zipcode";
 import UPDATE_SHIPPING_METHOD from "../../../mutations/update-shipping-method";
 import { isEmpty } from 'lodash'
 
@@ -18,6 +19,7 @@ const CartItemsContainer = () => {
 	// @TODO wil use it in future variations of the project.
 	const [cart, setCart] = useContext(AppContext);
 	const [requestError, setRequestError] = useState(null);
+	const [shippingMethod, setShippingMethod] = useState('');
 	const [zipcode, setZipcode] = useState('');
 
 	// Get Cart Data.
@@ -32,6 +34,7 @@ const CartItemsContainer = () => {
 			console.log('cart', data, updatedCart);
 			// Update cart data in React Context.
 			setCart(updatedCart);
+			setShippingMethod(cart?.chosenShippingMethods[0] ?? '')
 		}
 	});
 
@@ -56,6 +59,26 @@ const CartItemsContainer = () => {
 		onError: (error) => {
 			if (error) {
 				const errorMessage = !isEmpty(error?.graphQLErrors?.[0]) ? error.graphQLErrors[0]?.message : '';
+				setRequestError(errorMessage);
+			}
+		}
+	});
+
+	// Update Shipping Zipcode.
+	const [updateShippinZipcode, {
+		data: updatedShippingData,
+		loading: updateShippinZipcodeProcessing,
+		error: updateShippinZipcodeError
+	}] = useMutation(UPDATE_SHIPPING_ZIPCODE, {
+		onCompleted: () => {
+			console.log(updatedShippingData);
+			refetch();
+		},
+		onError: (error) => {
+			if (error) {
+				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+					? error.graphQLErrors[0]?.message
+					: '';
 				setRequestError(errorMessage);
 			}
 		}
@@ -133,14 +156,28 @@ const CartItemsContainer = () => {
 
 	const handleCalcShippingClick = async (event) => {
 		console.log("handleCalcShippingClick");
+		await updateShippinZipcode({
+			variables: {
+				input: {
+					shipping: {
+						state: 'SP',
+						country: 'BR',
+						postcode: zipcode,
+						// overwrite: true
+					},
+				}
+			},
+		});
 	};
 
 	const handleChooseShipping = async (event) => {
 		console.log("handleChooseShipping");
-		await chooseShippingMethod( {
+		const chosenShippingMethod = event.target.value;
+		setShippingMethod( chosenShippingMethod );
+		await chooseShippingMethod({
 			variables: {
-				input : {
-					shippingMethods: [event.target.value],
+				input: {
+					shippingMethods: [chosenShippingMethod],
 				}
 			},
 		});
@@ -222,12 +259,15 @@ const CartItemsContainer = () => {
 										<h3 className="my-2">Escolha o frete</h3>
 										{cart?.shippingMethods.map(method => (
 											<div key={method.id}>
-												<input
-													type="radio"
-													name="chosenShippingMethod"
-													value={method.id}
-													onChange={handleChooseShipping}
-												/> {method.label} - R${method.cost}
+												<label>
+													<input
+														type="radio"
+														name="chosenShippingMethod"
+														value={method.id}
+														onChange={handleChooseShipping}
+														checked={shippingMethod == method.id}
+													/> {method.label} - R${method.cost}
+												</label>
 											</div>
 										))}
 									</div>
@@ -245,7 +285,7 @@ const CartItemsContainer = () => {
 												Subtotal
 											</td>
 											<td className="woo-next-cart-element-amt font-bold">
-												{( cart?.subtotal && 'string' !== typeof cart.subtotal)
+												{(cart?.subtotal && 'string' !== typeof cart.subtotal)
 													? cart.subtotal.toFixed(2)
 													: cart.subtotal}
 											</td>
@@ -266,15 +306,15 @@ const CartItemsContainer = () => {
 											</tr>
 										}
 										<tr className="table-light">
-										<td className="woo-next-cart-element-amt text-xl font-bold">
-											Total
-										</td>
-										<td className="woo-next-cart-element-amt text-xl font-bold">
-											{ ( 'string' !== typeof cart.totalProductsPrice ) 
-											? cart.totalProductsPrice.toFixed(2) 
-											: cart.totalProductsPrice }
-										</td>
-									</tr>
+											<td className="woo-next-cart-element-amt text-xl font-bold">
+												Total
+											</td>
+											<td className="woo-next-cart-element-amt text-xl font-bold">
+												{('string' !== typeof cart.totalProductsPrice)
+													? cart.totalProductsPrice.toFixed(2)
+													: cart.totalProductsPrice}
+											</td>
+										</tr>
 									</tbody>
 								</table>
 								<Link href="/checkout">

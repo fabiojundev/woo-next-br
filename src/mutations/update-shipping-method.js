@@ -6,7 +6,7 @@ import { gql } from "@apollo/client";
  * This query is used for updating the selected shipping method option.
  */
 const UPDATE_SHIPPING_METHOD = gql`
-mutation ($input: UpdateShippingMethodInput!) {
+mutation UPDATE_SHIPPING_METHOD ($input: UpdateShippingMethodInput!) {
   updateShippingMethod(input: $input) {
     cart {
       availableShippingMethods {
