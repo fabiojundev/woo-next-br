@@ -242,6 +242,7 @@ export const getFormattedCart = ( data ) => {
 	formattedCart.chosenShippingMethods = data?.cart?.chosenShippingMethods;
 
 	formattedCart.totalProductsCount = totalProductsCount;
+	formattedCart.subtotal = data?.cart?.subtotal ?? '';
 	formattedCart.totalProductsPrice = data?.cart?.total ?? '';
 
 	return formattedCart;

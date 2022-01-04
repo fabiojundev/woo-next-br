@@ -241,24 +241,23 @@ const CartItemsContainer = () => {
 								<table className="table table-hover mb-5">
 									<tbody>
 										<tr className="table-light flex flex-col">
-											<td className="woo-next-cart-element-total text-2xl font-normal">
+											<td className="woo-next-cart-element-total text-xl font-normal">
 												Subtotal
 											</td>
-											<td className="woo-next-cart-element-amt text-xl font-bold">
-												{('string' !== typeof cart.totalProductsPrice)
-													? cart.totalProductsPrice.toFixed(2)
-													: cart.totalProductsPrice}
+											<td className="woo-next-cart-element-amt font-bold">
+												{( cart?.subtotal && 'string' !== typeof cart.subtotal)
+													? cart.subtotal.toFixed(2)
+													: cart.subtotal}
 											</td>
 										</tr>
 										{cart?.needsShippingAddress
 											&& cart?.shippingMethods?.length
 											&& cart?.chosenShippingMethods
-											&&
-											<tr className="table-light flex flex-col">
-												<td className="woo-next-cart-element-total text-2xl font-normal">
+											&& <tr className="table-light flex flex-col">
+												<td className="woo-next-cart-element-total text-xl font-normal">
 													Entrega
 												</td>
-												<td className="woo-next-cart-element-amt text-xl font-bold">
+												<td className="woo-next-cart-element-amt font-bold">
 													R$ {cart.shippingMethods.find(
 														method => method.id == cart.chosenShippingMethods[0])
 														.cost
@@ -266,10 +265,16 @@ const CartItemsContainer = () => {
 												</td>
 											</tr>
 										}
-										{/* <tr className="table-light">
-										<td className="woo-next-cart-element-total">Total</td>
-										<td className="woo-next-cart-element-amt">{ ( 'string' !== typeof cart.totalProductsPrice ) ? cart.totalProductsPrice.toFixed(2) : cart.totalProductsPrice }</td>
-									</tr> */}
+										<tr className="table-light">
+										<td className="woo-next-cart-element-amt text-xl font-bold">
+											Total
+										</td>
+										<td className="woo-next-cart-element-amt text-xl font-bold">
+											{ ( 'string' !== typeof cart.totalProductsPrice ) 
+											? cart.totalProductsPrice.toFixed(2) 
+											: cart.totalProductsPrice }
+										</td>
+									</tr>
 									</tbody>
 								</table>
 								<Link href="/checkout">
