@@ -64,14 +64,30 @@ export const afterware = new ApolloLink( ( operation, forward ) => {
 	} );
 } );
 console.log("client", `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`);
+const defaultOptions = {
+	watchQuery: {
+		fetchPolicy: "no-cache",
+		errorPolicy: "ignore",
+	},
+	query: {
+		fetchPolicy: "no-cache",
+		errorPolicy: "all",
+	},
+};
+
+const cache = new InMemoryCache({
+	resultCaching: false,
+});
+
 // Apollo GraphQL client.
 const client = new ApolloClient({
 	link: middleware.concat( afterware.concat( createHttpLink({
 		uri: `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`,
 		fetch: fetch
 	}) ) ),
-	cache: new InMemoryCache(),
+	cache,
 	connectToDevTools: true,
+	defaultOptions
 });
 
 export default client;
