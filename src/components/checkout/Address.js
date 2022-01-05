@@ -12,7 +12,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             <div className="flex flex-wrap overflow-hidden sm:-mx-3">
                 <InputField
                     name="firstName"
-                    inputValue={input?.firstName}
+                    inputValue={input?.firstName ?? ''}
                     required
                     handleOnChange={handleOnChange}
                     label="First name"
@@ -22,7 +22,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
                 />
                 <InputField
                     name="lastName"
-                    inputValue={input?.lastName}
+                    inputValue={input?.lastName ?? ''}
                     required
                     handleOnChange={handleOnChange}
                     label="Last name"
@@ -33,7 +33,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             </div>
             <InputField
                 name="company"
-                inputValue={input?.company}
+                inputValue={input?.company ?? ''}
                 handleOnChange={handleOnChange}
                 label="Company Name (Optional)"
                 errors={errors}
@@ -49,7 +49,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             />
             <InputField
                 name="address1"
-                inputValue={input?.address1}
+                inputValue={input?.address1 ?? ''}
                 required
                 handleOnChange={handleOnChange}
                 label="Street address"
@@ -60,7 +60,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             />
             <InputField
                 name="address2"
-                inputValue={input?.address2}
+                inputValue={input?.address2 ?? ''}
                 handleOnChange={handleOnChange}
                 label="Street address line two"
                 placeholder="Apartment floor unit building floor etc(optional)"
@@ -71,7 +71,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             <InputField
                 name="city"
                 required
-                inputValue={input?.city}
+                inputValue={input?.city ?? ''}
                 handleOnChange={handleOnChange}
                 label="Town/City"
                 errors={errors}
@@ -89,7 +89,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             <div className="flex flex-wrap overflow-hidden sm:-mx-3">
                 <InputField
                     name="postcode"
-                    inputValue={input?.postcode}
+                    inputValue={input?.postcode ?? ''}
                     required
                     handleOnChange={handleOnChange}
                     label="Post code"
@@ -99,7 +99,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
                 />
                 <InputField
                     name="phone"
-                    inputValue={input?.phone}
+                    inputValue={input?.phone ?? ''}
                     required
                     handleOnChange={handleOnChange}
                     label="Phone"
@@ -111,7 +111,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
             <InputField
                 name="email"
                 type="email"
-                inputValue={input?.email}
+                inputValue={input?.email ?? ''}
                 required
                 handleOnChange={handleOnChange}
                 label="Email"

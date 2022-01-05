@@ -88,6 +88,15 @@ const CheckoutForm = ({countriesData}) => {
 
             // Update cart data in React Context.
             setCart(updatedCart);
+
+            const shipping = updatedCart?.customer?.shipping;
+            //console.log(shipping, input);
+            if( shipping ) {
+                setInput({
+                    ...input,
+                    shipping
+                });    
+            }
         }
     });
 
