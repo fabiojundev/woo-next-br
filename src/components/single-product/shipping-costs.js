@@ -2,6 +2,7 @@ import { isEmpty } from "lodash";
 import { useState } from "react";
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import cx from 'classnames';
+import { GET_CUSTOMER } from "../../queries/get-customer";
 import GET_SHIPPING_COSTS from "../../queries/get-shipping-costs";
 import UPDATE_SHIPPING_ZIPCODE from "../../mutations/update-shipping-zipcode";
 import Image from "../image";
@@ -13,6 +14,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
     }
 
     const [zipcode, setZipcode] = useState('');
+    const [customer, setCustomer] = useState({});
     const [requestError, setRequestError] = useState(null);
 
     const shippingQryInput = {
@@ -28,24 +30,25 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
     };
 
     const defaultOptions = {
-		onCompleted: () => {
-			console.log("completed");
-		},
-		onError: (error) => {
-			if (error) {
-				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
-					? error.graphQLErrors[0]?.message
-					: '';
-				setRequestError(errorMessage);
-			}
-		}
-	};
+        onCompleted: () => {
+            console.log("completed");
+        },
+        onError: (error) => {
+            if (error) {
+                const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+                    ? error.graphQLErrors[0]?.message
+                    : '';
+                setRequestError(errorMessage);
+            }
+        }
+    };
+
     // Update Shipping Zipcode.
-	const [updateShippinAddress, {
-		data: updatedShippingData,
-		loading: updatingShippinZipcode,
-		error: updateShippinZipcodeError
-	}] = useMutation(UPDATE_SHIPPING_ZIPCODE);
+    const [updateShippinAddress, {
+        data: updatedShippingData,
+        loading: updatingShippinZipcode,
+        error: updateShippinZipcodeError
+    }] = useMutation(UPDATE_SHIPPING_ZIPCODE);
 
     // Get shipping costs.
     const [getShippingCosts, {
@@ -53,39 +56,34 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
         loading,
         error
     }] = useLazyQuery(GET_SHIPPING_COSTS, {
+        ...defaultOptions,
         onCompleted: async () => {
-			console.log("completed", data);
-            if( data?.shippingCosts?.address ) {
-                const {desc, __typename, ...address} = data.shippingCosts.address;
-                console.log("updateShippinZipcode", address);
-                await updateShippinAddress({
-                    variables: {
-                        input: {
-                            shipping: {
-                                ...address
-                            },
-                        }
-                    },
-                });    
+            console.log("completed", data);
+            if (data?.shippingCosts?.address) {
+                const { desc, __typename, ...address } = data.shippingCosts.address;
+                if(address?.postcode && customer?.shipping?.postcode != address?.postcode ) {
+                    console.log("updateShippinZipcode", address, customer);
+                    await updateShippinAddress({
+                        variables: {
+                            input: {
+                                shipping: {
+                                    ...address
+                                },
+                            }
+                        },
+                    });    
+                }
             }
-		},
-		onError: (error) => {
-			if (error) {
-				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
-					? error.graphQLErrors[0]?.message
-					: '';
-				setRequestError(errorMessage);
-			}
-		}
+        },
     });
 
-
     const handleGetShippingClick = () => {
+        console.log("handleGetShippingClick", zipcode);
         setRequestError(null);
         if (zipcode?.length == 9) {
             const address = getShippingCosts(
                 {
-                    skip: shippingQryInput?.zipcode?.length != 9,
+                    skip: shippingQryInput?.zipcode?.length < 8,
                     variables: {
                         productId,
                         zipcode,
@@ -93,8 +91,39 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                     },
                 }
             );
+            console.log(address);
         }
     };
+
+    // Get shipping costs.
+    const {
+        data: customerData,
+        loading: gettingCustomer,
+        error: getCustomerError
+    } = useQuery(GET_CUSTOMER, {
+        ...defaultOptions,
+        onCompleted: async () => {
+            console.log("customerData completed", customerData);
+            if (customerData?.customer?.shipping) {
+                setCustomer(customerData.customer);
+            }
+            if (customerData?.customer?.shipping?.postcode?.length >= 8) {
+                const postcode = customerData.customer.shipping.postcode;
+                setZipcode(postcode);
+                console.log("set zipcode", customerData.customer.shipping.postcode);
+                getShippingCosts(
+                    {
+                        skip: postcode?.length < 8,
+                        variables: {
+                            productId,
+                            zipcode: postcode,
+                            quantity,
+                        },
+                    }
+                );
+            }
+        },
+    });
 
     return (
         <>

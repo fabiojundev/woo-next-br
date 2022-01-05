@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { GetCustomer } from "./get-customer";
 
 const GET_CART = gql`
 query GET_CART {
@@ -93,21 +94,7 @@ query GET_CART {
     chosenShippingMethods
     needsShippingAddress
   }
-  customer {
-    shipping {
-      address1
-      address2
-      postcode
-      state
-      country
-      email
-      firstName
-      lastName
-      city
-      phone
-      company
-    }
-  }
+  ${GetCustomer}
 }
 `;
 
