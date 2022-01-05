@@ -42,70 +42,48 @@ const CartItemsContainer = () => {
 		}
 	});
 
-	// Update Cart Mutation.
-	const [updateCart, { data: updateCartResponse, loading: updateCartProcessing, error: updateCartError }] = useMutation(UPDATE_CART, {
+	const defaultOptions = {
 		onCompleted: () => {
+			console.log("completed");
 			refetch();
 		},
 		onError: (error) => {
 			if (error) {
-				const errorMessage = error?.graphQLErrors?.[0]?.message ? error.graphQLErrors[0].message : '';
+				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+					? error.graphQLErrors[0]?.message
+					: '';
 				setRequestError(errorMessage);
 			}
 		}
-	});
+	};
 
 	// Update Cart Mutation.
-	const [clearCart, { data: clearCartRes, loading: clearCartProcessing, error: clearCartError }] = useMutation(CLEAR_CART_MUTATION, {
-		onCompleted: () => {
-			refetch();
-		},
-		onError: (error) => {
-			if (error) {
-				const errorMessage = !isEmpty(error?.graphQLErrors?.[0]) ? error.graphQLErrors[0]?.message : '';
-				setRequestError(errorMessage);
-			}
-		}
-	});
+	const [updateCart, {
+		data: updateCartResponse,
+		loading: updateCartProcessing,
+		error: updateCartError
+	}] = useMutation(UPDATE_CART, defaultOptions);
+
+	// Update Cart Mutation.
+	const [clearCart, {
+		data: clearCartRes,
+		loading: clearCartProcessing,
+		error: clearCartError
+	}] = useMutation(CLEAR_CART_MUTATION, defaultOptions);
 
 	// Update Shipping Zipcode.
 	const [updateShippinZipcode, {
 		data: updatedShippingData,
 		loading: updatingShippinZipcode,
 		error: updateShippinZipcodeError
-	}] = useMutation(UPDATE_SHIPPING_ZIPCODE, {
-		onCompleted: () => {
-			console.log(updatedShippingData);
-			refetch();
-		},
-		onError: (error) => {
-			if (error) {
-				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
-					? error.graphQLErrors[0]?.message
-					: '';
-				setRequestError(errorMessage);
-			}
-		}
-	});
+	}] = useMutation(UPDATE_SHIPPING_ZIPCODE, defaultOptions);
 
 	// Update Shipping Method.
 	const [chooseShippingMethod, {
 		data: chosenShippingData,
-		loading: chooseShippingProcessing,
+		loading: choosingShippingMethod,
 		error: chooseShippingError
-	}] = useMutation(UPDATE_SHIPPING_METHOD, {
-		onCompleted: () => {
-			refetch();
-		},
-		onError: (error) => {
-			if (error) {
-				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
-					? error.graphQLErrors[0]?.message
-					: '';
-				setRequestError(errorMessage);
-			}
-		}
-	});
+	}] = useMutation(UPDATE_SHIPPING_METHOD, defaultOptions);
 
 	/*
 	 * Handle remove product click.
@@ -160,8 +138,8 @@ const CartItemsContainer = () => {
 
 	const handleCalcShippingClick = async (event) => {
 		console.log("handleCalcShippingClick");
-		if( zipcode?.length >= 8 ) {
-			await updateShippinZipcode({
+		if (zipcode?.length >= 8) {
+			 await updateShippinZipcode({
 				variables: {
 					input: {
 						shipping: {
@@ -250,12 +228,12 @@ const CartItemsContainer = () => {
 									data-placeholder="CEP"
 									onChange={handleZipcodeChange}
 								/>
-								{updatingShippinZipcode
+								{(choosingShippingMethod || updatingShippinZipcode)
 									? <span className="align-middle">
 										<Image src='/cart-spinner.gif' width="54px" height="54px" />
 									</span>
 									: <button
-										disabled={updatingShippinZipcode}
+										disabled={(choosingShippingMethod || updatingShippinZipcode)}
 										className={cx(
 											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
 											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': !loading },
@@ -271,13 +249,21 @@ const CartItemsContainer = () => {
 								{cart?.needsShippingAddress
 									&& cart?.shippingMethods?.length
 									&& <div className='mt-4'>
-										<h3 className="my-2">Escolha o frete</h3>
+										<div className='flex'>
+											<h3 className="my-2 self-center">Escolha o frete</h3>
+											{(choosingShippingMethod || updatingShippinZipcode) &&
+												<span className="align-top">
+													<Image src='/cart-spinner.gif' width="54px" height="54px" />
+												</span>
+											}
+										</div>
 										{cart?.shippingMethods.map(method => (
 											<div key={method.id}>
 												<label>
 													<input
 														type="radio"
 														name="chosenShippingMethod"
+														disabled={(choosingShippingMethod || updatingShippinZipcode)}
 														value={method.id}
 														onChange={handleChooseShipping}
 														checked={shippingMethod == method.id}
