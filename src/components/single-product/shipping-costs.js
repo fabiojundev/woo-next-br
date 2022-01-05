@@ -1,8 +1,9 @@
 import { isEmpty } from "lodash";
 import { useState } from "react";
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import cx from 'classnames';
 import GET_SHIPPING_COSTS from "../../queries/get-shipping-costs";
+import UPDATE_SHIPPING_ZIPCODE from "../../mutations/update-shipping-zipcode";
 import Image from "../image";
 
 const ShippingCosts = ({ productId, quantity = 1 }) => {
@@ -26,17 +27,50 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
         setZipcode(zip);
     };
 
+    const defaultOptions = {
+		onCompleted: () => {
+			console.log("completed");
+		},
+		onError: (error) => {
+			if (error) {
+				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+					? error.graphQLErrors[0]?.message
+					: '';
+				setRequestError(errorMessage);
+			}
+		}
+	};
+
     // Get shipping costs.
     const [getShippingCosts, {
         data,
         loading,
         error
-    }] = useLazyQuery(GET_SHIPPING_COSTS);
+    }] = useLazyQuery(GET_SHIPPING_COSTS, {
+        onCompleted: () => {
+			console.log("completed", data);
+		},
+		onError: (error) => {
+			if (error) {
+				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+					? error.graphQLErrors[0]?.message
+					: '';
+				setRequestError(errorMessage);
+			}
+		}
+    });
 
-    const handleGetShippingClick = async () => {
+    // Update Shipping Zipcode.
+	const [updateShippinAddress, {
+		data: updatedShippingData,
+		loading: updatingShippinZipcode,
+		error: updateShippinZipcodeError
+	}] = useMutation(UPDATE_SHIPPING_ZIPCODE);
+
+    const handleGetShippingClick =  () => {
         setRequestError(null);
         if (zipcode?.length == 9) {
-            await getShippingCosts(
+            const address = getShippingCosts(
                 {
                     skip: shippingQryInput?.zipcode?.length != 9,
                     variables: {
@@ -44,17 +78,9 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                         zipcode,
                         quantity,
                     },
-                    onCompleted: () => {
-                        console.log("response", data);
-                    },
-                    onError: (error) => {
-                        if (error) {
-                            console.log("ERROR get shipping costs", error);
-                            setRequestError(error?.graphQLErrors?.[0]?.message ?? '');
-                        }
-                    }
                 }
             );
+            console.log("adddress",address);
         }
     };
 
@@ -96,7 +122,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
             {data?.shippingCosts && (
                 <div className="w-full block my-2 text-sm">
                     <div className="text-xs opacity-75">
-                        {data?.shippingCosts?.address}
+                        {data?.shippingCosts?.address?.desc}
                     </div>
                     <table className="mb-6">
                         <tbody>

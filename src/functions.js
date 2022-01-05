@@ -202,18 +202,18 @@ export const getFormattedCart = ( data ) => {
 
 	let formattedCart = null;
 
-	if ( undefined === data || ! data.cart.contents.nodes.length ) {
+	if ( undefined === data || ! data?.cart?.contents?.nodes?.length ) {
 		return formattedCart;
 	}
 
-	const givenProducts = data.cart.contents.nodes;
+	const givenProducts = data?.cart?.contents?.nodes;
 
 	// Create an empty object.
 	formattedCart = {};
 	formattedCart.products = [];
 	let totalProductsCount = 0;
 
-	for( let i = 0; i < givenProducts.length; i++  ) {
+	for( let i = 0; i < givenProducts?.length; i++  ) {
 		const givenProduct = givenProducts?.[ i ]?.product?.node;
 		const product = {};
 		const total = getFloatVal( givenProducts[ i ].total );
