@@ -244,6 +244,7 @@ export const getFormattedCart = ( data ) => {
 	formattedCart.totalProductsCount = totalProductsCount;
 	formattedCart.subtotal = data?.cart?.subtotal ?? '';
 	formattedCart.totalProductsPrice = data?.cart?.total ?? '';
+	formattedCart.customer = data?.customer;
 
 	return formattedCart;
 

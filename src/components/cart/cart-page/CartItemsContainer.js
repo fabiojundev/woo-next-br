@@ -11,6 +11,8 @@ import CLEAR_CART_MUTATION from "../../../mutations/clear-cart";
 import UPDATE_SHIPPING_ZIPCODE from "../../../mutations/update-shipping-zipcode";
 import UPDATE_SHIPPING_METHOD from "../../../mutations/update-shipping-method";
 import { isEmpty } from 'lodash'
+import cx from 'classnames';
+import Image from "../../image";
 
 
 const CartItemsContainer = () => {
@@ -35,6 +37,7 @@ const CartItemsContainer = () => {
 			// Update cart data in React Context.
 			setCart(updatedCart);
 
+			setZipcode(updatedCart?.customer?.shipping?.postcode);
 			setShippingMethod(updatedCart?.chosenShippingMethods[0] ?? '');
 		}
 	});
@@ -68,7 +71,7 @@ const CartItemsContainer = () => {
 	// Update Shipping Zipcode.
 	const [updateShippinZipcode, {
 		data: updatedShippingData,
-		loading: updateShippinZipcodeProcessing,
+		loading: updatingShippinZipcode,
 		error: updateShippinZipcodeError
 	}] = useMutation(UPDATE_SHIPPING_ZIPCODE, {
 		onCompleted: () => {
@@ -157,24 +160,26 @@ const CartItemsContainer = () => {
 
 	const handleCalcShippingClick = async (event) => {
 		console.log("handleCalcShippingClick");
-		await updateShippinZipcode({
-			variables: {
-				input: {
-					shipping: {
-						state: 'SP',
-						country: 'BR',
-						postcode: zipcode,
-						// overwrite: true
-					},
-				}
-			},
-		});
+		if( zipcode?.length >= 8 ) {
+			await updateShippinZipcode({
+				variables: {
+					input: {
+						shipping: {
+							state: 'SP',
+							country: 'BR',
+							postcode: zipcode,
+							// overwrite: true
+						},
+					}
+				},
+			});
+		}
 	};
 
 	const handleChooseShipping = async (event) => {
 		const chosenShippingMethod = event.target.value;
 		console.log("handleChooseShipping", chosenShippingMethod);
-		setShippingMethod( chosenShippingMethod );
+		setShippingMethod(chosenShippingMethod);
 		await chooseShippingMethod({
 			variables: {
 				input: {
@@ -212,9 +217,9 @@ const CartItemsContainer = () => {
 								<tr className="woo-next-cart-head-container">
 									<th className="woo-next-cart-heading-el" scope="col" />
 									<th className="woo-next-cart-heading-el" scope="col" />
-									<th className="woo-next-cart-heading-el" scope="col">Product</th>
-									<th className="woo-next-cart-heading-el" scope="col">Price</th>
-									<th className="woo-next-cart-heading-el" scope="col">Quantity</th>
+									<th className="woo-next-cart-heading-el" scope="col">Produto</th>
+									<th className="woo-next-cart-heading-el" scope="col">Preço</th>
+									<th className="woo-next-cart-heading-el" scope="col">Quantidade</th>
 									<th className="woo-next-cart-heading-el" scope="col">Total</th>
 								</tr>
 							</thead>
@@ -245,15 +250,24 @@ const CartItemsContainer = () => {
 									data-placeholder="CEP"
 									onChange={handleZipcodeChange}
 								/>
-								<button
-									type="submit"
-									name="calc_shipping"
-									value="1"
-									className="px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500"
-									onClick={handleCalcShippingClick}
-								>
-									Atualizar
-								</button>
+								{updatingShippinZipcode
+									? <span className="align-middle">
+										<Image src='/cart-spinner.gif' width="54px" height="54px" />
+									</span>
+									: <button
+										disabled={updatingShippinZipcode}
+										className={cx(
+											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
+											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': !loading },
+											{ 'opacity-50 cursor-not-allowed': updatingShippinZipcode }
+										)}
+										name="calc_shipping"
+										onClick={handleCalcShippingClick}
+									>
+										Atualizar
+									</button>
+								}
+
 								{cart?.needsShippingAddress
 									&& cart?.shippingMethods?.length
 									&& <div className='mt-4'>
