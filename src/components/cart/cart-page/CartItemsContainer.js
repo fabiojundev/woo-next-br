@@ -142,6 +142,7 @@ const CartItemsContainer = () => {
 			 await updateShippinZipcode({
 				variables: {
 					input: {
+						clientMutationId: v4(),
 						shipping: {
 							country: 'BR',
 							postcode: zipcode,
@@ -160,6 +161,7 @@ const CartItemsContainer = () => {
 		await chooseShippingMethod({
 			variables: {
 				input: {
+					clientMutationId: v4(),
 					shippingMethods: [chosenShippingMethod],
 				}
 			},

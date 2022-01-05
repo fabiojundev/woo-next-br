@@ -13,11 +13,11 @@ mutation UPDATE_SHIPPING_ZIPCODE ($input: UpdateCustomerInput!) {
       email
       firstName
       shipping {
-        postcode
         address1
         address2
         city
         state
+        postcode
       }
     }
   }

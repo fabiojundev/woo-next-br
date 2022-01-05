@@ -40,6 +40,12 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
 			}
 		}
 	};
+    // Update Shipping Zipcode.
+	const [updateShippinAddress, {
+		data: updatedShippingData,
+		loading: updatingShippinZipcode,
+		error: updateShippinZipcodeError
+	}] = useMutation(UPDATE_SHIPPING_ZIPCODE);
 
     // Get shipping costs.
     const [getShippingCosts, {
@@ -47,8 +53,21 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
         loading,
         error
     }] = useLazyQuery(GET_SHIPPING_COSTS, {
-        onCompleted: () => {
+        onCompleted: async () => {
 			console.log("completed", data);
+            if( data?.shippingCosts?.address ) {
+                const {desc, __typename, ...address} = data.shippingCosts.address;
+                console.log("updateShippinZipcode", address);
+                await updateShippinAddress({
+                    variables: {
+                        input: {
+                            shipping: {
+                                ...address
+                            },
+                        }
+                    },
+                });    
+            }
 		},
 		onError: (error) => {
 			if (error) {
@@ -60,14 +79,8 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
 		}
     });
 
-    // Update Shipping Zipcode.
-	const [updateShippinAddress, {
-		data: updatedShippingData,
-		loading: updatingShippinZipcode,
-		error: updateShippinZipcodeError
-	}] = useMutation(UPDATE_SHIPPING_ZIPCODE);
 
-    const handleGetShippingClick =  () => {
+    const handleGetShippingClick = () => {
         setRequestError(null);
         if (zipcode?.length == 9) {
             const address = getShippingCosts(
@@ -80,7 +93,6 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                     },
                 }
             );
-            console.log("adddress",address);
         }
     };
 
