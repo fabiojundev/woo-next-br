@@ -143,7 +143,6 @@ const CartItemsContainer = () => {
 				variables: {
 					input: {
 						shipping: {
-							state: 'SP',
 							country: 'BR',
 							postcode: zipcode,
 							// overwrite: true

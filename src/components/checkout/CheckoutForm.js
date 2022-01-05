@@ -41,7 +41,7 @@ const defaultCustomerInfo = {
     address1: '',
     address2: '',
     city: '',
-    country: '',
+    country: 'BR',
     state: '',
     postcode: '',
     email: '',
@@ -52,7 +52,7 @@ const defaultCustomerInfo = {
 
 const CheckoutForm = ({countriesData}) => {
 
-    const {billingCountries, shippingCountries} = countriesData || {}
+    const {billingCountries, shippingCountries} = countriesData || {};
 
     const initialState = {
         billing: {
