@@ -34,7 +34,8 @@ const CartItemsContainer = () => {
 			console.log('cart', data, updatedCart);
 			// Update cart data in React Context.
 			setCart(updatedCart);
-			setShippingMethod(cart?.chosenShippingMethods[0] ?? '')
+
+			setShippingMethod(updatedCart?.chosenShippingMethods[0] ?? '');
 		}
 	});
 
@@ -171,8 +172,8 @@ const CartItemsContainer = () => {
 	};
 
 	const handleChooseShipping = async (event) => {
-		console.log("handleChooseShipping");
 		const chosenShippingMethod = event.target.value;
+		console.log("handleChooseShipping", chosenShippingMethod);
 		setShippingMethod( chosenShippingMethod );
 		await chooseShippingMethod({
 			variables: {
