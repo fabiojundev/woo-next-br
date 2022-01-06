@@ -68,7 +68,8 @@ export const getCreateOrderData = (order, products) => {
         shipping: {
             first_name: order?.shipping?.firstName,
             last_name: order?.shipping?.lastName,
-            address_1: order?.shipping?.address1,
+            address_1: order?.shipping?.address1
+                + ',' + order?.shipping?.number,
             address_2: order?.shipping?.address2,
             city: order?.shipping?.city,
             country: order?.shipping?.country,
@@ -81,7 +82,8 @@ export const getCreateOrderData = (order, products) => {
         billing: {
             first_name: billingData?.firstName,
             last_name: billingData?.lastName,
-            address_1: billingData?.address1,
+            address_1: billingData?.address1
+                + ',' + billingData?.number,
             address_2: billingData?.address2,
             city: billingData?.city,
             country: billingData?.country,

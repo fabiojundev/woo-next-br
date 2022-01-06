@@ -40,6 +40,7 @@ const defaultCustomerInfo = {
     lastName: '',
     address1: '',
     address2: '',
+    number: '',
     city: '',
     country: 'BR',
     state: '',

@@ -220,7 +220,7 @@ const CartItemsContainer = () => {
 
 						{/* Shipping Calculator */}
 						<div className="flex flex-wrap justify-between">
-							<div className="my-6 mr-2 p-4 border border-solid ">
+							<div className="my-6 mr-2 p-4 border border-solid flex-grow">
 								<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
 								<hr className="my-4 " />
 								<input
