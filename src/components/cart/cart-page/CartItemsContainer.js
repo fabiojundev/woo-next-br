@@ -139,7 +139,7 @@ const CartItemsContainer = () => {
 	const handleCalcShippingClick = async (event) => {
 		console.log("handleCalcShippingClick");
 		if (zipcode?.length >= 8) {
-			 await updateShippinZipcode({
+			await updateShippinZipcode({
 				variables: {
 					input: {
 						clientMutationId: v4(),
@@ -217,13 +217,15 @@ const CartItemsContainer = () => {
 								)}
 							</tbody>
 						</table>
+
 						{/* Shipping Calculator */}
-						<div className="flex">
-							<div className="shipping-calculator-form">
-								<h2 className="my-2">Calcular entrega</h2>
+						<div className="flex flex-wrap justify-between">
+							<div className="my-6 mr-2 p-4 border border-solid ">
+								<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
+								<hr className="my-4 " />
 								<input
 									type="text"
-									className="p-2 border"
+									className="p-2 border w-32"
 									value={zipcode}
 									placeholder="CEP"
 									data-placeholder="CEP"
@@ -249,9 +251,10 @@ const CartItemsContainer = () => {
 
 								{cart?.needsShippingAddress
 									&& cart?.shippingMethods?.length
-									&& <div className='mt-4'>
+									&& <div className='mt-8'>
+										<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
+										<hr className="my-4 " />
 										<div className='flex'>
-											<h3 className="my-2 self-center">Escolha o frete</h3>
 											{(choosingShippingMethod || updatingShippinZipcode) &&
 												<span className="align-top">
 													<Image src='/cart-spinner.gif' width="54px" height="54px" />
@@ -264,6 +267,7 @@ const CartItemsContainer = () => {
 													<input
 														type="radio"
 														name="chosenShippingMethod"
+														className="my-2"
 														disabled={(choosingShippingMethod || updatingShippinZipcode)}
 														value={method.id}
 														onChange={handleChooseShipping}
@@ -275,50 +279,40 @@ const CartItemsContainer = () => {
 									</div>
 								}
 							</div>
-						</div>
-						{/*Cart Total*/}
-						<div className="row woo-next-cart-total-container border p-5 bg-gray-200">
-							<div className="">
-								{/* <h2 className="text-2xl">Cart Total</h2> */}
-								<table className="table table-hover mb-5">
-									<tbody>
-										<tr className="table-light flex flex-col">
-											<td className="woo-next-cart-element-total text-xl font-normal">
-												Subtotal
-											</td>
-											<td className="woo-next-cart-element-amt font-bold">
-												{(cart?.subtotal && 'string' !== typeof cart.subtotal)
-													? cart.subtotal.toFixed(2)
-													: cart.subtotal}
-											</td>
-										</tr>
-										{cart?.needsShippingAddress
-											&& cart?.shippingMethods?.length
-											&& cart?.chosenShippingMethods
-											&& <tr className="table-light flex flex-col">
-												<td className="woo-next-cart-element-total text-xl font-normal">
-													Entrega
-												</td>
-												<td className="woo-next-cart-element-amt font-bold">
-													R$ {cart.shippingMethods.find(
-														method => method.id == cart.chosenShippingMethods[0])
-														.cost
-													}
-												</td>
-											</tr>
-										}
-										<tr className="table-light">
-											<td className="woo-next-cart-element-amt text-xl font-bold">
-												Total
-											</td>
-											<td className="woo-next-cart-element-amt text-xl font-bold">
-												{('string' !== typeof cart.totalProductsPrice)
-													? cart.totalProductsPrice.toFixed(2)
-													: cart.totalProductsPrice}
-											</td>
-										</tr>
-									</tbody>
-								</table>
+							{/*Cart Total*/}
+							<div className="my-6 p-4 border flex-grow">
+								<h2 className="my-2 self-center text-xl text-bold">Total no Carrinho</h2>
+								<hr className="my-4 " />
+								<div className="flex justify-between">
+									<h3 className="text-xl">Subtotal</h3>
+									<div className="font-bold">
+										{(cart?.subtotal && 'string' !== typeof cart.subtotal)
+											? cart.subtotal.toFixed(2)
+											: cart.subtotal}
+									</div>
+								</div>
+								{cart?.needsShippingAddress
+									&& cart?.shippingMethods?.length
+									&& cart?.chosenShippingMethods
+									&& <div className="flex justify-between">
+										<h3 className="text-xl">Entrega</h3>
+										<div className="font-bold">
+											R$ {cart.shippingMethods.find(
+												method => method.id == cart.chosenShippingMethods[0])
+												.cost
+											}
+										</div>
+									</div>
+								}
+								<hr className="my-4 " />
+								<div className="mb-6 flex justify-between">
+									<h3 className="text-xl">Total</h3>
+									<div className="font-bold">
+										{('string' !== typeof cart.totalProductsPrice)
+											? cart.totalProductsPrice.toFixed(2)
+											: cart.totalProductsPrice}
+									</div>
+								</div>
 								<Link href="/checkout">
 									<button className="bg-green-600 text-white px-5 py-3 rounded-sm w-auto xl:w-full">
 										<span className="woo-next-cart-checkout-txt">Concluir Compra</span>
