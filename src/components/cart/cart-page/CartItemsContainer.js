@@ -12,8 +12,8 @@ import UPDATE_SHIPPING_ZIPCODE from "../../../mutations/update-shipping-zipcode"
 import UPDATE_SHIPPING_METHOD from "../../../mutations/update-shipping-method";
 import { isEmpty } from 'lodash'
 import cx from 'classnames';
-import Image from "../../image";
-
+import LoadingButton from '../../LoadingButton';
+import LoadingImg from '../../LoadingImg';
 
 const CartItemsContainer = () => {
 
@@ -231,36 +231,23 @@ const CartItemsContainer = () => {
 									data-placeholder="CEP"
 									onChange={handleZipcodeChange}
 								/>
-								{(choosingShippingMethod || updatingShippinZipcode)
-									? <span className="align-middle">
-										<Image src='/cart-spinner.gif' width="54px" height="54px" />
-									</span>
-									: <button
-										disabled={(choosingShippingMethod || updatingShippinZipcode)}
-										className={cx(
-											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': !loading },
-											{ 'opacity-50 cursor-not-allowed': updatingShippinZipcode }
-										)}
-										name="calc_shipping"
-										onClick={handleCalcShippingClick}
-									>
-										Atualizar
-									</button>
-								}
+								<LoadingButton
+									label={"Atualizar"}
+									loading={(choosingShippingMethod || updatingShippinZipcode)}
+									type="button"
+									handleClick={handleCalcShippingClick}
+								/>
 
 								{cart?.needsShippingAddress
 									&& cart?.shippingMethods?.length
 									&& <div className='mt-8'>
-										<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
-										<hr className="my-4 " />
 										<div className='flex'>
+											<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
 											{(choosingShippingMethod || updatingShippinZipcode) &&
-												<span className="align-top">
-													<Image src='/cart-spinner.gif' width="54px" height="54px" />
-												</span>
+												<LoadingImg />
 											}
 										</div>
+										<hr className="my-4 " />
 										{cart?.shippingMethods.map(method => (
 											<div key={method.id}>
 												<label>
@@ -314,7 +301,12 @@ const CartItemsContainer = () => {
 									</div>
 								</div>
 								<Link href="/checkout">
-									<button className="bg-green-600 text-white px-5 py-3 rounded-sm w-auto xl:w-full">
+									<button 
+										className={cx(
+											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
+											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': true}
+										)}
+									>
 										<span className="woo-next-cart-checkout-txt">Concluir Compra</span>
 										<i className="fas fa-long-arrow-alt-right" />
 									</button>
@@ -331,7 +323,7 @@ const CartItemsContainer = () => {
 					<h2 className="text-2xl mb-5">No items in the cart</h2>
 					<Link href="/">
 						<button className="bg-purple-600 text-white px-5 py-3 rounded-sm">
-							<span className="woo-next-cart-checkout-txt">Add New Products</span>
+							<span className="woo-next-cart-checkout-txt">Adicionar Produtos</span>
 							<i className="fas fa-long-arrow-alt-right" />
 						</button>
 					</Link>

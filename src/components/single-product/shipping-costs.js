@@ -6,6 +6,7 @@ import { GET_CUSTOMER } from "../../queries/get-customer";
 import GET_SHIPPING_COSTS from "../../queries/get-shipping-costs";
 import UPDATE_SHIPPING_ZIPCODE from "../../mutations/update-shipping-zipcode";
 import Image from "../image";
+import LoadingButton from "../LoadingButton";
 
 const ShippingCosts = ({ productId, quantity = 1 }) => {
 
@@ -61,7 +62,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
             console.log("completed", data);
             if (data?.shippingCosts?.address) {
                 const { desc, __typename, ...address } = data.shippingCosts.address;
-                if(address?.postcode && customer?.shipping?.postcode != address?.postcode ) {
+                if (address?.postcode && customer?.shipping?.postcode != address?.postcode) {
                     console.log("updateShippinZipcode", address, customer);
                     await updateShippinAddress({
                         variables: {
@@ -71,7 +72,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                                 },
                             }
                         },
-                    });    
+                    });
                 }
             }
         },
@@ -141,24 +142,12 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                     placeholder="00000-000"
                     autoComplete="postal-code"
                 />
-                {loading
-                    ? <span className="align-middle">
-                        <Image src='/cart-spinner.gif' width="54px" height="54px" />
-                    </span>
-                    : <button
-                        disabled={loading}
-                        className={cx(
-                            'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-                            { 'hover:bg-green-600 hover:text-white hover:border-green-600': !loading },
-                            { 'opacity-50 cursor-not-allowed': loading }
-                        )}
-                        type="button"
-                        id="wppdev_wt_shipping_btn"
-                        onClick={handleGetShippingClick}
-                    >
-                        Ok
-                    </button>
-                }
+                <LoadingButton
+                    label={"OK"}
+                    loading={loading}
+                    type="button"
+                    handleClick={handleGetShippingClick}
+                />
             </div>
             {data?.shippingCosts && (
                 <div className="w-full block my-2 text-sm">
