@@ -15,7 +15,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
                     inputValue={input?.firstName ?? ''}
                     required
                     handleOnChange={handleOnChange}
-                    label="First name"
+                    label="Nome"
                     errors={errors}
                     isShipping={isShipping}
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
@@ -25,55 +25,113 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
                     inputValue={input?.lastName ?? ''}
                     required
                     handleOnChange={handleOnChange}
-                    label="Last name"
+                    label="Sobrenome"
                     errors={errors}
                     isShipping={isShipping}
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
                 />
             </div>
+            {/*
             <InputField
                 name="company"
                 inputValue={input?.company ?? ''}
                 handleOnChange={handleOnChange}
-                label="Company Name (Optional)"
+                label="Empresa (Optional)"
                 errors={errors}
                 isShipping={isShipping}
                 containerClassNames="mb-4"
             />
-            {/* Country Selection*/}
+             */}           
+            <InputField
+                name="email"
+                type="email"
+                inputValue={input?.email ?? ''}
+                required
+                handleOnChange={handleOnChange}
+                label="Email"
+                errors={errors}
+                isShipping={isShipping}
+                containerClassNames="mb-4"
+            />
+            <div className="flex flex-wrap overflow-hidden sm:-mx-3">
+                <InputField
+                    name="postcode"
+                    inputValue={input?.postcode ?? ''}
+                    required
+                    handleOnChange={handleOnChange}
+                    label="CEP"
+                    errors={errors}
+                    isShipping={isShipping}
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                />
+                <InputField
+                    name="phone"
+                    inputValue={input?.phone ?? ''}
+                    required
+                    handleOnChange={handleOnChange}
+                    label="Celular"
+                    errors={errors}
+                    isShipping={isShipping}
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                />
+            </div>
+            
+            {/* Country Selection
+            {/*
             <CountrySelection
                 input={input}
                 handleOnChange={handleOnChange}
                 countries={countries}
                 isShipping={isShipping}
             />
+            */}
+            <InputField
+                name="country"
+                inputValue={input?.country ?? ''}
+                type="hidden"
+                isShipping={isShipping}
+                containerClassNames="mb-4"
+            />
             <InputField
                 name="address1"
                 inputValue={input?.address1 ?? ''}
                 required
                 handleOnChange={handleOnChange}
-                label="Street address"
-                placeholder="House number and street name"
+                label="Endereço"
+                placeholder="Nome da rua"
                 errors={errors}
                 isShipping={isShipping}
                 containerClassNames="mb-4"
             />
-            <InputField
-                name="address2"
-                inputValue={input?.address2 ?? ''}
-                handleOnChange={handleOnChange}
-                label="Street address line two"
-                placeholder="Apartment floor unit building floor etc(optional)"
-                errors={errors}
-                isShipping={isShipping}
-                containerClassNames="mb-4"
-            />
+            <div className="flex flex-wrap overflow-hidden sm:-mx-3">
+                <InputField
+                    name="number"
+                    inputValue={input?.number ?? ''}
+                    required
+                    handleOnChange={handleOnChange}
+                    label="Número"
+                    placeholder="Número da casa"
+                    errors={errors}
+                    isShipping={isShipping}
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                />
+                <InputField
+                    name="address2"
+                    inputValue={input?.address2 ?? ''}
+                    handleOnChange={handleOnChange}
+                    label="Complemento"
+                    placeholder="Bloco, apto, etc(optional)"
+                    errors={errors}
+                    isShipping={isShipping}
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                />
+            </div>
             <InputField
                 name="city"
                 required
                 inputValue={input?.city ?? ''}
                 handleOnChange={handleOnChange}
-                label="Town/City"
+                label="Cidade"
                 errors={errors}
                 isShipping={isShipping}
                 containerClassNames="mb-4"
@@ -86,39 +144,7 @@ const Address = ({input, countries, states, handleOnChange, isFetchingStates, is
                 isShipping={isShipping}
                 isFetchingStates={isFetchingStates}
             />
-            <div className="flex flex-wrap overflow-hidden sm:-mx-3">
-                <InputField
-                    name="postcode"
-                    inputValue={input?.postcode ?? ''}
-                    required
-                    handleOnChange={handleOnChange}
-                    label="Post code"
-                    errors={errors}
-                    isShipping={isShipping}
-                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
-                />
-                <InputField
-                    name="phone"
-                    inputValue={input?.phone ?? ''}
-                    required
-                    handleOnChange={handleOnChange}
-                    label="Phone"
-                    errors={errors}
-                    isShipping={isShipping}
-                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
-                />
-            </div>
-            <InputField
-                name="email"
-                type="email"
-                inputValue={input?.email ?? ''}
-                required
-                handleOnChange={handleOnChange}
-                label="Email"
-                errors={errors}
-                isShipping={isShipping}
-                containerClassNames="mb-4"
-            />
+
             {/*	@TODO Create an Account */}
             {/*<div className="form-check">*/}
             {/*	<label className="leading-7 text-sm text-gray-600" className="form-check-label">*/}

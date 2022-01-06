@@ -223,7 +223,7 @@ const CheckoutForm = ({countriesData}) => {
                         <div>
                             {/*Shipping Details*/}
                             <div className="billing-details">
-                                <h2 className="text-xl font-medium mb-4">Shipping Details</h2>
+                                <h2 className="text-xl font-medium mb-4">Endereço de Entrega</h2>
                                 <Address
                                     states={theShippingStates}
                                     countries={shippingCountries}
@@ -240,7 +240,7 @@ const CheckoutForm = ({countriesData}) => {
                                     type="checkbox"
                                     checked={input?.billingDifferentThanShipping}
                                     handleOnChange={handleOnChange}
-                                    label="Billing different than shipping"
+                                    label="Endereço de faturamento diferente da entrega"
                                     containerClassNames="mb-4 pt-4"
                                 />
                             </div>
