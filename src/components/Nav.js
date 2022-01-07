@@ -31,7 +31,7 @@ const Nav = ( {slug} ) => {
 				{/*MMenu in mobile*/}
 				<div className={`${ isMenuVisible ? 'max-h-full h-full' : 'h-0' } w-full overflow-hidden lg:h-full flex-grow lg:flex lg:items-center lg:w-auto`}>
 					<div className="text-sm font-medium uppercase lg:flex-grow">
-						<Link href="/produtos">
+						<Link href="/">
 							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
 								Produtos
 							</a>
