@@ -1,19 +1,40 @@
-import {Facebook, Instagram, Twitter, Youtube} from "./icons";
+import {Instagram, WhatsApp, Email} from "./icons";
 
 const Footer = () => (
 	<div className="footer bg-gray-800 p-6 text-white">
 		<div className="container mx-auto">
 			<div className="footer-text flex-none md:flex items-center justify-between">
-				<p>© Codeytek Academy 2020</p>
-				<p className="text-gray">Learn the latest tech skills</p>
-				<span className="text-gray">Follow on social links to support the work</span>
+				<p>© 2018-2022 camadecultivo.com.br</p>
+				<p className="text-gray">Avisos Importantes</p>
+				<span className="text-gray">Site Seguro</span>
 			</div>
-			<ul className="social-links mt-8 flex align-center">
-				<li><a href="https://www.facebook.com/codeytek" className="fa fa-facebook" target="_blank"><Facebook/></a></li>
-				<li className="ml-2 mt-1"><a href="https://twitter.com/codeytek" target="_blank"><Twitter/></a></li>
-				<li className="ml-2 mt-1"><a href="https://youtube.com/ImranSayedDev" className="fa fa-youtube" target="_blank"><Youtube/></a></li>
-				<li className="ml-2"><a href="https://www.instagram.com/codeytek_academy/" className="fa fa-instagram" target="_blank"><Instagram/></a></li>
-			</ul>
+			<div className="social-links mt-8 mb-2 flex align-center">
+				<a 
+					className="flex my-2"
+					href="https://api.whatsapp.com/send?phone=5511948024005"
+				>
+					<WhatsApp className="mr-2" />
+					(11) 94802-4005
+				</a>
+			</div>
+			<div>
+				<a  
+					className="flex my-2"
+					href="https://www.instagram.com/nirvanagrowshopbr/"
+				>
+					<Instagram className="mr-2" />
+					@camadecultivo
+				</a>
+			</div>
+			<div>
+				<a 
+					className="flex my-2"
+					href="mailto:atendimento@nirvanagrowshop.com.br"
+				>
+					<Email className="mr-2" /> 
+					 atendimento@camadecultivo.com.br
+				</a>
+			</div>
 		</div>
 	</div>
 );
