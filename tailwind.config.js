@@ -8,6 +8,14 @@ module.exports = {
     './src/components/**/*.js',
     './pages/**/*.js'],
   theme: {
+    fontFamily: {
+      sans: [
+        'OpenSans', 
+        'Arial',
+        'sans-serif',
+        '"Helvetica Neue"',
+      ],
+    },
     extend: {
       height: {
         'almost-screen': 'calc(-16rem + 100vh)',
