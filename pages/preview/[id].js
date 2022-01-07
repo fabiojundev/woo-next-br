@@ -1,11 +1,10 @@
 import client from '../../src/apollo/client';
-import { GET_PAGE_BY_ID} from '../../../src/queries/pages/get-page';
+import { GET_PAGE_BY_ID} from '../../src/queries/pages/get-page';
 import Layout from '../../src/components/layout/index.js';
-import {handleRedirectsAndReturnData} from '../../../src/utils/slug';
-import {getAuthToken} from '../../../src/utils/cookies';
-import {getLoginPreviewRedirectUrl} from '../../../src/utils/redirects';
-import {GET_POST_BY_ID} from '../../../src/queries/posts/get-post';
-import {sanitize} from '../../../src/utils/miscellaneous';
+import {handleRedirectsAndReturnData} from '../../src/utils/slug';
+import {getAuthToken} from '../../src/utils/cookies';
+import {getLoginPreviewRedirectUrl} from '../../src/utils/redirects';
+import {sanitize} from '../../src/utils/miscellaneous';
 
 const PostPreview = ( { data } ) => {
 	return (
@@ -23,7 +22,7 @@ export async function getServerSideProps( context ) {
 
 	const { params } = context || {};
 	const { data, errors } = await client.query( {
-		query: GET_POST_BY_ID,
+		query: GET_PAGE_BY_ID,
 		variables: {
 			id: Number( params?.id ?? '' ),
 		},
