@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { getPageOffset, PER_PAGE_FIRST, PER_PAGE_REST } from '../../../src/utils/pagination';
 import client from '../../../src/apollo/client';
-import Layout from '../../../src/components/layout/index.js';
+import Layout from '../../../src/components/Layout';
 import Pagination from '../../../src/components/blog/pagination';
 import Posts from '../../../src/components/blog/posts';
 import {GET_POSTS, GET_TOTAL_POSTS_COUNT} from '../../../src/queries/posts/get-posts';

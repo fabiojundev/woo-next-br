@@ -1,5 +1,5 @@
 import client from '../../../src/apollo/client';
-import Layout from '../../../src/components/layout';
+import Layout from '../../../src/components/Layout';
 import {handleRedirectsAndReturnData} from '../../../src/utils/slug';
 import {getAuthToken} from '../../../src/utils/cookies';
 import {getLoginPreviewRedirectUrl} from '../../../src/utils/redirects';
