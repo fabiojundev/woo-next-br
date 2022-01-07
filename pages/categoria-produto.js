@@ -3,7 +3,7 @@ import client from '../src/components/ApolloClient';
 import ParentCategoriesBlock from "../src/components/category/category-block/ParentCategoriesBlock";
 import GET_CATEGORIES_QUERY from "../src/queries/get-categories";
 
-export default function Categories ( props ) {
+export default function CategoriaProduto ( props ) {
 
 	const { productCategories } = props;
 

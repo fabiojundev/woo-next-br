@@ -30,20 +30,25 @@ const Nav = ( {slug} ) => {
 
 				{/*MMenu in mobile*/}
 				<div className={`${ isMenuVisible ? 'max-h-full h-full' : 'h-0' } w-full overflow-hidden lg:h-full flex-grow lg:flex lg:items-center lg:w-auto`}>
-					<div className="text-sm font-medium uppercase lg:flex-grow">
-						<Link href="/">
+					<div className="font-medium lg:flex-grow">
+						<Link href="/categoria-produto/cama-de-cultivo/">
 							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Produtos
+								Cama de Cultivo
 							</a>
 						</Link>
-						<Link href="/">
+						<Link href="/categoria-produto/kits-de-cultivo/">
 							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Camas de Cultivo
+								Kits de Cultivo
 							</a>
 						</Link>
-						<Link href="/">
+						<Link href="/categoria-produto/vaso-de-6-7-litros/">
 							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
 								Vasos
+							</a>
+						</Link>
+						<Link href="/categoria-produto/solo-vivo/">
+							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
+								Solo vivo
 							</a>
 						</Link>
 						<Link href="/blog">
