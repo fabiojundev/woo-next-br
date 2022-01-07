@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from "./image";
 
 import NavSearch from './search/nav-search';
+import MenuPrincipal from './Menu';
 
 const Nav = ( {slug} ) => {
 
@@ -30,33 +31,10 @@ const Nav = ( {slug} ) => {
 
 				{/*MMenu in mobile*/}
 				<div className={`${ isMenuVisible ? 'max-h-full h-full' : 'h-0' } w-full overflow-hidden lg:h-full flex-grow lg:flex lg:items-center lg:w-auto`}>
-					<div className="font-medium lg:flex-grow">
-						<Link href="/categoria-produto/cama-de-cultivo/">
-							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Cama de Cultivo
-							</a>
-						</Link>
-						<Link href="/categoria-produto/kits-de-cultivo/">
-							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Kits de Cultivo
-							</a>
-						</Link>
-						<Link href="/categoria-produto/vaso-de-6-7-litros/">
-							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Vasos
-							</a>
-						</Link>
-						<Link href="/categoria-produto/solo-vivo/">
-							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Solo vivo
-							</a>
-						</Link>
-						<Link href="/blog">
-							<a className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-								Blog
-							</a>
-						</Link>
-					</div>
+					<MenuPrincipal
+						className="text-gray-900"
+						linkClassName="block lg:inline-block"
+					/>
 
 					<div className="text-sm font-medium">
 						<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">

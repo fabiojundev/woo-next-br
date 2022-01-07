@@ -4,10 +4,10 @@ function SvgInstagram(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={24}
-      height={24}
+      width="18"
+      height="18"
       viewBox="0 0 18 18"
-      fill="green"
+      fill="#00aa4e"
       {...props}
     >
       <g>
