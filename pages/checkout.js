@@ -15,10 +15,11 @@ const Checkout = ({data}) => (
 export default Checkout;
 
 export async function getStaticProps() {
-	const { data } = await client.query({
-		query: GET_COUNTRIES
-	});
-
+	// const { data } = await client.query({
+	// 	query: GET_COUNTRIES
+	// });
+	const data = {};
+	
 	return {
 		props: {
 			data: data || {}
