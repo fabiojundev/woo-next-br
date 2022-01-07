@@ -18,6 +18,7 @@ import {
 } from "../../utils/checkout";
 import CheckboxField from "./form-elements/CheckboxField";
 import CLEAR_CART_MUTATION from "../../mutations/clear-cart";
+import LoadingButton from '../LoadingButton';
 
 // Use this for testing purposes, so you dont have to fill the checkout form over an over again.
 // const defaultCustomerInfo = {
@@ -40,19 +41,20 @@ const defaultCustomerInfo = {
     lastName: '',
     address1: '',
     address2: '',
+    number: '',
     city: '',
-    country: '',
+    country: 'BR',
     state: '',
     postcode: '',
     email: '',
     phone: '',
     company: '',
-    errors: null
+    errors: null,
 }
 
 const CheckoutForm = ({countriesData}) => {
 
-    const {billingCountries, shippingCountries} = countriesData || {}
+    const {billingCountries, shippingCountries} = countriesData || {};
 
     const initialState = {
         billing: {
@@ -64,7 +66,7 @@ const CheckoutForm = ({countriesData}) => {
         createAccount: false,
         orderNotes: '',
         billingDifferentThanShipping: false,
-        paymentMethod: 'cod',
+        paymentMethod: 'stripe-mode',
     };
 
     const [cart, setCart] = useContext(AppContext);
@@ -88,6 +90,15 @@ const CheckoutForm = ({countriesData}) => {
 
             // Update cart data in React Context.
             setCart(updatedCart);
+
+            const shipping = updatedCart?.customer?.shipping;
+            //console.log(shipping, input);
+            if( shipping ) {
+                setInput({
+                    ...input,
+                    shipping
+                });    
+            }
         }
     });
 
@@ -214,7 +225,7 @@ const CheckoutForm = ({countriesData}) => {
                         <div>
                             {/*Shipping Details*/}
                             <div className="billing-details">
-                                <h2 className="text-xl font-medium mb-4">Shipping Details</h2>
+                                <h2 className="text-xl font-medium mb-4">Endereço de Entrega</h2>
                                 <Address
                                     states={theShippingStates}
                                     countries={shippingCountries}
@@ -231,14 +242,14 @@ const CheckoutForm = ({countriesData}) => {
                                     type="checkbox"
                                     checked={input?.billingDifferentThanShipping}
                                     handleOnChange={handleOnChange}
-                                    label="Billing different than shipping"
+                                    label="Endereço de faturamento diferente da entrega"
                                     containerClassNames="mb-4 pt-4"
                                 />
                             </div>
                             {/*Billing Details*/}
                             {input?.billingDifferentThanShipping ? (
                                 <div className="billing-details">
-                                    <h2 className="text-xl font-medium mb-4">Billing Details</h2>
+                                    <h2 className="text-xl font-medium mb-4">Endereço de Faturamento</h2>
                                     <Address
                                         states={theBillingStates}
                                         countries={billingCountries}
@@ -255,23 +266,18 @@ const CheckoutForm = ({countriesData}) => {
                         {/* Order & Payments*/}
                         <div className="your-orders">
                             {/*	Order*/}
-                            <h2 className="text-xl font-medium mb-4">Your Order</h2>
+                            <h2 className="text-xl font-medium mb-4">Seu pedido</h2>
                             <YourOrder cart={cart}/>
 
                             {/*Payment*/}
                             <PaymentModes input={input} handleOnChange={handleOnChange}/>
 
                             <div className="woo-next-place-order-btn-wrap mt-5">
-                                <button
-                                    disabled={isOrderProcessing}
-                                    className={cx(
-                                        'bg-purple-600 text-white px-5 py-3 rounded-sm w-auto xl:w-full',
-                                        {'opacity-50': isOrderProcessing}
-                                    )}
+                                <LoadingButton 
+                                    label={"Finalizar Compra"}
+                                    loading={isOrderProcessing}
                                     type="submit"
-                                >
-                                    Place Order
-                                </button>
+                                />
                             </div>
 
                             {/* Checkout Loading*/}

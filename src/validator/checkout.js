@@ -47,19 +47,19 @@ const validateAndSanitizeCheckoutForm = ( data, hasStates = true ) => {
 		 * Check for error and if there is no error then sanitize data.
 		 */
 		if ( ! validator.isLength( data[ fieldName ], { min, max } ) ){
-			errors[ fieldName ] = `${errorContent} must be ${min} to ${max} characters`;
+			errors[ fieldName ] = `${errorContent} é de ${min} a ${max} caracteres`;
 		}
 
 		if ( 'email' === type && ! validator.isEmail( data[ fieldName ] ) ){
-			errors[ fieldName ] = `${errorContent} is not valid`;
+			errors[ fieldName ] = `${errorContent} é inválido`;
 		}
 
 		if ( 'phone' === type && ! validator.isMobilePhone( data[ fieldName ] ) ) {
-			errors[ fieldName ] = `${errorContent} is not valid`;
+			errors[ fieldName ] = `${errorContent} é inválido`;
 		}
 
 		if ( required && validator.isEmpty( data[ fieldName ] ) ) {
-			errors[ fieldName ] = `${errorContent} is required`;
+			errors[ fieldName ] = `${errorContent} é um campo obrigatório`;
 		}
 
 		// If no errors
@@ -71,16 +71,17 @@ const validateAndSanitizeCheckoutForm = ( data, hasStates = true ) => {
 
 	};
 
-	addErrorAndSanitizedData( 'firstName', 'First name', 2, 35, 'string', true );
-	addErrorAndSanitizedData( 'lastName', 'Last name', 2, 35, 'string', true );
-	addErrorAndSanitizedData( 'company', 'Company Name', 0, 35, 'string', false );
-	addErrorAndSanitizedData( 'country', 'Country name', 2, 55, 'string', true );
-	addErrorAndSanitizedData( 'address1', 'Street address line 1', 12, 100,'string',true );
+	addErrorAndSanitizedData( 'firstName', 'Nome', 2, 35, 'string', true );
+	addErrorAndSanitizedData( 'lastName', 'Sobrenome', 2, 35, 'string', true );
+	addErrorAndSanitizedData( 'company', 'Empresa', 0, 35, 'string', false );
+	addErrorAndSanitizedData( 'country', 'País', 2, 55, 'string', true );
+	addErrorAndSanitizedData( 'address1', 'Endereço', 12, 100,'string',true );
 	addErrorAndSanitizedData( 'address2', '', 0, 254, 'string', false );
-	addErrorAndSanitizedData( 'city', 'City field', 3, 25, 'string', true );
-	addErrorAndSanitizedData( 'state', 'State/County', 0, 254, 'string', hasStates );
-	addErrorAndSanitizedData( 'postcode', 'Post code', 2, 10, 'postcode', true );
-	addErrorAndSanitizedData( 'phone', 'Phone number', 10, 15, 'phone', true );
+	addErrorAndSanitizedData( 'number', 'Número', 0, 35, 'string', true );
+	addErrorAndSanitizedData( 'city', 'Cidade', 3, 25, 'string', true );
+	addErrorAndSanitizedData( 'state', 'Estado', 0, 254, 'string', hasStates );
+	addErrorAndSanitizedData( 'postcode', 'CEP', 2, 10, 'postcode', true );
+	addErrorAndSanitizedData( 'phone', 'Celular', 10, 15, 'phone', true );
 	addErrorAndSanitizedData( 'email', 'Email', 11, 254, 'email', true );
 
 	// The data.createAccount is a boolean value.

@@ -1,11 +1,12 @@
 import Nav from "./Nav";
 
-const Header = () => {
+const Header = ( {slug} ) => {
+
 	return (
-		<div className="header">
-			<Nav/>
-		</div>
-	)
+		<header className="header">
+			<Nav slug={slug}/>
+		</header>
+	);
 };
 
 export default Header;

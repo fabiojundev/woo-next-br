@@ -1,9 +1,14 @@
 import { gql } from "@apollo/client";
+import MenuFragment from './fragments/menus'
+import SeoFragment from "./fragments/seo";
+import {HeaderFooter} from "./get-menus";
+import ImageFragment from "./fragments/image";
 
 /**
  * GraphQL categories and products query.
  */
 const PRODUCTS_AND_CATEGORIES_QUERY = gql`query {
+  ${HeaderFooter}
   heroCarousel: productCategories(where: {slug: "offers"}) {
     nodes {
       id
@@ -79,6 +84,7 @@ const PRODUCTS_AND_CATEGORIES_QUERY = gql`query {
     }
   }
 }
+${MenuFragment}
 `;
 
 export default PRODUCTS_AND_CATEGORIES_QUERY;
