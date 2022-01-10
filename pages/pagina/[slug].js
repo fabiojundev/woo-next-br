@@ -17,7 +17,7 @@ const Page = ({ data }) => {
 		return <div>Carregando...</div>;
 	}
 
-	console.log("PAGE", data);
+	// console.log("PAGE", data);
 	return (
 		<Layout data={data}>
 			<h1 

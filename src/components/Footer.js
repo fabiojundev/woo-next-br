@@ -1,6 +1,7 @@
 import { Instagram, WhatsApp, Email } from "./icons";
 import MenuPrincipal from "./Menu";
 import Image from "./image";
+import Link from 'next/link';
 
 const Footer = () => (
 	<>
@@ -46,13 +47,33 @@ const Footer = () => (
 					/>
 				</div>
 				<div className="m-2 p-4">
-					<h4>AVISOS IMPORTANTES</h4>
+					<h4 className="mb-8">AVISOS IMPORTANTES</h4>
+					<div className="my-2" >
+						<Link href="/envio-e-prazo-de-entrega">
+							<a> Envio e Prazo de Entrega </a>
+						</Link>
+					</div>
+					<div className="my-2" >
+						<Link href="/garantia-e-politica-de-reembolso">
+							<a> Garantia e Política de Reembolso </a>
+						</Link>
+					</div>
+					<div className="my-2" >
+						<Link href="/politica-de-privacidade">
+							<a> Política de Privacidade </a>
+						</Link>
+					</div>
+					<div className="my-2" >
+						<Link href="/sobre-nos">
+							<a> Sobre Nós </a>
+						</Link>
+					</div>
 				</div>
 				<div className="m-2 p-4">
 					<h4 className="mb-8">SITE SEGURO</h4>
-					<Image 
-						
-						sourceUrl="/google-safe-browsing.png" 
+					<Image
+
+						sourceUrl="/google-safe-browsing.png"
 						width="239"
 						height="162"
 					/>
