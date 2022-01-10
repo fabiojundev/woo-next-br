@@ -3,12 +3,12 @@ import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 import Layout from '../../src/components/Layout';
 import { FALLBACK, handleRedirectsAndReturnData } from '../../src/utils/slug';
-import { GET_POST } from '../../src/queries/posts/get-post';
-import { GET_POST_SLUGS } from '../../src/queries/posts/get-posts';
+import { GET_PAGE } from '../../src/queries/pages/get-page';
+import { GET_PAGES_URI } from '../../src/queries/pages/get-pages';
 import { sanitize } from '../../src/utils/miscellaneous';
 import Image from '../../src/components/image';
 
-const Post = ({ data }) => {
+const Page = ({ data }) => {
 	const router = useRouter();
 
 	// If the page is not yet generated, this will be displayed
@@ -17,23 +17,26 @@ const Post = ({ data }) => {
 		return <div>Carregando...</div>;
 	}
 
+	console.log("PAGE", data);
 	return (
-		<Layout data={data} isPost>
-			<figure className="overflow-hidden mb-4">
-				<Image {...data?.post?.featuredImage?.node} width="400" height="225" layout="fill" containerClassNames="w-96 sm:-w-600px md:w-400px h-56 sm:h-338px md:h-225px" title={data?.post?.title ?? ''} />
-			</figure>
-			<h1 className="font-bold mb-3 text-lg hover:text-blue-500" dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.title ?? '') }} />
+		<Layout data={data}>
+			<h1 
+				className="font-bold mb-3 text-lg hover:text-blue-500" 
+				dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.title ?? '') }} 
+			/>
 
-			<div dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.content ?? {}) }} />
+			<div 
+				dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.content ?? {}) }} 
+			/>
 		</Layout>
 	);
 };
 
-export default Post;
+export default Page;
 
 export async function getStaticProps({ params }) {
 	const { data, errors } = await client.query({
-		query: GET_POST,
+		query: GET_PAGE,
 		variables: {
 			uri: params?.slug ?? '/',
 		},
@@ -51,7 +54,7 @@ export async function getStaticProps({ params }) {
 		revalidate: 1,
 	};
 
-	return handleRedirectsAndReturnData(defaultProps, data, errors, 'post');
+	return handleRedirectsAndReturnData(defaultProps, data, errors, 'page');
 }
 
 /**
@@ -73,14 +76,15 @@ export async function getStaticProps({ params }) {
  */
 export async function getStaticPaths() {
 	const { data } = await client.query({
-		query: GET_POST_SLUGS
+		query: GET_PAGES_URI
 	});
 
+	console.log( data);
 	const pathsData = [];
 
-	data?.posts?.nodes && data?.posts?.nodes.map(post => {
-		if (!isEmpty(post?.slug)) {
-			pathsData.push({ params: { slug: post?.slug } });
+	data?.pages?.nodes && data?.pages?.nodes.map(page => {
+		if (!isEmpty(page?.slug)) {
+			pathsData.push({ params: { slug: page?.slug } });
 		}
 	});
 

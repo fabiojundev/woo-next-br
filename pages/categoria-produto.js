@@ -21,7 +21,7 @@ export default function CategoriaProduto ( props ) {
 export async function getStaticProps() {
 
 	const {data} = await client.query({
-		query: GET_CATEGORIES_QUERY,
+		query: GET_CATEGORIES_QUERY
 	});
 
 	return {

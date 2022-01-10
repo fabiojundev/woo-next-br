@@ -7,49 +7,81 @@ import client from "./ApolloClient";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { ApolloProvider } from "@apollo/client";
-import {sanitize} from '../utils/miscellaneous';
+import { sanitize } from '../utils/miscellaneous';
+import { isEmpty } from 'lodash';
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-const Layout = ( {data, isPost, children} ) => {
+const Layout = ({ data, isPost, children }) => {
 
-	const {page, post, posts, products, productCategories, header, footer, headerMenus, footerMenus} = data || {};
+	const {
+		page,
+		post,
+		posts,
+		products,
+		productCategories,
+		header
+	} = data || {};
 
-	const empty = [page, post, posts, products, productCategories].reduce( 
-		( empty, obj ) => ( empty && isEmpty( obj ) ) 
+	const empty = [
+		null,
+		page,
+		post,
+		posts,
+		products,
+		productCategories
+	].reduce(
+		(empty, obj) => {
+			return (empty && isEmpty(obj))
+		}
 	);
-	if( empty ) {
+	if (empty) {
 		return null;
 	}
 
-	const seo = isPost ? ( post?.seo ?? {} ) : ( page?.seo ?? {} );
-	const uri = isPost ? ( post?.uri ?? {} ) : ( page?.uri ?? {} );
+	const seo = isPost
+		? (post?.seo ?? {})
+		: (page?.seo ?? {});
 
+	const uri = isPost
+		? (post?.uri ?? {})
+		: (page?.uri ?? {});
+	// console.log(seo, uri);
 	return (
 		<AppProvider>
-		<ApolloProvider client={client}>
-			<div>
-				<Seo seo={seo} uri={uri}/>
-				<Head>
-					<link rel="shortcut icon" href={header?.favicon}/>
-					{seo?.schemaDetails ? (
-						<script
-							type='application/ld+json'
-							className='yoast-schema-graph'
-							key='yoastSchema'
-							dangerouslySetInnerHTML={{__html: sanitize( seo.schemaDetails )}}
+			<ApolloProvider client={client}>
+				<div>
+					<Seo seo={seo} uri={uri} />
+					<Head>
+						<link
+							rel="shortcut icon"
+							href={header?.favicon}
 						/>
-					) : null}
-				</Head>
-				<Header header={header} headerMenus={headerMenus?.edges}/>
-				<div className="md:container px-5 py-14 mx-auto min-h-almost-screen">
-					{children}
+						{seo?.schemaDetails
+							? (
+								<script
+									type='application/ld+json'
+									className='yoast-schema-graph'
+									key='yoastSchema'
+									dangerouslySetInnerHTML={{ 
+										__html: sanitize(seo.schemaDetails) 
+									}}
+								/>
+							)
+							: null
+						}
+					</Head>
+					<Header />
+					<div
+						className="md:container px-5 py-14 mx-auto min-h-almost-screen"
+					>
+						{children}
+					</div>
+					<Footer />
 				</div>
-				<Footer footer={footer} footerMenus={footerMenus?.edges}/>
-			</div>
-		</ApolloProvider>
+			</ApolloProvider>
 		</AppProvider>
 	);
 };
