@@ -20,7 +20,7 @@ const CartItemsContainer = () => {
 
 	// @TODO wil use it in future variations of the project.
 	const [cart, setCart] = useContext(AppContext);
-	const [requestError, setRequestError] = useState(null);
+	const [requestError, setRequestError] = useState('');
 	const [shippingMethod, setShippingMethod] = useState('');
 	const [zipcode, setZipcode] = useState('');
 
@@ -190,7 +190,7 @@ const CartItemsContainer = () => {
 							{updateCartProcessing ? <p>Atualizando...</p> : null}
 						</div>
 					</div>
-					<div className="grid grid-cols-1 xl:grid-cols-4 gap-0 xl:gap-4 mb-5">
+					<div className="grid grid-cols-1 gap-0 xl:gap-4 mb-5">
 						<table className="cart-products table-auto col-span-3 mb-5">
 							<thead className="text-left">
 								<tr className="woo-next-cart-head-container">
