@@ -19,6 +19,7 @@ const validateAndSanitizeCheckoutForm = ( data, hasStates = true ) => {
 	data.country = ( ! isEmpty( data.country ) ) ? data.country : '';
 	data.address1 = ( ! isEmpty( data.address1 ) ) ? data.address1 : '';
 	data.address2 = ( ! isEmpty( data.address2 ) ) ? data.address2 : '';
+	data.number = ( ! isEmpty( data.number ) ) ? data.number : '';
 	data.city = ( ! isEmpty( data.city ) ) ? data.city : '';
 	data.state = ( ! isEmpty( data.state ) ) ? data.state : '';
 	data.postcode = ( ! isEmpty( data.postcode ) ) ? data.postcode : '';
