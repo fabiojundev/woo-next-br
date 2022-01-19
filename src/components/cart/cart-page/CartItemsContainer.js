@@ -169,149 +169,151 @@ const CartItemsContainer = () => {
 	};
 
 	return (
-		<div className="cart product-cart-container container mx-auto my-32 px-4 xl:px-0">
+		<div className="cart product-cart-container container mx-auto my-10 px-4 xl:px-0">
 			{cart ? (
 				<div className="woo-next-cart-wrapper container">
-					<div className="cart-header grid grid-cols-2 gap-4">
-						<h1 className="text-2xl mb-5">
-							Você tem {cart.totalProductsCount} itens no Carrinho
-						</h1>
-						{/*Clear entire cart*/}
-						<div className="clear-cart text-right">
-							<button
-								className="px-4 py-1 bg-gray-500 text-white rounded-sm w-auto"
-								onClick={(event) => handleClearCart(event)}
-								disabled={clearCartProcessing}
-							>
-								<span className="woo-next-cart">Esvaziar Carrinho</span>
-								<i className="fa fa-arrow-alt-right" />
-							</button>
-							{clearCartProcessing ? <p>Esvaziando...</p> : ''}
-							{updateCartProcessing ? <p>Atualizando...</p> : null}
+					<div className="border border-solid p-4">
+						<div className="cart-header flex flex-wrap justify-between">
+							<h1 className="text-2xl mb-5">
+								Você possui {cart.totalProductsCount} itens no Carrinho
+							</h1>
+							{/*Clear entire cart*/}
+							<div className="clear-cart text-right mb-2">
+								<button
+									className="px-4 py-1 bg-gray-500 text-white rounded-sm w-auto"
+									onClick={(event) => handleClearCart(event)}
+									disabled={clearCartProcessing}
+								>
+									<span className="woo-next-cart">Esvaziar Carrinho</span>
+									<i className="fa fa-arrow-alt-right" />
+								</button>
+								{clearCartProcessing ? <p>Esvaziando...</p> : ''}
+								{updateCartProcessing ? <p>Atualizando...</p> : null}
+							</div>
+						</div>
+						<hr />
+						<div className="grid grid-cols-1 gap-0 xl:gap-4 mb-5">
+							<table className="cart-products table-auto col-span-3 mb-5">
+								<thead className="text-left hidden sm:table-header-group">
+									<tr className="woo-next-cart-head-container">
+										<th className="woo-next-cart-heading-el" scope="col">Produto</th>
+										<th className="woo-next-cart-heading-el" scope="col">Preço</th>
+										<th className="woo-next-cart-heading-el" scope="col">Quantidade</th>
+										<th className="woo-next-cart-heading-el" scope="col">Subtotal</th>
+										<th className="woo-next-cart-heading-el" scope="col" />
+									</tr>
+								</thead>
+								<tbody>
+									{cart.products.length && (
+										cart.products.map(item => (
+											<CartItem
+												key={item.productId}
+												item={item}
+												updateCartProcessing={updateCartProcessing}
+												products={cart.products}
+												handleRemoveProductClick={handleRemoveProductClick}
+												updateCart={updateCart}
+											/>
+										))
+									)}
+								</tbody>
+							</table>
 						</div>
 					</div>
-					<div className="grid grid-cols-1 gap-0 xl:gap-4 mb-5">
-						<table className="cart-products table-auto col-span-3 mb-5">
-							<thead className="text-left">
-								<tr className="woo-next-cart-head-container">
-									<th className="woo-next-cart-heading-el" scope="col" />
-									<th className="woo-next-cart-heading-el" scope="col" />
-									<th className="woo-next-cart-heading-el" scope="col">Produto</th>
-									<th className="woo-next-cart-heading-el" scope="col">Preço</th>
-									<th className="woo-next-cart-heading-el" scope="col">Quantidade</th>
-									<th className="woo-next-cart-heading-el" scope="col">Total</th>
-								</tr>
-							</thead>
-							<tbody>
-								{cart.products.length && (
-									cart.products.map(item => (
-										<CartItem
-											key={item.productId}
-											item={item}
-											updateCartProcessing={updateCartProcessing}
-											products={cart.products}
-											handleRemoveProductClick={handleRemoveProductClick}
-											updateCart={updateCart}
-										/>
-									))
-								)}
-							</tbody>
-						</table>
 
-						{/* Shipping Calculator */}
-						<div className="flex flex-wrap justify-between">
-							<div className="my-6 mr-2 p-4 border border-solid flex-grow">
-								<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
-								<hr className="my-4 " />
-								<input
-									type="text"
-									className="p-2 border w-32"
-									value={zipcode}
-									placeholder="CEP"
-									data-placeholder="CEP"
-									onChange={handleZipcodeChange}
-								/>
-								<LoadingButton
-									label={"Atualizar"}
-									loading={(choosingShippingMethod || updatingShippinZipcode)}
-									type="button"
-									handleClick={handleCalcShippingClick}
-								/>
+					{/* Shipping Calculator */}
+					<div className="flex flex-wrap justify-between">
+						<div className="my-6 mr-2 p-4 border border-solid flex-grow">
+							<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
+							<hr className="my-4 " />
+							<input
+								type="text"
+								className="p-2 border w-32"
+								value={zipcode}
+								placeholder="CEP"
+								data-placeholder="CEP"
+								onChange={handleZipcodeChange}
+							/>
+							<LoadingButton
+								label={"Atualizar"}
+								loading={(choosingShippingMethod || updatingShippinZipcode)}
+								type="button"
+								handleClick={handleCalcShippingClick}
+							/>
 
-								{cart?.needsShippingAddress
-									&& cart?.shippingMethods?.length
-									&& <div className='mt-8'>
-										<div className='flex'>
-											<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
-											{(choosingShippingMethod || updatingShippinZipcode) &&
-												<LoadingImg />
-											}
-										</div>
-										<hr className="my-4 " />
-										{cart?.shippingMethods.map(method => (
-											<div key={method.id}>
-												<label>
-													<input
-														type="radio"
-														name="chosenShippingMethod"
-														className="my-2"
-														disabled={(choosingShippingMethod || updatingShippinZipcode)}
-														value={method.id}
-														onChange={handleChooseShipping}
-														checked={shippingMethod == method.id}
-													/> {method.label} - R${method.cost}
-												</label>
-											</div>
-										))}
+							{cart?.needsShippingAddress
+								&& cart?.shippingMethods?.length
+								&& <div className='mt-8'>
+									<div className='flex'>
+										<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
+										{(choosingShippingMethod || updatingShippinZipcode) &&
+											<LoadingImg />
+										}
 									</div>
-								}
+									<hr className="my-4 " />
+									{cart?.shippingMethods.map(method => (
+										<div key={method.id}>
+											<label>
+												<input
+													type="radio"
+													name="chosenShippingMethod"
+													className="my-2"
+													disabled={(choosingShippingMethod || updatingShippinZipcode)}
+													value={method.id}
+													onChange={handleChooseShipping}
+													checked={shippingMethod == method.id}
+												/> {method.label} - R${method.cost}
+											</label>
+										</div>
+									))}
+								</div>
+							}
+						</div>
+						{/*Cart Total*/}
+						<div className="my-6 p-4 border flex-grow">
+							<h2 className="my-2 self-center text-xl text-bold">Total no Carrinho</h2>
+							<hr className="my-4 " />
+							<div className="flex justify-between">
+								<h3 className="text-xl">Subtotal</h3>
+								<div className="font-bold">
+									{(cart?.subtotal && 'string' !== typeof cart.subtotal)
+										? cart.subtotal.toFixed(2)
+										: cart.subtotal}
+								</div>
 							</div>
-							{/*Cart Total*/}
-							<div className="my-6 p-4 border flex-grow">
-								<h2 className="my-2 self-center text-xl text-bold">Total no Carrinho</h2>
-								<hr className="my-4 " />
-								<div className="flex justify-between">
-									<h3 className="text-xl">Subtotal</h3>
+							{cart?.needsShippingAddress
+								&& cart?.shippingMethods?.length
+								&& cart?.chosenShippingMethods
+								&& <div className="flex justify-between">
+									<h3 className="text-xl">Entrega</h3>
 									<div className="font-bold">
-										{(cart?.subtotal && 'string' !== typeof cart.subtotal)
-											? cart.subtotal.toFixed(2)
-											: cart.subtotal}
+										R$ {cart.shippingMethods.find(
+											method => method.id == cart.chosenShippingMethods[0])
+											.cost
+										}
 									</div>
 								</div>
-								{cart?.needsShippingAddress
-									&& cart?.shippingMethods?.length
-									&& cart?.chosenShippingMethods
-									&& <div className="flex justify-between">
-										<h3 className="text-xl">Entrega</h3>
-										<div className="font-bold">
-											R$ {cart.shippingMethods.find(
-												method => method.id == cart.chosenShippingMethods[0])
-												.cost
-											}
-										</div>
-									</div>
-								}
-								<hr className="my-4 " />
-								<div className="mb-6 flex justify-between">
-									<h3 className="text-xl">Total</h3>
-									<div className="font-bold">
-										{('string' !== typeof cart.totalProductsPrice)
-											? cart.totalProductsPrice.toFixed(2)
-											: cart.totalProductsPrice}
-									</div>
+							}
+							<hr className="my-4 " />
+							<div className="mb-6 flex justify-between">
+								<h3 className="text-xl">Total</h3>
+								<div className="font-bold">
+									{('string' !== typeof cart.totalProductsPrice)
+										? cart.totalProductsPrice.toFixed(2)
+										: cart.totalProductsPrice}
 								</div>
-								<Link href="/checkout">
-									<button 
-										className={cx(
-											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': true}
-										)}
-									>
-										<span className="woo-next-cart-checkout-txt">Concluir Compra</span>
-										<i className="fas fa-long-arrow-alt-right" />
-									</button>
-								</Link>
 							</div>
+							<Link href="/checkout">
+								<button
+									className={cx(
+										'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
+										{ 'hover:bg-green-600 hover:text-white hover:border-green-600': true }
+									)}
+								>
+									<span className="woo-next-cart-checkout-txt">Concluir Compra</span>
+									<i className="fas fa-long-arrow-alt-right" />
+								</button>
+							</Link>
 						</div>
 					</div>
 
