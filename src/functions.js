@@ -247,8 +247,13 @@ export const getFormattedCart = (data) => {
 	formattedCart.totalProductsPrice = data?.cart?.total ?? '';
 
 	if( data?.customer ) {
-		let customer = {};
-		Object.assign(customer, data?.customer);
+		let customer = {
+			...data?.customer,
+			shipping: { ...data?.customer?.shipping },
+			billing: { ...data?.customer?.billing }
+		};
+		// Object.assign(customer, data?.customer);
+		console.log(customer);
 		if(customer.shipping?.address1) {
 			customer.shipping.number = '';
 			const number = customer.shipping.address1.match(/,?\s*(\d*)\s?$/);
