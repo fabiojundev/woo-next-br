@@ -14,6 +14,7 @@ import { isEmpty } from 'lodash'
 import cx from 'classnames';
 import LoadingButton from '../../LoadingButton';
 import LoadingImg from '../../LoadingImg';
+import EmptyCart from '../EmptyCart';
 
 const CartItemsContainer = () => {
 
@@ -169,7 +170,7 @@ const CartItemsContainer = () => {
 	};
 
 	return (
-		<div className="cart product-cart-container container mx-auto my-10 px-4 xl:px-0">
+		<div className="cart product-cart-container mx-auto my-10 px-4 xl:px-0">
 			{cart ? (
 				<div className="woo-next-cart-wrapper container">
 					<div className="border border-solid p-4">
@@ -320,17 +321,7 @@ const CartItemsContainer = () => {
 					{/* Display Errors if any */}
 					{requestError ? <div className="row woo-next-cart-total-container mt-5"> {requestError} </div> : ''}
 				</div>
-			) : (
-				<div className="container mx-auto my-32 px-4 xl:px-0">
-					<h2 className="text-2xl mb-5">No items in the cart</h2>
-					<Link href="/">
-						<button className="bg-purple-600 text-white px-5 py-3 rounded-sm">
-							<span className="woo-next-cart-checkout-txt">Adicionar Produtos</span>
-							<i className="fas fa-long-arrow-alt-right" />
-						</button>
-					</Link>
-				</div>
-			)}
+			) : <EmptyCart />}
 		</div>
 
 	);

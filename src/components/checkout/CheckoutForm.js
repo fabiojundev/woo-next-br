@@ -19,6 +19,7 @@ import {
 import CheckboxField from "./form-elements/CheckboxField";
 import CLEAR_CART_MUTATION from "../../mutations/clear-cart";
 import LoadingButton from '../LoadingButton';
+import EmptyCart from '../cart/EmptyCart';
 
 // Use this for testing purposes, so you dont have to fill the checkout form over an over again.
 // const defaultCustomerInfo = {
@@ -281,12 +282,12 @@ const CheckoutForm = ({countriesData}) => {
                             </div>
 
                             {/* Checkout Loading*/}
-                            {isOrderProcessing && <p>Processing Order...</p>}
-                            {requestError && <p>Error : {requestError} :( Please try again</p>}
+                            {isOrderProcessing && <p>Procesando Pedido...</p>}
+                            {requestError && <p>Error : {requestError} :( Por favor, tente novamente.</p>}
                         </div>
                     </div>
                 </form>
-            ) : null}
+            ) : <EmptyCart />}
             {/*	Show message if Order Success*/}
             <OrderSuccess response={checkoutResponse}/>
         </>

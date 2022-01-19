@@ -28,4 +28,10 @@
     p {
         @apply mb-5;
     }
+    button {
+      @apply px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500;
+    }
+    button:hover {
+      @apply bg-green-600 text-white border-green-600;
+    }
   }
