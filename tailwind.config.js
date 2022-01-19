@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: [
-        'OpenSans', 
+        '"Open Sans"', 
         'Arial',
         'sans-serif',
         '"Helvetica Neue"',

@@ -59,14 +59,18 @@ const Layout = ({ data, isPost, children }) => {
 							rel="shortcut icon"
 							href={header?.favicon}
 						/>
+						<link 
+							href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" 
+							rel="stylesheet" 
+						/>
 						{seo?.schemaDetails
 							? (
 								<script
 									type='application/ld+json'
 									className='yoast-schema-graph'
 									key='yoastSchema'
-									dangerouslySetInnerHTML={{ 
-										__html: sanitize(seo.schemaDetails) 
+									dangerouslySetInnerHTML={{
+										__html: sanitize(seo.schemaDetails)
 									}}
 								/>
 							)
@@ -75,7 +79,7 @@ const Layout = ({ data, isPost, children }) => {
 					</Head>
 					<Header />
 					<div
-						className="md:container px-5 py-14 mx-auto min-h-almost-screen"
+						className="p-8 mx-auto min-h-almost-screen"
 					>
 						{children}
 					</div>
