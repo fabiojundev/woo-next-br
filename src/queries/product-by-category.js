@@ -11,6 +11,7 @@ export const PRODUCT_BY_CATEGORY_SLUG = gql` query PRODUCT_BY_CATEGORY_SLUG($slu
 		  averageRating
 		  slug
 		  description
+		  shortDescription
 		  image {
 			id
 			uri

@@ -11,6 +11,7 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 	  averageRating
 	  slug
 	  description
+	  shortDescription
 	  seo {
 		...SeoFragment
 	  }

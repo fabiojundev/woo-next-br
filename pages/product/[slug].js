@@ -38,7 +38,9 @@ export default function Product(props) {
                             ) : null}
                         </div>
                         <div className="product-info">
-                            <h4 className="products-main-title text-3xl text-green-600">{product.name}</h4>
+                            <h1 className="products-main-title text-3xl text-green-600">
+                                {product.name}
+                            </h1>
                             <Price
                                 salesPrice={product?.price}
                                 regularPrice={product?.regularPrice}
@@ -46,11 +48,10 @@ export default function Product(props) {
                             />
                             <hr className='mb-2' />
                             <div
-
-                                dangerouslySetInnerHTML={{
-                                    __html: product.description,
-                                }}
                                 className="product-description mb-5"
+                                dangerouslySetInnerHTML={{
+                                    __html: product.shortDescription,
+                                }}
                             />
                             <ShippingCosts
                                 productId={product?.productId}
@@ -61,7 +62,17 @@ export default function Product(props) {
                             />
                         </div>
                     </div>
-
+                    <div
+                        className="mt-8"
+                    >
+                        <h2>Descrição</h2>
+                        <hr className="mb-4" />
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: product.description,
+                            }}
+                        />
+                    </div>
                 </div>
             ) : (
                 ''

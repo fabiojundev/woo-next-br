@@ -9,9 +9,15 @@
 @layer base {
     h1 {
       @apply text-2xl;
+      @apply mb-4;
     }
     h2 {
       @apply text-xl;
+      @apply mb-2;
+    }
+    h3 {
+      @apply text-xl;
+      @apply mb-2;
     }
     a {
         @apply text-green-700;
