@@ -45,18 +45,18 @@ body {
   }
 }
 
-.banner-img {
-  position: relative;
-  height: 400px;
-}
-
 .slider-button {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  background: #fff;
-  padding: 10px 20px;
-  font-size: 24px;
+  top: 45%;
+  left: 0;
+  background: #000;
+  opacity: .6;
+  padding: 10px;
+  font-size: 20px;
+  &.right {
+    left: unset;
+    right: 0;
+  }
 }
 
 .products .product-description {

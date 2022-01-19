@@ -15,7 +15,7 @@ export default function Product(props) {
     // If the page is not yet generated, this will be displayed
     // initially until getStaticProps() finishes running
     if (router.isFallback) {
-        return <div>Loading...</div>
+        return <div>Carregando...</div>
     }
 
     return (
@@ -24,18 +24,13 @@ export default function Product(props) {
                 <div className="single-product">
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="product-images">
-
-                            {!isEmpty(product?.galleryImages?.nodes) ? (
-                                <GalleryCarousel gallery={product?.galleryImages?.nodes} />
-                            ) : !isEmpty(product.image) ? (
-                                <img
-                                    src={product?.image?.sourceUrl}
-                                    alt="Product Image"
-                                    width="100%"
-                                    height="auto"
-                                    srcSet={product?.image?.srcSet}
-                                />
-                            ) : null}
+                            <GalleryCarousel
+                                mainImageUrl={product?.image?.sourceUrl}
+                                gallery={[
+                                    { mediaItemUrl: product?.image?.sourceUrl },
+                                    ...product?.galleryImages?.nodes
+                                ]}
+                            />
                         </div>
                         <div className="product-info">
                             <h1 className="products-main-title text-3xl text-green-600">

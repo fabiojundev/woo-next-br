@@ -19,12 +19,18 @@ module.exports = {
     extend: {
       height: {
         'almost-screen': 'calc(-16rem + 100vh)',
+        '100px': '6.25rem',
         '308px': '19.25rem',
+        '500px' : '31.25rem'
       },
       width: {
+        '100px': '6.25rem',
         '308px': '19.25rem',
         '600px': '37.5rem',
       },
+      maxHeight: {
+        '500px' : '31.25rem'
+      }
     },
   },
   variants: {},
