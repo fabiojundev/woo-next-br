@@ -63,7 +63,7 @@ const CartItem = ({
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				<Link href={`/product/${item?.slug}`} >
 					<a className="flex flex-wrap justify-center items-center sm:flex-no-wrap sm:justify-start">
-						<span className="m-4">
+						<span className="my-4">
 							<img
 								className="w-32 sm:w-24"
 								width="90px"
@@ -72,7 +72,7 @@ const CartItem = ({
 								alt={item.image.title}
 							/>
 						</span>
-						<span className="m-4 link">
+						<span className="m-4">
 							{item.name}
 						</span>
 					</a>
@@ -92,7 +92,7 @@ const CartItem = ({
 					type="number"
 					min="1"
 					data-cart-key={item.cartKey}
-					className={`woo-next-cart-qty-input form-control border border-solid p-2 w-16 text-right ${updateCartProcessing ? 'opacity-25 cursor-not-allowed' : ''} `}
+					className={`woo-next-cart-qty-input form-control border border-solid p-2 w-16 text-center ${updateCartProcessing ? 'opacity-25 cursor-not-allowed' : ''} `}
 					value={productCount}
 					onChange={(event) => handleQtyChange(event, item.cartKey)}
 				/>

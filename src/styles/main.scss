@@ -4,3 +4,22 @@
 
 // NProgress style.
 @import 'nprogress/nprogress.css';
+
+
+@layer base {
+    h1 {
+      @apply text-2xl;
+    }
+    h2 {
+      @apply text-xl;
+    }
+    a {
+        @apply text-green-700;
+    }
+    a:hover {
+        @apply text-green-500;
+    }
+    p {
+        @apply mb-5;
+    }
+  }
