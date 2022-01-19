@@ -2,6 +2,13 @@ body {
   width: 100%;
 }
 
+.link {
+  color: #48bb78;
+  &:hover {
+    opacity: .8;
+  }
+}
+
 .product {
   img {
     width: 100%;

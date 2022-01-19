@@ -57,25 +57,26 @@ const CartItem = ({
 
 		}
 	};
-// console.log(item);
 
 	return (
 		<tr className="woo-next-cart-item block relative sm:table-row" key={item.productId}>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
-				<div className="flex flex-wrap justify-center items-center sm:flex-no-wrap sm:justify-start">
-					<span className="m-4">
-						<img
-							className="w-32 sm:w-24"
-							width="90px"
-							src={item.image.sourceUrl}
-							srcSet={item.image.srcSet}
-							alt={item.image.title}
-						/>
-					</span>
-					<span className="m-4">
-						{item.name}
-					</span>
-				</div>
+				<Link href={`/product/${item?.slug}`} >
+					<a className="flex flex-wrap justify-center items-center sm:flex-no-wrap sm:justify-start">
+						<span className="m-4">
+							<img
+								className="w-32 sm:w-24"
+								width="90px"
+								src={item.image.sourceUrl}
+								srcSet={item.image.srcSet}
+								alt={item.image.title}
+							/>
+						</span>
+						<span className="m-4 link">
+							{item.name}
+						</span>
+					</a>
+				</Link>
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				{ 'string' !== typeof item.price
