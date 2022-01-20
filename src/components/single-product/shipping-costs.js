@@ -4,7 +4,7 @@ import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import cx from 'classnames';
 import { GET_CUSTOMER } from "../../queries/get-customer";
 import GET_SHIPPING_COSTS from "../../queries/get-shipping-costs";
-import UPDATE_SHIPPING_ZIPCODE from "../../mutations/update-shipping-zipcode";
+import UPDATE_SHIPPING_ADDRESS from "../../mutations/update-shipping-address";
 import Image from "../image";
 import LoadingButton from "../LoadingButton";
 
@@ -49,7 +49,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
         data: updatedShippingData,
         loading: updatingShippinZipcode,
         error: updateShippinZipcodeError
-    }] = useMutation(UPDATE_SHIPPING_ZIPCODE);
+    }] = useMutation(UPDATE_SHIPPING_ADDRESS);
 
     // Get shipping costs.
     const [getShippingCosts, {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { v4 } from 'uuid';
 import { useMutation, useQuery } from '@apollo/client';
-import UPDATE_SHIPPING_ZIPCODE from "../../mutations/update-shipping-zipcode";
+import UPDATE_SHIPPING_ADDRESS from "../../mutations/update-shipping-address";
 import UPDATE_SHIPPING_METHOD from "../../mutations/update-shipping-method";
 import LoadingButton from '../LoadingButton';
 import LoadingImg from '../LoadingImg';
@@ -24,11 +24,11 @@ const ChooseShipping = ({
 	] = useState(cart?.customer?.shipping?.postcode ?? '');
 
 	// Update Shipping Zipcode.
-	const [updateShippinZipcode, {
+	const [updateShippingAddress, {
 		data: updatedShippingData,
 		loading: updatingShippinZipcode,
-		error: updateShippinZipcodeError
-	}] = useMutation(UPDATE_SHIPPING_ZIPCODE, requestDefaultOptions);
+		error: updateShippingAddressError
+	}] = useMutation(UPDATE_SHIPPING_ADDRESS, requestDefaultOptions);
 
 	// Update Shipping Method.
 	const [chooseShippingMethod, {
@@ -44,7 +44,7 @@ const ChooseShipping = ({
 	const handleCalcShippingClick = async (event) => {
 		console.log("handleCalcShippingClick");
 		if (zipcode?.length >= 8) {
-			await updateShippinZipcode({
+			await updateShippingAddress({
 				variables: {
 					input: {
 						clientMutationId: v4(),
@@ -61,7 +61,6 @@ const ChooseShipping = ({
 
 	const handleChooseShipping = async (event) => {
 		const chosenShippingMethod = event.target.value;
-		console.log("handleChooseShipping", chosenShippingMethod, shippingMethod);
 
 		setShippingMethod(chosenShippingMethod);
 		if (chosenShippingMethod != shippingMethod) {

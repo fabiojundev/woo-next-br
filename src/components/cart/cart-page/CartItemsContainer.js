@@ -39,6 +39,7 @@ const CartItemsContainer = () => {
 		onCompleted: () => {
 			console.log("completed");
 			refetch();
+			// setRequestError('');
 		},
 		onError: (error) => {
 			if (error) {
@@ -166,7 +167,7 @@ const CartItemsContainer = () => {
 
 					{/* Shipping Calculator */}
 					<div className="flex flex-wrap justify-between">
-						<ChooseShipping 
+						<ChooseShipping
 							cart={cart}
 							requestDefaultOptions={defaultOptions}
 						/>
@@ -219,7 +220,12 @@ const CartItemsContainer = () => {
 					</div>
 
 					{/* Display Errors if any */}
-					{requestError ? <div className="row woo-next-cart-total-container mt-5"> {requestError} </div> : ''}
+					{requestError
+						? <div className="row woo-next-cart-total-container mt-5 text-red-700">
+							{requestError}
+						</div>
+						: ''
+					}
 				</div>
 			) : <EmptyCart />}
 		</div>

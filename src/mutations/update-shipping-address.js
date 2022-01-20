@@ -5,8 +5,8 @@ import { gql } from "@apollo/client";
  *
  * This query is used for updating the selected shipping method option.
  */
-const UPDATE_SHIPPING_ZIPCODE = gql`
-mutation UPDATE_SHIPPING_ZIPCODE ($input: UpdateCustomerInput!) {
+const UPDATE_SHIPPING_ADDRESS = gql`
+mutation UPDATE_SHIPPING_ADDRESS ($input: UpdateCustomerInput!) {
   updateCustomer(input: $input) {
     customer {
       id
@@ -24,4 +24,4 @@ mutation UPDATE_SHIPPING_ZIPCODE ($input: UpdateCustomerInput!) {
 }
 `;
 
-export default UPDATE_SHIPPING_ZIPCODE;
+export default UPDATE_SHIPPING_ADDRESS;
