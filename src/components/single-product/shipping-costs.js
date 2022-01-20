@@ -62,7 +62,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
             console.log("completed", data);
             if (data?.shippingCosts?.address) {
                 const { desc, __typename, ...address } = data.shippingCosts.address;
-                if (address?.postcode && customer?.shipping?.postcode != address?.postcode) {
+                if (address?.postcode && customer?.shipping?.address1 != address?.address1) {
                     console.log("updateShippinZipcode", address, customer);
                     await updateShippinAddress({
                         variables: {
