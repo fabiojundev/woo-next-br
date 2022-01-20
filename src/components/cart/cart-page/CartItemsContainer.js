@@ -8,13 +8,10 @@ import { useMutation, useQuery } from '@apollo/client';
 import UPDATE_CART from "../../../mutations/update-cart";
 import GET_CART from "../../../queries/get-cart";
 import CLEAR_CART_MUTATION from "../../../mutations/clear-cart";
-import UPDATE_SHIPPING_ZIPCODE from "../../../mutations/update-shipping-zipcode";
-import UPDATE_SHIPPING_METHOD from "../../../mutations/update-shipping-method";
 import { isEmpty } from 'lodash'
 import cx from 'classnames';
-import LoadingButton from '../../LoadingButton';
-import LoadingImg from '../../LoadingImg';
 import EmptyCart from '../EmptyCart';
+import ChooseShipping from '../ChooseShipping';
 
 const CartItemsContainer = () => {
 
@@ -22,8 +19,6 @@ const CartItemsContainer = () => {
 	// @TODO wil use it in future variations of the project.
 	const [cart, setCart] = useContext(AppContext);
 	const [requestError, setRequestError] = useState('');
-	const [shippingMethod, setShippingMethod] = useState('');
-	const [zipcode, setZipcode] = useState('');
 
 	// Get Cart Data.
 	const { loading, error, data, refetch } = useQuery(GET_CART, {
@@ -37,9 +32,6 @@ const CartItemsContainer = () => {
 			console.log('cart', data, updatedCart);
 			// Update cart data in React Context.
 			setCart(updatedCart);
-
-			setZipcode(updatedCart?.customer?.shipping?.postcode);
-			setShippingMethod(updatedCart?.chosenShippingMethods[0] ?? '');
 		}
 	});
 
@@ -71,20 +63,6 @@ const CartItemsContainer = () => {
 		loading: clearCartProcessing,
 		error: clearCartError
 	}] = useMutation(CLEAR_CART_MUTATION, defaultOptions);
-
-	// Update Shipping Zipcode.
-	const [updateShippinZipcode, {
-		data: updatedShippingData,
-		loading: updatingShippinZipcode,
-		error: updateShippinZipcodeError
-	}] = useMutation(UPDATE_SHIPPING_ZIPCODE, defaultOptions);
-
-	// Update Shipping Method.
-	const [chooseShippingMethod, {
-		data: chosenShippingData,
-		loading: choosingShippingMethod,
-		error: chooseShippingError
-	}] = useMutation(UPDATE_SHIPPING_METHOD, defaultOptions);
 
 	/*
 	 * Handle remove product click.
@@ -128,42 +106,6 @@ const CartItemsContainer = () => {
 				input: {
 					clientMutationId: v4(),
 					all: true
-				}
-			},
-		});
-	};
-
-	const handleZipcodeChange = event => {
-		setZipcode(event.target.value);
-	};
-
-	const handleCalcShippingClick = async (event) => {
-		console.log("handleCalcShippingClick");
-		if (zipcode?.length >= 8) {
-			await updateShippinZipcode({
-				variables: {
-					input: {
-						clientMutationId: v4(),
-						shipping: {
-							country: 'BR',
-							postcode: zipcode,
-							// overwrite: true
-						},
-					}
-				},
-			});
-		}
-	};
-
-	const handleChooseShipping = async (event) => {
-		const chosenShippingMethod = event.target.value;
-		console.log("handleChooseShipping", chosenShippingMethod);
-		setShippingMethod(chosenShippingMethod);
-		await chooseShippingMethod({
-			variables: {
-				input: {
-					clientMutationId: v4(),
-					shippingMethods: [chosenShippingMethod],
 				}
 			},
 		});
@@ -224,52 +166,10 @@ const CartItemsContainer = () => {
 
 					{/* Shipping Calculator */}
 					<div className="flex flex-wrap justify-between">
-						<div className="my-6 mr-2 p-4 border border-solid flex-grow">
-							<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
-							<hr className="my-4 " />
-							<input
-								type="text"
-								className="p-2 border w-32"
-								value={zipcode}
-								placeholder="CEP"
-								data-placeholder="CEP"
-								onChange={handleZipcodeChange}
-							/>
-							<LoadingButton
-								label={"Atualizar"}
-								loading={(choosingShippingMethod || updatingShippinZipcode)}
-								type="button"
-								handleClick={handleCalcShippingClick}
-							/>
-
-							{cart?.needsShippingAddress
-								&& cart?.shippingMethods?.length
-								&& <div className='mt-8'>
-									<div className='flex'>
-										<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
-										{(choosingShippingMethod || updatingShippinZipcode) &&
-											<LoadingImg />
-										}
-									</div>
-									<hr className="my-4 " />
-									{cart?.shippingMethods.map(method => (
-										<div key={method.id}>
-											<label>
-												<input
-													type="radio"
-													name="chosenShippingMethod"
-													className="my-2"
-													disabled={(choosingShippingMethod || updatingShippinZipcode)}
-													value={method.id}
-													onChange={handleChooseShipping}
-													checked={shippingMethod == method.id}
-												/> {method.label} - R${method.cost}
-											</label>
-										</div>
-									))}
-								</div>
-							}
-						</div>
+						<ChooseShipping 
+							cart={cart}
+							requestDefaultOptions={defaultOptions}
+						/>
 						{/*Cart Total*/}
 						<div className="my-6 p-4 border flex-grow">
 							<h2 className="my-2 self-center text-xl text-bold">Total no Carrinho</h2>

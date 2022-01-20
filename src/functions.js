@@ -239,7 +239,9 @@ export const getFormattedCart = (data) => {
 	}
 
 	formattedCart.needsShippingAddress = data?.cart?.needsShippingAddress;
-	formattedCart.shippingMethods = data?.cart?.availableShippingMethods[0]?.rates;
+	formattedCart.shippingMethods = data?.cart?.availableShippingMethods 
+		? data?.cart?.availableShippingMethods[0]?.rates 
+		: [];
 	formattedCart.chosenShippingMethods = data?.cart?.chosenShippingMethods;
 
 	formattedCart.totalProductsCount = totalProductsCount;
