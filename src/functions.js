@@ -239,10 +239,10 @@ export const getFormattedCart = (data) => {
 	}
 
 	formattedCart.needsShippingAddress = data?.cart?.needsShippingAddress;
+	formattedCart.shippingMethod = data?.cart?.chosenShippingMethods[0] ?? '';
 	formattedCart.shippingMethods = data?.cart?.availableShippingMethods 
 		? data?.cart?.availableShippingMethods[0]?.rates 
 		: [];
-	formattedCart.chosenShippingMethods = data?.cart?.chosenShippingMethods;
 
 	formattedCart.totalProductsCount = totalProductsCount;
 	formattedCart.subtotal = data?.cart?.subtotal ?? '';
@@ -307,6 +307,7 @@ export const createCheckoutData = (order) => {
 			company: billingData?.company,
 		},
 		shipToDifferentAddress: order.billingDifferentThanShipping,
+		shippingMethod: order.shippingMethod,
 		paymentMethod: order.paymentMethod,
 		isPaid: false,
 	};

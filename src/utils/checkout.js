@@ -75,7 +75,7 @@ export const handleStripeCheckout = async (input, products, setRequestError, cle
     const cartCleared = await clearTheCart( clearCartMutation, createCustomerOrder?.error );
     setIsStripeOrderProcessing(false);
 
-
+    //console.log("orderdata", orderData, createCustomerOrder, input )
     if ( isEmpty( createCustomerOrder?.orderId ) || cartCleared?.error ) {
         console.log( 'came in' );
         setRequestError('Clear cart failed')
@@ -94,11 +94,12 @@ const createCheckoutSessionAndRedirect = async ( products, input, orderId ) => {
         success_url: window.location.origin + `/thank-you?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}`,
         cancel_url: window.location.href,
         customer_email: input.billingDifferentThanShipping ? input?.billing?.email : input?.shipping?.email,
-        line_items: getStripeLineItems( products ),
+        line_items: getStripeLineItems( products, input ),
         metadata: getMetaData( input, orderId ),
         payment_method_types: ['card'],
-        mode: 'payment'
+        mode: 'payment',
     }
+    //console.log("sessionData",sessionData);
     const session = await createCheckoutSession(sessionData)
     try {
         const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -110,20 +111,29 @@ const createCheckoutSessionAndRedirect = async ( products, input, orderId ) => {
     }
 }
 
-const getStripeLineItems = (products) => {
+const getStripeLineItems = (products, input) => {
     if (isEmpty(products) && !isArray(products)) {
         return [];
     }
 
-    return products.map(product => {
-        return {
-            quantity: product?.qty ?? 0,
-            name: product?.name ?? '',
-            images: [product?.image?.sourceUrl ?? ''],
-            amount: Math.round(product?.price * 100),
-            currency: 'usd',
-        }
-    })
+    return [
+        ...products.map(product => {
+            return {
+                quantity: product?.qty ?? 0,
+                name: product?.name ?? '',
+                images: [product?.image?.sourceUrl ?? ''],
+                amount: Math.round(product?.price * 100),
+                currency: 'brl',
+            } 
+        }),
+        //shipping
+        {
+            quantity: 1,
+            name: input.shippingLabel,
+            amount: Math.round(input.shippingTotal * 100),
+            currency: 'brl',
+        },
+    ];
 }
 
 /**

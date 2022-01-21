@@ -9,6 +9,9 @@ mutation CHECKOUT_MUTATION( $input: CheckoutInput! ) {
       orderKey
       orderNumber
       status
+      shippingTotal
+      subtotal
+      total
       refunds {
         nodes {
           amount

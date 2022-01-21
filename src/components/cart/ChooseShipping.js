@@ -16,7 +16,7 @@ const ChooseShipping = ({
 	const [
 		shippingMethod,
 		setShippingMethod
-	] = useState(cart?.chosenShippingMethods[0] ?? '');
+	] = useState(cart?.shippingMethod ?? '');
 
 	const [
 		zipcode,
@@ -69,7 +69,7 @@ const ChooseShipping = ({
 				variables: {
 					input: {
 						clientMutationId: v4(),
-						shippingMethods: [chosenShippingMethod],
+						shippingMethod: [chosenShippingMethod],
 					}
 				},
 			});
@@ -117,7 +117,7 @@ const ChooseShipping = ({
 									}
 								</div>
 								<hr className="my-4 " />
-								{cart?.shippingMethods.map(method => (
+								{cart?.shippingMethods?.map(method => (
 									<div key={method.id}>
 										<label>
 											<input

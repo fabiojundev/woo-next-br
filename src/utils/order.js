@@ -1,4 +1,4 @@
-import {isArray, isEmpty} from "lodash";
+import { isArray, isEmpty } from "lodash";
 
 /**
  * Get line items for stripe
@@ -7,24 +7,24 @@ import {isArray, isEmpty} from "lodash";
  *
  * @returns {*[]|*} Line items, Array of objects.
  */
-export const getStripeLineItems = ( products ) => {
+// export const getStripeLineItems = ( products ) => {
 
-    if ( isEmpty( products ) || !isArray( products ) ) {
-        return []
-    }
+//     if ( isEmpty( products ) || !isArray( products ) ) {
+//         return []
+//     }
 
-    return products?.map(
-        ( { productId, name, price, qty: quantity, image } ) => {
-            return {
-                price: price?.toString(), // The reason we pass price here and not total, because stripe multiplies it with qty.
-                quantity,
-                name,
-                image,
-                productId,
-            };
-        },
-    );
-}
+//     return products?.map(
+//         ( { productId, name, price, qty: quantity, image } ) => {
+//             return {
+//                 price: price?.toString(), // The reason we pass price here and not total, because stripe multiplies it with qty.
+//                 quantity,
+//                 name,
+//                 image,
+//                 productId,
+//             };
+//         },
+//     );
+// }
 
 /**
  * Get line items for create order
@@ -35,14 +35,14 @@ export const getStripeLineItems = ( products ) => {
  */
 export const getCreateOrderLineItems = (products) => {
 
-    if (isEmpty(products) || !isArray( products )) {
+    if (isEmpty(products) || !isArray(products)) {
         return []
     }
 
-    console.log( 'products', products );
+    console.log('products', products);
 
     return products?.map(
-        ({productId, qty: quantity}) => {
+        ({ productId, qty: quantity }) => {
             return {
                 quantity,
                 product_id: productId,
@@ -63,6 +63,7 @@ export const getCreateOrderData = (order, products) => {
     // Set the billing Data to shipping, if applicable.
     const billingData = order.billingDifferentThanShipping ? order.billing : order.shipping;
 
+    //console.log("getCreateOrderData", order);
     // Checkout data.
     return {
         shipping: {
@@ -93,9 +94,20 @@ export const getCreateOrderData = (order, products) => {
             phone: billingData?.phone,
             company: billingData?.company,
         },
+        shipping_lines: order.shippingMethod
+            ? [
+                {
+                    method_id: order.shippingMethod,
+                    method_title: order.shippingLabel,
+                    total: order.shippingTotal
+                }
+            ]
+            : [],
+        // shipping_method: order.shippingMethod,
+        // shipping_total: order.shippingTotal,
         payment_method: 'stripe',
         payment_method_title: 'Stripe',
-        line_items: getCreateOrderLineItems( products ),
+        line_items: getCreateOrderLineItems(products, order),
     };
 }
 
@@ -108,7 +120,7 @@ export const getCreateOrderData = (order, products) => {
  *
  * @returns {Promise<{orderId: null, error: string}>}
  */
-export const createTheOrder = async ( orderData, setOrderFailedError, previousRequestError ) => {
+export const createTheOrder = async (orderData, setOrderFailedError, previousRequestError) => {
     let response = {
         orderId: null,
         total: '',
@@ -117,34 +129,34 @@ export const createTheOrder = async ( orderData, setOrderFailedError, previousRe
     };
 
     // Don't proceed if previous request has error.
-    if ( previousRequestError ) {
+    if (previousRequestError) {
         response.error = previousRequestError;
         return response;
     }
 
-    setOrderFailedError( '' );
+    setOrderFailedError('');
 
     try {
-        const request = await fetch( '/api/create-order', {
+        const request = await fetch('/api/create-order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify( orderData ),
-        } );
+            body: JSON.stringify(orderData),
+        });
 
         const result = await request.json();
-        if ( result.error ) {
+        if (result.error) {
             response.error = result.error
-            setOrderFailedError( 'Something went wrong. Order creation failed. Please try again' );
+            setOrderFailedError('Something went wrong. Order creation failed. Please try again');
         }
         response.orderId = result?.orderId ?? '';
         response.total = result.total ?? '';
         response.currency = result.currency ?? '';
 
-    } catch ( error ) {
+    } catch (error) {
         // @TODO to be handled later.
-        console.warn( 'Handle create order error', error?.message );
+        console.warn('Handle create order error', error?.message);
     }
 
     return response;

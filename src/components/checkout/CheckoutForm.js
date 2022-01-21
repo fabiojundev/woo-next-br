@@ -1,12 +1,12 @@
-import {useState, useContext, useEffect} from 'react';
-import {useMutation, useQuery} from '@apollo/client';
+import { useState, useContext, useEffect } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import cx from 'classnames'
 
 import YourOrder from "./YourOrder";
 import PaymentModes from "./PaymentModes";
-import {AppContext} from "../context/AppContext";
+import { AppContext } from "../context/AppContext";
 import validateAndSanitizeCheckoutForm from '../../validator/checkout';
-import {getFormattedCart, createCheckoutData,} from "../../functions";
+import { getFormattedCart, createCheckoutData, } from "../../functions";
 import OrderSuccess from "./OrderSuccess";
 import GET_CART from "../../queries/get-cart";
 import CHECKOUT_MUTATION from "../../mutations/checkout";
@@ -53,9 +53,9 @@ const defaultCustomerInfo = {
     errors: null,
 }
 
-const CheckoutForm = ({countriesData}) => {
+const CheckoutForm = ({ countriesData }) => {
 
-    const {billingCountries, shippingCountries} = countriesData || {};
+    const { billingCountries, shippingCountries } = countriesData || {};
 
     const initialState = {
         billing: {
@@ -68,6 +68,7 @@ const CheckoutForm = ({countriesData}) => {
         orderNotes: '',
         billingDifferentThanShipping: false,
         paymentMethod: 'stripe-mode',
+        shippingMethod: '',
     };
 
     const [cart, setCart] = useContext(AppContext);
@@ -82,7 +83,7 @@ const CheckoutForm = ({countriesData}) => {
     const [createdOrderData, setCreatedOrderData] = useState({});
 
     // Get Cart Data.
-    const {data, refetch} = useQuery(GET_CART, {
+    const { data, refetch } = useQuery(GET_CART, {
         notifyOnNetworkStatusChange: true,
         onCompleted: () => {
             // Update cart in the localStorage.
@@ -95,11 +96,11 @@ const CheckoutForm = ({countriesData}) => {
 
             const shipping = updatedCart?.customer?.shipping;
             //console.log(shipping, input);
-            if( shipping ) {
+            if (shipping) {
                 setInput({
                     ...input,
                     shipping
-                });    
+                });
             }
         }
     });
@@ -119,7 +120,7 @@ const CheckoutForm = ({countriesData}) => {
         }
     });
 
-    const [ clearCartMutation ] = useMutation( CLEAR_CART_MUTATION );
+    const [clearCartMutation] = useMutation(CLEAR_CART_MUTATION);
 
     /*
      * Handle form submit.
@@ -139,22 +140,54 @@ const CheckoutForm = ({countriesData}) => {
          * 2. We are passing theBillingStates?.length and theShippingStates?.length, so that
          * the respective states should only be mandatory, if a country has states.
          */
-        const billingValidationResult = input?.billingDifferentThanShipping ? validateAndSanitizeCheckoutForm(input?.billing, theBillingStates?.length) : {errors: null, isValid: true};
-        const shippingValidationResult = validateAndSanitizeCheckoutForm(input?.shipping, theShippingStates?.length);
+        const billingValidationResult = input?.billingDifferentThanShipping
+            ? validateAndSanitizeCheckoutForm(input?.billing, theBillingStates?.length)
+            : { errors: null, isValid: true };
+
+        const shippingValidationResult = validateAndSanitizeCheckoutForm(
+            input?.shipping,
+            theShippingStates?.length
+        );
 
         if (!shippingValidationResult.isValid || !billingValidationResult.isValid) {
             setInput({
                 ...input,
-                billing: {...input.billing, errors: billingValidationResult.errors},
-                shipping: {...input.shipping, errors: shippingValidationResult.errors}
+                billing: {
+                    ...input.billing,
+                    errors: billingValidationResult.errors
+                },
+                shipping: {
+                    ...input.shipping,
+                    errors: shippingValidationResult.errors
+                }
             });
 
             return;
         }
 
-        if ( 'stripe-mode' === input.paymentMethod ) {
-            const createdOrderData = await handleStripeCheckout(input, cart?.products, setRequestError, clearCartMutation, setIsStripeOrderProcessing, setCreatedOrderData);
-        	return null;
+        if (cart?.needsShippingAddress
+            && cart.shippingMethod
+            && cart.shippingMethods) {
+            const ship_method = cart.shippingMethods?.find(ship =>
+                (ship.id == cart.shippingMethod)
+            );
+            input.shippingMethod = cart.shippingMethod;
+            input.shippingMethods = cart.shippingMethods;
+            input.shippingTotal = ship_method?.cost;
+            input.shippingLabel = ship_method?.label;
+        }
+        //console.log("input", input);
+
+        if ('stripe-mode' === input.paymentMethod) {
+            const createdOrderData = await handleStripeCheckout(
+                input,
+                cart?.products,
+                setRequestError,
+                clearCartMutation,
+                setIsStripeOrderProcessing,
+                setCreatedOrderData
+            );
+            return null;
         }
 
         const checkOutData = createCheckoutData(input);
@@ -177,12 +210,19 @@ const CheckoutForm = ({countriesData}) => {
      */
     const handleOnChange = async (event, isShipping = false, isBillingOrShipping = false) => {
 
-        const {target} = event || {};
+        const { target } = event || {};
 
         if ('createAccount' === target.name) {
-            handleCreateAccount(input, setInput, target)
+            handleCreateAccount(
+                input,
+                setInput,
+                target
+            )
         } else if ('billingDifferentThanShipping' === target.name) {
-            handleBillingDifferentThanShipping(input, setInput, target);
+            handleBillingDifferentThanShipping(
+                input,
+                setInput, target
+            );
         } else if (isBillingOrShipping) {
             if (isShipping) {
                 await handleShippingChange(target)
@@ -190,21 +230,44 @@ const CheckoutForm = ({countriesData}) => {
                 await handleBillingChange(target)
             }
         } else {
-            const newState = {...input, [target.name]: target.value};
+            const newState = {
+                ...input,
+                [target.name]: target.value
+            };
             setInput(newState);
         }
     };
 
     const handleShippingChange = async (target) => {
-        const newState = {...input, shipping: {...input?.shipping, [target.name]: target.value}};
+        const newState = {
+            ...input,
+            shipping: {
+                ...input?.shipping,
+                [target.name]: target.value
+            }
+        };
         setInput(newState);
-        await setStatesForCountry(target, setTheShippingStates, setIsFetchingShippingStates);
+        await setStatesForCountry(
+            target,
+            setTheShippingStates,
+            setIsFetchingShippingStates
+        );
     }
 
     const handleBillingChange = async (target) => {
-        const newState = {...input, billing: {...input?.billing, [target.name]: target.value}};
+        const newState = {
+            ...input,
+            billing: {
+                ...input?.billing,
+                [target.name]: target.value
+            }
+        };
         setInput(newState);
-        await setStatesForCountry(target, setTheBillingStates, setIsFetchingBillingStates);
+        await setStatesForCountry(
+            target,
+            setTheBillingStates,
+            setIsFetchingBillingStates
+        );
     }
 
     useEffect(async () => {
@@ -227,7 +290,9 @@ const CheckoutForm = ({countriesData}) => {
                         <div>
                             {/*Shipping Details*/}
                             <div className="billing-details">
-                                <h2 className="text-xl font-medium mb-4">Endereço de Entrega</h2>
+                                <h2 className="text-xl font-medium mb-4">
+                                    Endereço de Entrega
+                                </h2>
                                 <Address
                                     states={theShippingStates}
                                     countries={shippingCountries}
@@ -251,7 +316,9 @@ const CheckoutForm = ({countriesData}) => {
                             {/*Billing Details*/}
                             {input?.billingDifferentThanShipping ? (
                                 <div className="billing-details">
-                                    <h2 className="text-xl font-medium mb-4">Endereço de Faturamento</h2>
+                                    <h2 className="text-xl font-medium mb-4">
+                                        Endereço de Faturamento
+                                    </h2>
                                     <Address
                                         states={theBillingStates}
                                         countries={billingCountries}
@@ -269,16 +336,16 @@ const CheckoutForm = ({countriesData}) => {
                         <div className="your-orders">
                             {/*	Order*/}
                             <h2 className="text-xl font-medium mb-4">Seu pedido</h2>
-                            <YourOrder 
+                            <YourOrder
                                 cart={cart}
                                 refetchCart={refetch}
                             />
 
                             {/*Payment*/}
-                            <PaymentModes input={input} handleOnChange={handleOnChange}/>
+                            <PaymentModes input={input} handleOnChange={handleOnChange} />
 
                             <div className="woo-next-place-order-btn-wrap mt-5">
-                                <LoadingButton 
+                                <LoadingButton
                                     label={"Finalizar Compra"}
                                     loading={isOrderProcessing}
                                     type="submit"
@@ -286,14 +353,20 @@ const CheckoutForm = ({countriesData}) => {
                             </div>
 
                             {/* Checkout Loading*/}
-                            {isOrderProcessing && <p>Procesando Pedido...</p>}
-                            {requestError && <p>Error : {requestError} :( Por favor, tente novamente.</p>}
+                            {
+                                isOrderProcessing
+                                && <p>Procesando Pedido...</p>
+                            }
+                            {
+                                requestError
+                                && <p>Erro : {requestError} :( Por favor, tente novamente.</p>
+                            }
                         </div>
                     </div>
                 </form>
             ) : <EmptyCart />}
             {/*	Show message if Order Success*/}
-            <OrderSuccess response={checkoutResponse}/>
+            <OrderSuccess response={checkoutResponse} />
         </>
     );
 };

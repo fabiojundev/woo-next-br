@@ -185,12 +185,12 @@ const CartItemsContainer = () => {
 							</div>
 							{cart?.needsShippingAddress
 								&& cart?.shippingMethods?.length
-								&& cart?.chosenShippingMethods
+								&& cart?.shippingMethod
 								&& <div className="flex justify-between">
 									<h3 className="text-xl">Entrega</h3>
 									<div className="font-bold">
 										R$ {cart.shippingMethods.find(
-											method => method.id == cart.chosenShippingMethods[0])
+											method => method.id == cart.shippingMethod)
 											.cost
 										}
 									</div>
