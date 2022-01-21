@@ -82,13 +82,14 @@ const CheckoutForm = ({countriesData}) => {
     const [createdOrderData, setCreatedOrderData] = useState({});
 
     // Get Cart Data.
-    const {data} = useQuery(GET_CART, {
+    const {data, refetch} = useQuery(GET_CART, {
         notifyOnNetworkStatusChange: true,
         onCompleted: () => {
             // Update cart in the localStorage.
             const updatedCart = getFormattedCart(data);
             localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
 
+            console.log('refetch cart', data, updatedCart);
             // Update cart data in React Context.
             setCart(updatedCart);
 
@@ -268,7 +269,10 @@ const CheckoutForm = ({countriesData}) => {
                         <div className="your-orders">
                             {/*	Order*/}
                             <h2 className="text-xl font-medium mb-4">Seu pedido</h2>
-                            <YourOrder cart={cart}/>
+                            <YourOrder 
+                                cart={cart}
+                                refetchCart={refetch}
+                            />
 
                             {/*Payment*/}
                             <PaymentModes input={input} handleOnChange={handleOnChange}/>

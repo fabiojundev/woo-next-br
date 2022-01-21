@@ -1,7 +1,23 @@
 import { Fragment } from 'react';
 import CheckoutCartItem from "./CheckoutCartItem";
+import ChooseShipping from '../cart/ChooseShipping';
 
-const YourOrder = ({ cart }) => {
+const YourOrder = ({ cart, refetchCart }) => {
+
+	const defaultOptions = {
+		onCompleted: () => {
+			console.log("completed, refetch");
+			refetchCart();
+		},
+		onError: (error) => {
+			if (error) {
+				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+					? error.graphQLErrors[0]?.message
+					: '';
+				setRequestError(errorMessage);
+			}
+		}
+	};
 
 	return (
 		<Fragment>
@@ -22,35 +38,21 @@ const YourOrder = ({ cart }) => {
 									<CheckoutCartItem key={item.productId} item={item} />
 								))
 							)}
-							{cart?.needsShippingAddress
-								&& cart?.shippingMethods?.length
-								&& cart?.chosenShippingMethods
-								&& <tr className="woo-next-cart-item">
-									<td className="" />
-									<td className="woo-next-cart-element">
-										Entrega
-									</td>
-									<td className="woo-next-cart-element">
-										R$ {cart.shippingMethods.find(
-											method => method.id == cart.chosenShippingMethods[0])
-											.cost
-										}
-									</td>
-								</tr>
-							}
-							{/*Total*/}
-							<tr className="bg-gray-200">
-								<td className="" />
-								<td className="woo-next-checkout-total font-normal text-xl">Total</td>
-								<td className="woo-next-checkout-total font-bold text-xl">{cart.totalProductsPrice}</td>
-							</tr>
-							{/* <tr className="">
-							<td className=""/>
-							<td className="woo-next-checkout-total">Total</td>
-							<td className="woo-next-checkout-total">{ cart.totalProductsPrice }</td>
-						</tr> */}
 						</tbody>
 					</table>
+					<ChooseShipping
+						cart={cart}
+						requestDefaultOptions={defaultOptions}
+						showOnlyRates={true}
+					/>
+					<div className="my-2 p-4 bg-gray-300 flex justify-between">
+						<span className="woo-next-checkout-total font-normal text-xl">
+							Total
+						</span>
+						<span className="woo-next-checkout-total font-bold text-xl">
+							{cart.totalProductsPrice}
+						</span>
+					</div>
 				</Fragment>
 			) : ''}
 		</Fragment>

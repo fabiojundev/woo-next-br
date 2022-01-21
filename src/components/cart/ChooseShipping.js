@@ -100,13 +100,13 @@ const ChooseShipping = ({
 									type="button"
 									handleClick={handleCalcShippingClick}
 								/>
+								<p className="my-4 text-xs opacity-75">
+									{cart?.customer?.shipping?.address1}
+									- {cart?.customer?.shipping?.city}
+									/ {cart?.customer?.shipping?.state}
+								</p>
 							</>
 						)}
-						<p className="my-4 text-xs opacity-75">
-							{cart?.customer?.shipping?.address1}
-							- {cart?.customer?.shipping?.city}
-							/ {cart?.customer?.shipping?.state}
-						</p>
 						{cart?.needsShippingAddress
 							&& cart?.shippingMethods?.length
 							&& <div className='mt-8'>
