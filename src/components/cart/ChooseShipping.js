@@ -69,7 +69,7 @@ const ChooseShipping = ({
 				variables: {
 					input: {
 						clientMutationId: v4(),
-						shippingMethod: [chosenShippingMethod],
+						shippingMethods: [chosenShippingMethod],
 					}
 				},
 			});
