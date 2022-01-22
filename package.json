@@ -18,6 +18,7 @@
     "cookie": "^0.4.1",
     "graphql": "^15.4.0",
     "lodash": "^4.17.20",
+    "mercadopago": "^1.5.11",
     "micro": "^9.3.4",
     "next": "^11.1.1",
     "next-seo": "^4.28.1",
