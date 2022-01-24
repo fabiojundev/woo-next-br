@@ -68,11 +68,27 @@ export const handleCreateAccount = ( input, setInput, target ) => {
  * @param setIsStripeOrderProcessing
  *
  */
-export const handleStripeCheckout = async (input, products, setRequestError, clearCartMutation, setIsStripeOrderProcessing, setCreatedOrderData) => {
+export const handleStripeCheckout = async (
+    input, 
+    products, 
+    setRequestError, 
+    clearCartMutation, 
+    setIsStripeOrderProcessing, 
+    setCreatedOrderData
+) => {
     setIsStripeOrderProcessing(true);
-    const orderData = getCreateOrderData( input, products );
-    const createCustomerOrder = await createTheOrder( orderData, setRequestError,  '' );
-    const cartCleared = await clearTheCart( clearCartMutation, createCustomerOrder?.error );
+    const orderData = getCreateOrderData( 
+        input, 
+        products
+    );
+    const createCustomerOrder = await createTheOrder( 
+        orderData, 
+        setRequestError,  '' 
+    );
+    const cartCleared = await clearTheCart( 
+        clearCartMutation, 
+        createCustomerOrder?.error 
+    );
     setIsStripeOrderProcessing(false);
 
     //console.log("orderdata", orderData, createCustomerOrder, input )

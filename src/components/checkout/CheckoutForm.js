@@ -15,11 +15,17 @@ import {
     handleBillingDifferentThanShipping,
     handleCreateAccount, handleStripeCheckout,
     setStatesForCountry
-} from "../../utils/checkout";
+} from "../../utils/checkout-stripe";
+import {
+    MercadoPagoCheckout,
+    handleMercadoPagoCheckout
+} from './MercadoPagoCheckout';
 import CheckboxField from "./form-elements/CheckboxField";
 import CLEAR_CART_MUTATION from "../../mutations/clear-cart";
 import LoadingButton from '../LoadingButton';
 import EmptyCart from '../cart/EmptyCart';
+
+// import { useMercadopago } from 'react-sdk-mercadopago';
 
 // Use this for testing purposes, so you dont have to fill the checkout form over an over again.
 // const defaultCustomerInfo = {
@@ -53,9 +59,9 @@ const defaultCustomerInfo = {
     errors: null,
 }
 
-const CheckoutForm = ({ countriesData }) => {
+const CheckoutForm = (props) => {
 
-    const { billingCountries, shippingCountries } = countriesData || {};
+    const { billingCountries, shippingCountries } = {};
 
     const initialState = {
         billing: {
@@ -178,17 +184,8 @@ const CheckoutForm = ({ countriesData }) => {
         }
         //console.log("input", input);
 
-        if ('stripe-mode' === input.paymentMethod) {
-            const createdOrderData = await handleStripeCheckout(
-                input,
-                cart?.products,
-                setRequestError,
-                clearCartMutation,
-                setIsStripeOrderProcessing,
-                setCreatedOrderData
-            );
-            return null;
-        }
+        handlePayment(input, cart);
+
 
         const checkOutData = createCheckoutData(input);
         setRequestError(null);
@@ -199,6 +196,32 @@ const CheckoutForm = ({ countriesData }) => {
         setOrderData(checkOutData);
     };
 
+    const handlePayment = async (input, cart) => {
+        switch (input.paymentMethod) {
+            case 'stripe':
+                await handleStripeCheckout(
+                    input,
+                    cart?.products,
+                    setRequestError,
+                    clearCartMutation,
+                    setIsStripeOrderProcessing,
+                    setCreatedOrderData
+                );
+                break;
+
+            case 'mercado-pago':
+                console.log("mercago pago pay");
+                await handleMercadoPagoCheckout(
+                    input,
+                    cart?.products,
+                    setRequestError,
+                    clearCartMutation,
+                    setIsStripeOrderProcessing,
+                    setCreatedOrderData
+                );
+                break;
+        }
+    };
     /*
      * Handle onchange input.
      *
@@ -285,7 +308,11 @@ const CheckoutForm = ({ countriesData }) => {
     return (
         <>
             {cart ? (
-                <form onSubmit={handleFormSubmit} className="woo-next-checkout-form">
+                <form
+                    id="payment-form"
+                    onSubmit={handleFormSubmit}
+                    className="woo-next-checkout-form"
+                >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
                         <div>
                             {/*Shipping Details*/}
@@ -351,6 +378,11 @@ const CheckoutForm = ({ countriesData }) => {
                                     type="submit"
                                 />
                             </div>
+                            <MercadoPagoCheckout
+                                products={cart?.products}
+                                orderId={createdOrderData?.orderId}
+                                input={input}
+                            />
 
                             {/* Checkout Loading*/}
                             {

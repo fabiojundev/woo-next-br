@@ -1,30 +1,4 @@
-import { isArray, isEmpty } from "lodash";
-
-/**
- * Get line items for stripe
- *
- * @param {array} products Products.
- *
- * @returns {*[]|*} Line items, Array of objects.
- */
-// export const getStripeLineItems = ( products ) => {
-
-//     if ( isEmpty( products ) || !isArray( products ) ) {
-//         return []
-//     }
-
-//     return products?.map(
-//         ( { productId, name, price, qty: quantity, image } ) => {
-//             return {
-//                 price: price?.toString(), // The reason we pass price here and not total, because stripe multiplies it with qty.
-//                 quantity,
-//                 name,
-//                 image,
-//                 productId,
-//             };
-//         },
-//     );
-// }
+import { isArray, isEmpty, camelCase } from "lodash";
 
 /**
  * Get line items for create order
@@ -59,7 +33,10 @@ export const getCreateOrderLineItems = (products) => {
  * @param products
  * @return {{shipping: {country: *, city: *, phone: *, address_1: (string|*), address_2: (string|*), postcode: (string|*), last_name: (string|*), company: *, state: *, first_name: (string|*), email: *}, payment_method_title: string, line_items: (*[]|*), payment_method: string, billing: {country: *, city: *, phone: *, address_1: (string|*), address_2: (string|*), postcode: (string|*), last_name: (string|*), company: *, state: *, first_name: (string|*), email: *}}}
  */
-export const getCreateOrderData = (order, products) => {
+export const getCreateOrderData = (
+    order,
+    products
+) => {
     // Set the billing Data to shipping, if applicable.
     const billingData = order.billingDifferentThanShipping ? order.billing : order.shipping;
 
@@ -103,16 +80,14 @@ export const getCreateOrderData = (order, products) => {
                 }
             ]
             : [],
-        // shipping_method: order.shippingMethod,
-        // shipping_total: order.shippingTotal,
-        payment_method: 'stripe',
-        payment_method_title: 'Stripe',
+        payment_method: order.paymentMethod,
+        payment_method_title: camelCase(order.paymentMethod),
         line_items: getCreateOrderLineItems(products, order),
     };
 }
 
 /**
- * Create order.
+ * Create order in WooCommerce.
  *
  * @param {Object} orderData Order data.
  * @param {function} setOrderFailedError sets the react state to true if the order creation fails.
@@ -120,7 +95,11 @@ export const getCreateOrderData = (order, products) => {
  *
  * @returns {Promise<{orderId: null, error: string}>}
  */
-export const createTheOrder = async (orderData, setOrderFailedError, previousRequestError) => {
+export const createTheOrder = async (
+    orderData,
+    setOrderFailedError,
+    previousRequestError
+) => {
     let response = {
         orderId: null,
         total: '',
@@ -146,6 +125,7 @@ export const createTheOrder = async (orderData, setOrderFailedError, previousReq
         });
 
         const result = await request.json();
+        //console.log("order created: ", result);
         if (result.error) {
             response.error = result.error
             setOrderFailedError('Something went wrong. Order creation failed. Please try again');
@@ -158,6 +138,6 @@ export const createTheOrder = async (orderData, setOrderFailedError, previousReq
         // @TODO to be handled later.
         console.warn('Handle create order error', error?.message);
     }
-
+    //console.log("create order response: ", response);
     return response;
 }
