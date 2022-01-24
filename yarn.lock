@@ -2433,6 +2433,11 @@ react-refresh@0.8.3:
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.8.3.tgz"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
+react-sdk-mercadopago@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-sdk-mercadopago/-/react-sdk-mercadopago-1.1.1.tgz#9a0dff45e1ad17228d405029dabf76a02d839e41"
+  integrity sha512-HG3WwC1YztevWe5MrcaY1/MzjTtohihstBMI5QXFWB6zQDxcL4PZT39q6SYQ2ZvNZMYCXxSFcGf6FheELthIXQ==
+
 react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
