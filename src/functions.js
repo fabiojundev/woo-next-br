@@ -9,7 +9,8 @@ import { isEmpty, isArray } from 'lodash'
  */
 export const getFloatVal = (string) => {
 
-	let floatValue = string.match(/[+-]?\d+(\.\d+)?/g)[0];
+	let floatValue = string.replace(',', '.' );
+	floatValue = floatValue.match(/[+-]?\d+(\.\d+)?/g)[0];
 	return (null !== floatValue) ? parseFloat(parseFloat(floatValue).toFixed(2)) : '';
 
 };
@@ -255,7 +256,7 @@ export const getFormattedCart = (data) => {
 			billing: { ...data?.customer?.billing }
 		};
 		// Object.assign(customer, data?.customer);
-		console.log(customer);
+		// console.log(customer);
 		if(customer.shipping?.address1) {
 			customer.shipping.number = '';
 			const number = customer.shipping.address1.match(/,?\s*(\d*)\s?$/);
