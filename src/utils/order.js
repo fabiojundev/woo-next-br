@@ -104,7 +104,8 @@ export const createTheOrder = async (
         orderId: null,
         total: '',
         currency: '',
-        error: ''
+        error: '',
+        preference: '',
     };
 
     // Don't proceed if previous request has error.
@@ -133,6 +134,7 @@ export const createTheOrder = async (
         response.orderId = result?.orderId ?? '';
         response.total = result.total ?? '';
         response.currency = result.currency ?? '';
+        response.preference = result.preference ?? '';
 
     } catch (error) {
         // @TODO to be handled later.

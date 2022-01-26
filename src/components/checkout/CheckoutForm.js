@@ -73,7 +73,7 @@ const CheckoutForm = (props) => {
         createAccount: false,
         orderNotes: '',
         billingDifferentThanShipping: false,
-        paymentMethod: 'stripe-mode',
+        paymentMethod: 'mercado-pago',
         shippingMethod: '',
     };
 
@@ -382,6 +382,7 @@ const CheckoutForm = (props) => {
                                 products={cart?.products}
                                 orderId={createdOrderData?.orderId}
                                 input={input}
+                                preference={createdOrderData?.preference}
                             />
 
                             {/* Checkout Loading*/}

@@ -66,7 +66,8 @@ const createCheckoutSessionAndRedirect = async (
     mercadopago,
     products,
     input,
-    orderId
+    orderId,
+    preference
 ) => {
 
     try {
@@ -74,7 +75,7 @@ const createCheckoutSessionAndRedirect = async (
         if (mercadopago) {
             const opt = {
                 preference: {
-                    id: orderId,
+                    id: preference,
                 },
                 tokenizer: getMercadoPagoLineItems(products, input, orderId),
                 // theme: {
@@ -86,7 +87,7 @@ const createCheckoutSessionAndRedirect = async (
                 //     label: 'Pagar MP'
                 // },
                 autoOpen: true,
-                notificationUrl: 'https://cms.camadecultivo.com.br/?wc-api=WC_WooMercadoPago_Notification_IPN',
+                notificationUrl: process.env.NEXT_PUBLIC_MP_IPN_URL,
             };
 
             console.log(opt);
@@ -122,6 +123,7 @@ export const getMercadoPagoLineItems = (products, input, orderId) => {
             // discountLabel: 'discount label',
             // discount: 5,
         },
+        externalReference: {orderId},
         backUrl: `/thank-you/?&order_id=${orderId}`,
     };
 }
@@ -149,7 +151,7 @@ const getMetaData = (input, orderId) => {
 
 }
 
-export const MercadoPagoCheckout = ({ products, orderId, input }) => {
+export const MercadoPagoCheckout = ({ products, orderId, input, preference }) => {
 
     const mercadopago = useMercadopago.v2(process.env.NEXT_PUBLIC_MP_PUBLIC_TOKEN, {
         locale: 'pt-BR'
@@ -164,7 +166,8 @@ export const MercadoPagoCheckout = ({ products, orderId, input }) => {
                 mercadopago,
                 products,
                 input,
-                orderId
+                orderId,
+                preference
             );
 
         }

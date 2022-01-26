@@ -36,17 +36,19 @@ export default async function handler(req, res) {
     const data = req.body;
     data.status = 'pending';
     data.set_paid = false;
-
+    // console.log("req data", data);
     try {
         const {data} = await api.post(
             'orders',
             req.body
         );
 
+        // console.log("resp data", data);
         responseData.success = true;
         responseData.orderId = data.number;
         responseData.total = data.total;
         responseData.currency = data.currency;
+        responseData.preference = data.preference ?? '';
 
         res.json(responseData)
 
