@@ -49,6 +49,9 @@ const defaultCustomerInfo = {
     address1: '',
     address2: '',
     number: '',
+    persontype: '1',
+    cpf: '',
+    cnpj: '',
     city: '',
     country: 'BR',
     state: '',
@@ -75,6 +78,7 @@ const CheckoutForm = (props) => {
         billingDifferentThanShipping: false,
         paymentMethod: 'mercado-pago',
         shippingMethod: '',
+        preference: '',
     };
 
     const [cart, setCart] = useContext(AppContext);

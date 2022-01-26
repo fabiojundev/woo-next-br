@@ -1,8 +1,11 @@
 import { from } from '@apollo/client';
 import { useEffect } from 'react';
 import { useMercadopago } from 'react-sdk-mercadopago';
-import { createTheOrder, getCreateOrderData} from '../../utils/order';
+import { createTheOrder, getCreateOrderData } from '../../utils/order';
 import { isEmpty, isArray } from 'lodash';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { clearTheCart } from '../../utils/cart';
 
 /**
 * Handle MercadoPago checkout.
@@ -45,8 +48,13 @@ export const handleMercadoPagoCheckout = async (
     setIsMercadoPagoOrderProcessing(false);
 
     //console.log("orderdata", orderData, createCustomerOrder, input )
-    if (isEmpty(createCustomerOrder?.orderId) || cartCleared?.error) {
-        console.log('empty orderId or error', createCustomerOrder, cartCleared);
+    if (!createCustomerOrder?.orderId) {
+        console.log('empty orderId ', createCustomerOrder?.orderId, isEmpty(createCustomerOrder?.orderId));
+        setRequestError('Create order failed');
+        return null;
+    }
+    if (cartCleared?.error) {
+        console.log('error', cartCleared?.error);
         setRequestError('Clear cart failed');
         return null;
     }
@@ -73,11 +81,12 @@ const createCheckoutSessionAndRedirect = async (
     try {
 
         if (mercadopago) {
+
             const opt = {
                 preference: {
-                    id: preference,
+                    id: preference?.id,
                 },
-                tokenizer: getMercadoPagoLineItems(products, input, orderId),
+                tokenizer: getMercadoPagoLineItems(products, input),
                 // theme: {
                 //     elementsColor: '#2ddc52',
                 //     headerColor: '#2ddc52'
@@ -86,20 +95,20 @@ const createCheckoutSessionAndRedirect = async (
                 //     container: '.mp-container',
                 //     label: 'Pagar MP'
                 // },
-                autoOpen: true,
-                notificationUrl: process.env.NEXT_PUBLIC_MP_IPN_URL,
+                // autoOpen: true,
+                // notificationUrl: process.env.NEXT_PUBLIC_MP_IPN_URL,
             };
 
             console.log(opt);
             const checkout = mercadopago.checkout(opt);
-            console.log("checkout", checkout, checkout?.initPoint);
+            console.log("checkout", checkout, checkout?.init_point);
         }
     } catch (error) {
         console.log(error);
     }
 }
 
-export const getMercadoPagoLineItems = (products, input, orderId) => {
+export const getMercadoPagoLineItems = (products, input) => {
     if (isEmpty(products) && !isArray(products)) {
         return [];
     }
@@ -113,7 +122,7 @@ export const getMercadoPagoLineItems = (products, input, orderId) => {
     return {
         totalAmount: subtotal + shippingCost,
         summary: {
-            title: 'Resumo',
+            title: 'Resumo da sua Compra',
             productLabel: 'Subtotal produtos',
             product: subtotal,
             shipping: shippingCost,
@@ -123,8 +132,6 @@ export const getMercadoPagoLineItems = (products, input, orderId) => {
             // discountLabel: 'discount label',
             // discount: 5,
         },
-        externalReference: {orderId},
-        backUrl: `/thank-you/?&order_id=${orderId}`,
     };
 }
 
@@ -157,11 +164,11 @@ export const MercadoPagoCheckout = ({ products, orderId, input, preference }) =>
         locale: 'pt-BR'
     });
 
+    const router = useRouter();
 
     useEffect(() => {
-        console.log("useEffect");
         if (mercadopago && orderId && !isEmpty(products)) {
-            console.log("useEffect checkout", orderId, mercadopago);
+            // console.log("useEffect checkout", orderId, mercadopago);
             createCheckoutSessionAndRedirect(
                 mercadopago,
                 products,
@@ -169,7 +176,10 @@ export const MercadoPagoCheckout = ({ products, orderId, input, preference }) =>
                 orderId,
                 preference
             );
-
+            if( preference?.init_point ) {
+                // console.log("redir to: ", preference?.init_point);
+                router.push(preference?.init_point);
+            }
         }
     }, [mercadopago, orderId])
 

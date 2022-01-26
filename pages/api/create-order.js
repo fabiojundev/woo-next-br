@@ -1,5 +1,6 @@
 const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
-import {isEmpty} from 'lodash'
+import { isEmpty } from 'lodash'
+import { getMercadoPagoPreference } from './mercado-pago/get-preference';
 
 const api = new WooCommerceRestApi({
     url: process.env.NEXT_PUBLIC_WORDPRESS_URL,
@@ -28,31 +29,37 @@ export default async function handler(req, res) {
         error: ''
     }
 
-    if ( isEmpty(req.body) ) {
-        responseData.error = 'Required data not sent';
+    const reqData = req?.body;
+
+    if (isEmpty(reqData)) {
+        responseData.error = 'Missing required data.';
         return responseData
     }
 
-    const data = req.body;
-    data.status = 'pending';
-    data.set_paid = false;
-    // console.log("req data", data);
     try {
-        const {data} = await api.post(
+        const { data } = await api.post(
             'orders',
-            req.body
+            reqData
         );
 
-        // console.log("resp data", data);
+        console.log("resp data", data);
         responseData.success = true;
-        responseData.orderId = data.number;
+        responseData.orderId = data.id;
         responseData.total = data.total;
         responseData.currency = data.currency;
-        responseData.preference = data.preference ?? '';
 
+        const preferences = await getMercadoPagoPreference(data);
+
+        responseData.preference = {
+            id: preferences?.id,
+            init_point: preferences?.init_point
+        };
+
+        console.log("response data", responseData);
         res.json(responseData)
 
     } catch (error) {
+        console.log("error", error);
         /**
          * Request usually fails if the data in req.body is not sent in the format required.
          *
