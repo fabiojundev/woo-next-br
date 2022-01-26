@@ -16,10 +16,12 @@ export const getCreateOrderLineItems = (products) => {
     console.log('products', products);
 
     return products?.map(
-        ({ productId, qty: quantity }) => {
+        ({ productId, qty: quantity, name, price }) => {
             return {
                 quantity,
                 product_id: productId,
+                name,
+                price
                 // variation_id: '', // @TODO to be added.
             };
         },
@@ -70,6 +72,8 @@ export const getCreateOrderData = (
             email: billingData?.email,
             phone: billingData?.phone,
             company: billingData?.company,
+            persontype: 1,
+            // person_type: 1,
         },
         shipping_lines: order.shippingMethod
             ? [
@@ -126,7 +130,7 @@ export const createTheOrder = async (
         });
 
         const result = await request.json();
-        //console.log("order created: ", result);
+        console.log("order created: ", result);
         if (result.error) {
             response.error = result.error
             setOrderFailedError('Something went wrong. Order creation failed. Please try again');
