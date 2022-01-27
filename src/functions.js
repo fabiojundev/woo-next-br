@@ -239,9 +239,9 @@ export const getFormattedCart = (data) => {
 		product.cartKey = givenProducts?.[i]?.key ?? '';
 		product.name = givenProduct?.name ?? '';
 		product.slug = givenProduct?.slug ?? '';
-		product.qty = givenProducts?.[i]?.quantity;
-		product.price = total / product?.qty;
-		product.totalPrice = givenProducts?.[i]?.total ?? '';
+		product.qty = parseInt( givenProducts?.[i]?.quantity );
+		product.price = parseFloat( total / product?.qty );
+		product.totalPrice = total;
 		product.image = {
 			sourceUrl: givenProduct?.image?.sourceUrl ?? '',
 			srcSet: givenProduct?.image?.srcSet ?? '',
@@ -296,8 +296,14 @@ export const getFormattedCart = (data) => {
 
 export const calculateCartTotals = (cart) => {
 
+	const products = cart?.products.map( prod => {
+		return {
+			...prod,
+			totalPrice: prod.qty * prod.price
+		}
+	});
 	const productsTotal = cart?.products?.reduce( (productsTotal, prod) => {
-		return productsTotal += parseInt(prod.qty) * parseFloat(prod.price);
+		return productsTotal += prod.qty * prod.price;
 	}, 0);
 	const shippingTotal = parseFloat(cart.shippingMethods.find(
 		ship => ship.id == cart?.shippingMethod
@@ -305,6 +311,7 @@ export const calculateCartTotals = (cart) => {
 
 	return {
 		...cart,
+		products,
 		productsTotal,
 		shippingTotal,
 		total: productsTotal + shippingTotal,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { v4 } from "uuid";
-import { getUpdatedItems } from "../../../functions";
+import { getUpdatedItems, calculateCartTotals, formatCurrency } from "../../../functions";
 import { Cross, Loading } from "../../icons";
 import Link from 'next/link';
 
@@ -9,7 +9,10 @@ const CartItem = ({
 	products,
 	updateCartProcessing,
 	handleRemoveProductClick,
-	updateCart,
+	cart,
+	setCart,
+	needCartUpdate,
+	setNeedCartUpdate
 }) => {
 
 	const [productCount, setProductCount] = useState(item.qty);
@@ -38,22 +41,46 @@ const CartItem = ({
 				? parseInt(event.target.value) 
 				: 1;
 
+
+			if( productCount != newQty ) {
+				setNeedCartUpdate({
+					...needCartUpdate,
+					products: true,
+				})
+			}
 			// Set the new qty in state.
 			setProductCount(newQty);
 
-			if (products.length) {
-
-				const updatedItems = getUpdatedItems(products, newQty, cartKey);
-
-				updateCart({
-					variables: {
-						input: {
-							clientMutationId: v4(),
-							items: updatedItems
+			const updatedCart = calculateCartTotals({
+				...cart,
+				products: products.map(prod => {
+					if( prod.cartKey === cartKey ) {
+						return {
+							...prod,
+							qty: newQty,
 						}
-					},
-				});
-			}
+					}
+					else {
+						return prod;
+					}
+				} ),
+			});
+
+			setCart(updatedCart);
+
+			// if (products.length) {
+
+			// 	const updatedItems = getUpdatedItems(products, newQty, cartKey);
+
+			// 	updateCart({
+			// 		variables: {
+			// 			input: {
+			// 				clientMutationId: v4(),
+			// 				items: updatedItems
+			// 			}
+			// 		},
+			// 	});
+			// }
 
 		}
 	};
@@ -79,10 +106,7 @@ const CartItem = ({
 				</Link>
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
-				{ 'string' !== typeof item.price
-					? item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-					: item.price
-				}
+				{formatCurrency(item.price)}
 			</td>
 
 			{/* Qty Input */}
@@ -98,10 +122,7 @@ const CartItem = ({
 				/>
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
-				{('string' !== typeof item.totalPrice) 
-					? item.totalPrice.toFixed(2) 
-					: item.totalPrice
-				}
+				{formatCurrency(item.totalPrice)}
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				{/* Remove item */}

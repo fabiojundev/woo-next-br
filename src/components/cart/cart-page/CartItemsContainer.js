@@ -20,6 +20,11 @@ const CartItemsContainer = () => {
 	const [cart, setCart] = useContext(AppContext);
 	const [requestError, setRequestError] = useState('');
 
+	const [needCartUpdate, setNeedCartUpdate] = useState({
+		shipping: false,
+		products: false,
+	});
+
 	// Get Cart Data.
 	const { loading, error, data, refetch } = useQuery(GET_CART, {
 		notifyOnNetworkStatusChange: true,
@@ -156,7 +161,10 @@ const CartItemsContainer = () => {
 												updateCartProcessing={updateCartProcessing}
 												products={cart.products}
 												handleRemoveProductClick={handleRemoveProductClick}
-												updateCart={updateCart}
+												cart={cart}
+												setCart={setCart}
+												needCartUpdate={needCartUpdate}
+												setNeedCartUpdate={setNeedCartUpdate}					
 											/>
 										))
 									)}
@@ -170,6 +178,8 @@ const CartItemsContainer = () => {
 						<ChooseShipping
 							cart={cart}
 							requestDefaultOptions={defaultOptions}
+							needCartUpdate={needCartUpdate}
+							setNeedCartUpdate={setNeedCartUpdate}
 						/>
 						{/*Cart Total*/}
 						<div className="p-4 border flex-grow">
@@ -178,9 +188,7 @@ const CartItemsContainer = () => {
 							<div className="flex justify-between">
 								<h3 className="text-xl">Subtotal</h3>
 								<div className="font-bold">
-									{(cart?.subtotal && 'string' !== typeof cart.subtotal)
-										? cart.subtotal.toFixed(2)
-										: cart.subtotal}
+									{formatCurrency(cart.productsTotal)}
 								</div>
 							</div>
 							{cart?.needsShippingAddress

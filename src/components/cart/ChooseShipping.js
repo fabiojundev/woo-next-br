@@ -12,7 +12,9 @@ import CartItem from './cart-page/CartItem';
 
 const ChooseShipping = ({
 	requestDefaultOptions,
-	showOnlyRates
+	showOnlyRates,
+	needCartUpdate,
+	setNeedCartUpdate
 }) => {
 
 	const [cart, setCart] = useContext(AppContext);
@@ -73,6 +75,11 @@ const ChooseShipping = ({
 		});
 		console.log("updatedCart", updatedCart);
 		setCart(updatedCart);
+
+		setNeedCartUpdate({
+			...needCartUpdate,
+			shipping: true,
+		})
 
 		// if (chosenShippingMethod != shippingMethod) {
 		// 	console.log("mutate shipping method", chosenShippingMethod, shippingMethod);
