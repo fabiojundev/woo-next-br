@@ -9,10 +9,25 @@ import { isEmpty, isArray } from 'lodash'
  */
 export const getFloatVal = (string) => {
 
-	let floatValue = string.replace(',', '.' );
+	let floatValue = string.replace(',', '.');
 	floatValue = floatValue.match(/[+-]?\d+(\.\d+)?/g)[0];
 	return (null !== floatValue) ? parseFloat(parseFloat(floatValue).toFixed(2)) : '';
 
+};
+
+/**
+ * Extracts and returns float value from a string.
+ *
+ * @param {string} string String
+ * @return {any}
+ */
+export const formatCurrency = (num, currency = 'BRL') => {
+	let floatValue = num;
+	if ('string' === typeof floatValue) {
+		floatValue = getFloatVal(floatValue);
+	}
+	// return floatValue.toLocaleString('pt-BR', {style: 'currency', currency}).replace(' ', '');
+	return ('R$' + floatValue.toFixed(2)).replace('.', ',');
 };
 
 /**
@@ -213,6 +228,7 @@ export const getFormattedCart = (data) => {
 	formattedCart = {};
 	formattedCart.products = [];
 	let totalProductsCount = 0;
+	let productsTotal = 0;
 
 	for (let i = 0; i < givenProducts?.length; i++) {
 		const givenProduct = givenProducts?.[i]?.product?.node;
@@ -234,22 +250,28 @@ export const getFormattedCart = (data) => {
 		};
 
 		totalProductsCount += givenProducts?.[i]?.quantity;
+		productsTotal += total;
 
 		// Push each item into the products array.
 		formattedCart.products.push(product);
+
 	}
 
 	formattedCart.needsShippingAddress = data?.cart?.needsShippingAddress;
 	formattedCart.shippingMethod = data?.cart?.chosenShippingMethods[0] ?? '';
-	formattedCart.shippingMethods = data?.cart?.availableShippingMethods 
-		? data?.cart?.availableShippingMethods[0]?.rates 
+	formattedCart.shippingMethods = data?.cart?.availableShippingMethods
+		? data?.cart?.availableShippingMethods[0]?.rates
 		: [];
-
+	formattedCart.shippingTotal = formattedCart.shippingMethods.find(
+		ship => ship.id == formattedCart.shippingMethod
+	).cost;
 	formattedCart.totalProductsCount = totalProductsCount;
 	formattedCart.subtotal = data?.cart?.subtotal ?? '';
 	formattedCart.totalProductsPrice = data?.cart?.total ?? '';
+	formattedCart.productsTotal = productsTotal;
+	formattedCart.total = (productsTotal + parseFloat(formattedCart.shippingTotal)).toFixed(2);
 
-	if( data?.customer ) {
+	if (data?.customer) {
 		let customer = {
 			...data?.customer,
 			shipping: { ...data?.customer?.shipping },
@@ -257,10 +279,10 @@ export const getFormattedCart = (data) => {
 		};
 		// Object.assign(customer, data?.customer);
 		// console.log(customer);
-		if(customer.shipping?.address1) {
+		if (customer.shipping?.address1) {
 			customer.shipping.number = '';
 			const number = customer.shipping.address1.match(/,?\s*(\d*)\s?$/);
-			if(number.length >= 2){
+			if (number.length >= 2) {
 				customer.shipping.address1 = customer.shipping.address1.replace(number[0], '');
 				customer.shipping.number = number[1];
 			}
@@ -271,6 +293,23 @@ export const getFormattedCart = (data) => {
 	return formattedCart;
 
 };
+
+export const calculateCartTotals = (cart) => {
+
+	const productsTotal = cart?.products?.reduce( (productsTotal, prod) => {
+		return productsTotal += parseInt(prod.qty) * parseFloat(prod.price);
+	}, 0);
+	const shippingTotal = parseFloat(cart.shippingMethods.find(
+		ship => ship.id == cart?.shippingMethod
+	).cost);
+
+	return {
+		...cart,
+		productsTotal,
+		shippingTotal,
+		total: productsTotal + shippingTotal,
+	};
+}
 
 export const createCheckoutData = (order) => {
 

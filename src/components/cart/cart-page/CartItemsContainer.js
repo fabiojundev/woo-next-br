@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { AppContext } from "../../context/AppContext";
-import { getFormattedCart, getUpdatedItems } from '../../../functions';
+import { getFormattedCart, getUpdatedItems, formatCurrency } from '../../../functions';
 import CartItem from "./CartItem";
 import { v4 } from 'uuid';
 import { useMutation, useQuery } from '@apollo/client';
@@ -189,20 +189,15 @@ const CartItemsContainer = () => {
 								&& <div className="flex justify-between">
 									<h3 className="text-xl">Entrega</h3>
 									<div className="font-bold">
-										R$ {cart.shippingMethods.find(
-											method => method.id == cart.shippingMethod)
-											.cost
-										}
+									{formatCurrency(cart.shippingTotal)}
 									</div>
 								</div>
 							}
 							<hr className="my-4 " />
 							<div className="mb-6 flex justify-between">
 								<h3 className="text-xl">Total</h3>
-								<div className="font-bold">
-									{('string' !== typeof cart.totalProductsPrice)
-										? cart.totalProductsPrice.toFixed(2)
-										: cart.totalProductsPrice}
+								<div className="font-bold text-green-600">
+									{formatCurrency(cart.total)}
 								</div>
 							</div>
 							<Link href="/checkout">

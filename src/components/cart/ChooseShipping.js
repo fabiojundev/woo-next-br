@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AppContext } from "../context/AppContext";
 import { v4 } from 'uuid';
 import { useMutation, useQuery } from '@apollo/client';
 import UPDATE_SHIPPING_ADDRESS from "../../mutations/update-shipping-address";
 import UPDATE_SHIPPING_METHOD from "../../mutations/update-shipping-method";
 import LoadingButton from '../LoadingButton';
 import LoadingImg from '../LoadingImg';
+import { calculateCartTotals, formatCurrency } from '../../functions';
+import { CollectionPageJsonLd } from 'next-seo';
+import CartItem from './cart-page/CartItem';
 
 const ChooseShipping = ({
-	cart,
 	requestDefaultOptions,
 	showOnlyRates
 }) => {
 
-
+	const [cart, setCart] = useContext(AppContext);
 	const [
 		shippingMethod,
 		setShippingMethod
@@ -59,21 +62,29 @@ const ChooseShipping = ({
 		}
 	};
 
-	const handleChooseShipping = async (event) => {
+	const handleChooseShipping = (event) => {
 		const chosenShippingMethod = event.target.value;
 
 		setShippingMethod(chosenShippingMethod);
-		if (chosenShippingMethod != shippingMethod) {
-			console.log("mutate shipping method", chosenShippingMethod, shippingMethod);
-			await chooseShippingMethod({
-				variables: {
-					input: {
-						clientMutationId: v4(),
-						shippingMethods: [chosenShippingMethod],
-					}
-				},
-			});
-		}
+
+		const updatedCart = calculateCartTotals({
+			...cart,
+			shippingMethod: chosenShippingMethod,
+		});
+		console.log("updatedCart", updatedCart);
+		setCart(updatedCart);
+
+		// if (chosenShippingMethod != shippingMethod) {
+		// 	console.log("mutate shipping method", chosenShippingMethod, shippingMethod);
+		// 	chooseShippingMethod({
+		// 		variables: {
+		// 			input: {
+		// 				clientMutationId: v4(),
+		// 				shippingMethods: [chosenShippingMethod],
+		// 			}
+		// 		},
+		// 	});
+		// }
 	};
 
 
@@ -84,7 +95,7 @@ const ChooseShipping = ({
 					<div className="p-4 border border-solid flex-grow">
 						{!showOnlyRates && (
 							<>
-								<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
+								<h2 className="mb-2 text-xl text-bold">Calcular entrega</h2>
 								<hr className="my-4 " />
 								<input
 									type="text"
@@ -96,7 +107,7 @@ const ChooseShipping = ({
 								/>
 								<LoadingButton
 									label={"Atualizar"}
-									loading={(choosingShippingMethod || updatingShippinZipcode)}
+									loading={updatingShippinZipcode}
 									type="button"
 									handleClick={handleCalcShippingClick}
 								/>
@@ -114,7 +125,7 @@ const ChooseShipping = ({
 									<h2 className="my-2 self-center text-xl text-bold">
 										Escolha o frete
 									</h2>
-									{(choosingShippingMethod || updatingShippinZipcode) &&
+									{updatingShippinZipcode &&
 										<LoadingImg />
 									}
 								</div>
@@ -126,11 +137,11 @@ const ChooseShipping = ({
 												type="radio"
 												name="chosenShippingMethod"
 												className="my-2"
-												disabled={(choosingShippingMethod || updatingShippinZipcode)}
+												disabled={updatingShippinZipcode}
 												value={method.id}
 												onChange={handleChooseShipping}
 												checked={shippingMethod == method.id}
-											/> {method.label} - R${method.cost}
+											/> {method.label} - {formatCurrency(method.cost)}
 										</label>
 									</div>
 								))}
