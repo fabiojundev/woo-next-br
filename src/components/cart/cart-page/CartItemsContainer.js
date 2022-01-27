@@ -8,10 +8,12 @@ import { useMutation, useQuery } from '@apollo/client';
 import UPDATE_CART from "../../../mutations/update-cart";
 import GET_CART from "../../../queries/get-cart";
 import CLEAR_CART_MUTATION from "../../../mutations/clear-cart";
+import UPDATE_SHIPPING_METHOD from "../../../mutations/update-shipping-method";
 import { isEmpty } from 'lodash'
 import cx from 'classnames';
 import EmptyCart from '../EmptyCart';
 import ChooseShipping from '../ChooseShipping';
+import { useRouter } from 'next/router';
 
 const CartItemsContainer = () => {
 
@@ -20,10 +22,12 @@ const CartItemsContainer = () => {
 	const [cart, setCart] = useContext(AppContext);
 	const [requestError, setRequestError] = useState('');
 
-	const [needCartUpdate, setNeedCartUpdate] = useState({
+	const needCartUpdateInit = {
 		shipping: false,
 		products: false,
-	});
+	};
+	const [needCartUpdate, setNeedCartUpdate] = useState(needCartUpdateInit);
+	const router = useRouter();
 
 	// Get Cart Data.
 	const { loading, error, data, refetch } = useQuery(GET_CART, {
@@ -37,6 +41,7 @@ const CartItemsContainer = () => {
 			console.log('cart', data, updatedCart);
 			// Update cart data in React Context.
 			setCart(updatedCart);
+			setNeedCartUpdate(needCartUpdateInit);
 		}
 	});
 
@@ -69,6 +74,13 @@ const CartItemsContainer = () => {
 		loading: clearCartProcessing,
 		error: clearCartError
 	}] = useMutation(CLEAR_CART_MUTATION, defaultOptions);
+
+	// Update Shipping Method.
+	const [chooseShippingMethod, {
+		data: chosenShippingData,
+		loading: choosingShippingMethod,
+		error: chooseShippingError
+	}] = useMutation(UPDATE_SHIPPING_METHOD, defaultOptions);
 
 	/*
 	 * Handle remove product click.
@@ -115,6 +127,36 @@ const CartItemsContainer = () => {
 				}
 			},
 		});
+	};
+
+	const updateRemoteCart = async () => {
+		if (needCartUpdate?.products) {
+			console.log("mutate products in cart");
+			await updateCart({
+				variables: {
+					input: {
+						clientMutationId: v4(),
+						items: getUpdatedItems(cart.products, 1, 1)
+					}
+				},
+			});
+		}
+		if (needCartUpdate?.shipping) {
+			console.log("mutate shipping method");
+			await chooseShippingMethod({
+				variables: {
+					input: {
+						clientMutationId: v4(),
+						shippingMethods: [cart.shippingMethod],
+					}
+				},
+			});
+		}
+	}
+
+	const handleCheckout = async () => {
+		await updateRemoteCart();
+		router.push('/checkout');
 	};
 
 	return (
@@ -164,7 +206,7 @@ const CartItemsContainer = () => {
 												cart={cart}
 												setCart={setCart}
 												needCartUpdate={needCartUpdate}
-												setNeedCartUpdate={setNeedCartUpdate}					
+												setNeedCartUpdate={setNeedCartUpdate}
 											/>
 										))
 									)}
@@ -197,7 +239,7 @@ const CartItemsContainer = () => {
 								&& <div className="flex justify-between">
 									<h3 className="text-xl">Entrega</h3>
 									<div className="font-bold">
-									{formatCurrency(cart.shippingTotal)}
+										{formatCurrency(cart.shippingTotal)}
 									</div>
 								</div>
 							}
@@ -208,17 +250,27 @@ const CartItemsContainer = () => {
 									{formatCurrency(cart.total)}
 								</div>
 							</div>
-							<Link href="/checkout">
-								<button
-									className={cx(
-										'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-										{ 'hover:bg-green-600 hover:text-white hover:border-green-600': true }
-									)}
-								>
-									<span className="woo-next-cart-checkout-txt">Concluir Compra</span>
-									<i className="fas fa-long-arrow-alt-right" />
-								</button>
-							</Link>
+							<div className="flex flex-wrap justify-end ">
+								{(needCartUpdate?.products || needCartUpdate.shipping)
+									&& <button
+										onClick={updateRemoteCart}
+									>
+										Atualizar Carrinho
+									</button>
+								}
+								{/* <Link href="/checkout"> */}
+									<button
+										onClick={handleCheckout}
+										className={cx(
+											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
+											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': true }
+										)}
+									>
+										<span className="woo-next-cart-checkout-txt">Finalizar Compra</span>
+										<i className="fas fa-long-arrow-alt-right" />
+									</button>
+								{/* </Link> */}
+							</div>
 						</div>
 					</div>
 

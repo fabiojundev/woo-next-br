@@ -10,7 +10,8 @@ import { isEmpty, isArray } from 'lodash'
 export const getFloatVal = (string) => {
 
 	let floatValue = string.replace(',', '.');
-	floatValue = floatValue.match(/[+-]?\d+(\.\d+)?/g)[0];
+	floatValue = floatValue.match(/[+-]?\d+(\.\d+)?/g);
+	floatValue = floatValue?.length ? floatValue[0] : 0;
 	return (null !== floatValue) ? parseFloat(parseFloat(floatValue).toFixed(2)) : '';
 
 };
@@ -262,8 +263,8 @@ export const getFormattedCart = (data) => {
 	formattedCart.shippingMethods = data?.cart?.availableShippingMethods
 		? data?.cart?.availableShippingMethods[0]?.rates
 		: [];
-	formattedCart.shippingTotal = formattedCart.shippingMethods.find(
-		ship => ship.id == formattedCart.shippingMethod
+	formattedCart.shippingTotal = formattedCart?.shippingMethods?.find(
+		ship => ship.id == formattedCart?.shippingMethod
 	).cost;
 	formattedCart.totalProductsCount = totalProductsCount;
 	formattedCart.subtotal = data?.cart?.subtotal ?? '';
@@ -305,9 +306,9 @@ export const calculateCartTotals = (cart) => {
 	const productsTotal = cart?.products?.reduce( (productsTotal, prod) => {
 		return productsTotal += prod.qty * prod.price;
 	}, 0);
-	const shippingTotal = parseFloat(cart.shippingMethods.find(
+	const shippingTotal = parseFloat(cart?.shippingMethods?.find(
 		ship => ship.id == cart?.shippingMethod
-	).cost);
+	).cost) || 0;
 
 	return {
 		...cart,
