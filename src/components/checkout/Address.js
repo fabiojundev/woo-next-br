@@ -36,65 +36,6 @@ const Address = ({ input, countries, states, handleOnChange, isFetchingStates, i
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
                 />
             </div>
-            <div className="flex flex-wrap gap-2 justify-center sm:-mx-3">
-                {personTypes.map(person => (
-                    <label 
-                        key={person.value}
-                        className="form-check-label"
-                    >
-                        <input
-                            onChange={handleOnChange}
-                            value={person.value}
-                            className="form-check-input mr-3"
-                            name="persontype"
-                            type="radio"
-                            checked={person.value == input.persontype}
-                        />
-                        <span className="mr-2">
-                            {person.label}
-                        </span>
-                    </label>
-                ))}
-            </div>
-            {(input?.persontype == 1)
-                ? (
-                    <InputField
-                        name="cpf"
-                        inputValue={input?.cpf ?? ''}
-                        required
-                        handleOnChange={handleOnChange}
-                        label="CPF"
-                        errors={errors}
-                        isShipping={isShipping}
-                        containerClassNames="mb-4"
-                    />
-                )
-                : (
-                    <InputField
-                        name="cpnj"
-                        inputValue={input?.cpf ?? ''}
-                        required
-                        handleOnChange={handleOnChange}
-                        label="CNPJ"
-                        errors={errors}
-                        isShipping={isShipping}
-                        containerClassNames="mb-4"
-                    />
-
-                )
-            }
-
-            {/*
-            <InputField
-                name="company"
-                inputValue={input?.company ?? ''}
-                handleOnChange={handleOnChange}
-                label="Empresa (Optional)"
-                errors={errors}
-                isShipping={isShipping}
-                containerClassNames="mb-4"
-            />
-             */}
             <InputField
                 name="email"
                 type="email"

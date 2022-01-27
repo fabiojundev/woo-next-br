@@ -11,11 +11,6 @@ import GET_CART from "../../queries/get-cart";
 import CHECKOUT_MUTATION from "../../mutations/checkout";
 import Address from "./Address";
 import {
-    handleBillingDifferentThanShipping,
-    handleCreateAccount, handleStripeCheckout,
-    setStatesForCountry
-} from "../../utils/checkout-stripe";
-import {
     MercadoPagoCheckout,
     handleMercadoPagoCheckout
 } from './MercadoPagoCheckout';
@@ -173,31 +168,15 @@ const CheckoutForm = (props) => {
     };
 
     const handlePayment = async (input, cart) => {
-        switch (input.paymentMethod) {
-            case 'stripe':
-                await handleStripeCheckout(
-                    input,
-                    cart?.products,
-                    setRequestError,
-                    clearCartMutation,
-                    setIsStripeOrderProcessing,
-                    setCreatedOrderData
-                );
-                break;
-
-            case 'mercado-pago':
-                console.log("mercago pago pay");
-                await handleMercadoPagoCheckout(
-                    input,
-                    cart?.products,
-                    setRequestError,
-                    clearCartMutation,
-                    setIsStripeOrderProcessing,
-                    setCreatedOrderData
-                );
-                break;
-        }
-    };
+        await handleMercadoPagoCheckout(
+            input,
+            cart?.products,
+            setRequestError,
+            clearCartMutation,
+            setIsStripeOrderProcessing,
+            setCreatedOrderData
+        );
+};
     /*
      * Handle onchange input.
      *
@@ -246,11 +225,6 @@ const CheckoutForm = (props) => {
             }
         };
         setInput(newState);
-        await setStatesForCountry(
-            target,
-            setTheShippingStates,
-            setIsFetchingShippingStates
-        );
     }
 
     const handleBillingChange = async (target) => {
@@ -262,11 +236,6 @@ const CheckoutForm = (props) => {
             }
         };
         setInput(newState);
-        await setStatesForCountry(
-            target,
-            setTheBillingStates,
-            setIsFetchingBillingStates
-        );
     }
 
     useEffect(async () => {
@@ -363,7 +332,7 @@ const CheckoutForm = (props) => {
                             />
 
                             {/*Payment*/}
-                            <PaymentModes input={input} handleOnChange={handleOnChange} />
+                            {/* <PaymentModes input={input} handleOnChange={handleOnChange} /> */}
 
                             <div className="woo-next-place-order-btn-wrap mt-5">
                                 <LoadingButton
