@@ -96,7 +96,7 @@ const ChooseShipping = ({
 
 
 	return (
-		<div className="choose-shipping-wrap">
+		<div className="choose-shipping-wrap flex-grow">
 			{cart &&
 				<div className="flex flex-wrap justify-between">
 					<div className="p-4 border border-solid flex-grow">
