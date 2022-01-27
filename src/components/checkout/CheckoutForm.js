@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import cx from 'classnames'
 
 import YourOrder from "./YourOrder";
 import PaymentModes from "./PaymentModes";
@@ -25,24 +24,6 @@ import CLEAR_CART_MUTATION from "../../mutations/clear-cart";
 import LoadingButton from '../LoadingButton';
 import EmptyCart from '../cart/EmptyCart';
 
-// import { useMercadopago } from 'react-sdk-mercadopago';
-
-// Use this for testing purposes, so you dont have to fill the checkout form over an over again.
-// const defaultCustomerInfo = {
-// 	firstName: 'Imran',
-// 	lastName: 'Sayed',
-// 	address1: '123 Abc farm',
-// 	address2: 'Hill Road',
-// 	city: 'Mumbai',
-// 	country: 'IN',
-// 	state: 'Maharastra',
-// 	postcode: '221029',
-// 	email: 'codeytek.academy@gmail.com',
-// 	phone: '9883778278',
-// 	company: 'The Company',
-// 	errors: null
-// }
-
 const defaultCustomerInfo = {
     firstName: '',
     lastName: '',
@@ -62,24 +43,24 @@ const defaultCustomerInfo = {
     errors: null,
 }
 
+const initialState = {
+    billing: {
+        ...defaultCustomerInfo,
+    },
+    shipping: {
+        ...defaultCustomerInfo
+    },
+    createAccount: false,
+    orderNotes: '',
+    billingDifferentThanShipping: false,
+    paymentMethod: 'mercado-pago',
+    shippingMethod: '',
+    preference: '',
+};
+
 const CheckoutForm = (props) => {
 
     const { billingCountries, shippingCountries } = {};
-
-    const initialState = {
-        billing: {
-            ...defaultCustomerInfo,
-        },
-        shipping: {
-            ...defaultCustomerInfo
-        },
-        createAccount: false,
-        orderNotes: '',
-        billingDifferentThanShipping: false,
-        paymentMethod: 'mercado-pago',
-        shippingMethod: '',
-        preference: '',
-    };
 
     const [cart, setCart] = useContext(AppContext);
     const [input, setInput] = useState(initialState);
@@ -103,15 +84,6 @@ const CheckoutForm = (props) => {
             console.log('refetch cart', data, updatedCart);
             // Update cart data in React Context.
             setCart(updatedCart);
-
-            const shipping = updatedCart?.customer?.shipping;
-            //console.log(shipping, input);
-            if (shipping) {
-                setInput({
-                    ...input,
-                    shipping
-                });
-            }
         }
     });
 
@@ -306,6 +278,24 @@ const CheckoutForm = (props) => {
 
     }, [orderData]);
 
+    const updateCustomerFromCart = () => {
+        let shipping = cart?.customer?.shipping;
+        // console.log("UPDATE SHIPing from cart",shipping, input);
+        if (shipping) {
+            shipping = Object.fromEntries(
+                Object.entries(shipping)
+                .map(([k, v]) => [k, input.shipping[k] || v ])
+            );
+            // console.log("shipping", shipping);
+            setInput({
+                ...input,
+                shipping
+            });
+        }
+    };
+    useEffect(async () => {
+        updateCustomerFromCart();
+    },[cart?.customer?.shipping]);
     // Loading state
     const isOrderProcessing = checkoutLoading || isStripeOrderProcessing;
 
