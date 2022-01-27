@@ -166,14 +166,14 @@ const CartItemsContainer = () => {
 					</div>
 
 					{/* Shipping Calculator */}
-					<div className="flex flex-wrap justify-between">
+					<div className="pt-8 flex flex-wrap gap-2 justify-between">
 						<ChooseShipping
 							cart={cart}
 							requestDefaultOptions={defaultOptions}
 						/>
 						{/*Cart Total*/}
-						<div className="my-6 p-4 border flex-grow">
-							<h2 className="my-2 self-center text-xl text-bold">Total no Carrinho</h2>
+						<div className="p-4 border flex-grow">
+							<h2 className="self-center text-xl text-bold">Total no Carrinho</h2>
 							<hr className="my-4 " />
 							<div className="flex justify-between">
 								<h3 className="text-xl">Subtotal</h3>

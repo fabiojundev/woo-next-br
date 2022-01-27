@@ -78,10 +78,10 @@ const ChooseShipping = ({
 
 
 	return (
-		<div className="choose-shipping-wrap mx-auto px-4 xl:px-0">
+		<div className="choose-shipping-wrap">
 			{cart &&
 				<div className="flex flex-wrap justify-between">
-					<div className="my-6 mr-2 p-4 border border-solid flex-grow">
+					<div className="p-4 border border-solid flex-grow">
 						{!showOnlyRates && (
 							<>
 								<h2 className="my-2 text-xl text-bold">Calcular entrega</h2>
@@ -109,14 +109,16 @@ const ChooseShipping = ({
 						)}
 						{cart?.needsShippingAddress
 							&& cart?.shippingMethods?.length
-							&& <div className='mt-8'>
+							&& <div className='shipping-methods-wrap'>
 								<div className='flex'>
-									<h2 className="my-2 self-center text-xl text-bold">Escolha o frete</h2>
+									<h2 className="my-2 self-center text-xl text-bold">
+										Escolha o frete
+									</h2>
 									{(choosingShippingMethod || updatingShippinZipcode) &&
 										<LoadingImg />
 									}
 								</div>
-								<hr className="my-4 " />
+								<hr className="my-2" />
 								{cart?.shippingMethods?.map(method => (
 									<div key={method.id}>
 										<label>

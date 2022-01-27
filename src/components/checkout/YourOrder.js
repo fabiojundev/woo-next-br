@@ -24,7 +24,7 @@ const YourOrder = ({ cart, refetchCart }) => {
 			{cart ? (
 				<Fragment>
 					{/*Product Listing*/}
-					<table className="checkout-cart table table-hover w-full mb-10">
+					<table className="checkout-cart table table-hover w-full mb-4 border border-solid">
 						<thead>
 							<tr className="woo-next-cart-head-container text-left">
 								<th className="woo-next-cart-heading-el" scope="col" />

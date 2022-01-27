@@ -79,7 +79,7 @@ const Layout = ({ data, isPost, children }) => {
 					</Head>
 					<Header />
 					<div
-						className="p-8 mx-auto min-h-almost-screen"
+						className="p-5 md:p-6 xl:p-8 mx-auto min-h-almost-screen"
 					>
 						{children}
 					</div>
