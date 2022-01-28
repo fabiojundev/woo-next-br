@@ -57,6 +57,7 @@ const Address = ({ input, countries, states, handleOnChange, isFetchingStates, i
                     errors={errors}
                     isShipping={isShipping}
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                    mask="99999-999"
                 />
                 <InputField
                     name="phone"

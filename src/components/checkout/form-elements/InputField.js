@@ -1,8 +1,21 @@
 import Error from "../Error";
 import PropTypes from 'prop-types';
 import Abbr from "./Abbr";
+import InputMask from 'react-input-mask';
 
-const InputField = ({ handleOnChange, inputValue, name, type, label, errors, placeholder, required, containerClassNames, isShipping }) => {
+const InputField = ({ 
+    handleOnChange, 
+    inputValue, 
+    name, 
+    type, 
+    label, 
+    errors, 
+    placeholder, 
+    required, 
+    containerClassNames, 
+    isShipping,
+    mask
+}) => {
 
     const inputId = `${name}-${isShipping ? 'shipping' : ''}`;
 
@@ -12,7 +25,7 @@ const InputField = ({ handleOnChange, inputValue, name, type, label, errors, pla
                 { label || '' }
                 <Abbr required={required}/>
             </label>
-            <input
+            <InputMask
                 onChange={ handleOnChange }
                 value={ inputValue }
                 placeholder={placeholder}
@@ -20,6 +33,7 @@ const InputField = ({ handleOnChange, inputValue, name, type, label, errors, pla
                 name={name}
                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-500 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-800 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                 id={inputId}
+                mask={mask}
             />
             <Error errors={ errors } fieldName={ name }/>
         </div>

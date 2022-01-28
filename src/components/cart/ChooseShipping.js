@@ -9,6 +9,7 @@ import LoadingImg from '../LoadingImg';
 import { calculateCartTotals, formatCurrency } from '../../functions';
 import { CollectionPageJsonLd } from 'next-seo';
 import CartItem from './cart-page/CartItem';
+import InputMask from 'react-input-mask';
 
 const ChooseShipping = ({
 	requestDefaultOptions,
@@ -104,7 +105,8 @@ const ChooseShipping = ({
 							<>
 								<h2 className="mb-2 text-xl text-bold">Calcular entrega</h2>
 								<hr className="my-4 " />
-								<input
+								<InputMask
+									mask="99999-999"
 									type="text"
 									className="p-2 border w-32"
 									value={zipcode}
