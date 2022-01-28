@@ -11,8 +11,8 @@ const CheckoutCartItem = ({ item }) => {
 					alt={item.image.title}
 				/>
 			</td>
-			<td className="woo-next-cart-element">
-				{item.name}
+			<td className="woo-next-cart-element text-sm">
+				{item.name} x {item.qty}
 			</td>
 			<td className="woo-next-cart-element">
 				{formatCurrency(item.totalPrice)}
