@@ -176,7 +176,13 @@ const CheckoutForm = (props) => {
             setIsStripeOrderProcessing,
             setCreatedOrderData
         );
-};
+    };
+
+    const handleBillingDifferentThanShipping = (input, setInput, target) => {
+        const newState = { ...input, [target.name]: !input.billingDifferentThanShipping };
+        setInput(newState);
+    }
+
     /*
      * Handle onchange input.
      *
@@ -253,7 +259,7 @@ const CheckoutForm = (props) => {
         if (shipping) {
             shipping = Object.fromEntries(
                 Object.entries(shipping)
-                .map(([k, v]) => [k, input.shipping[k] || v ])
+                    .map(([k, v]) => [k, input.shipping[k] || v])
             );
             // console.log("shipping", shipping);
             setInput({
@@ -264,7 +270,7 @@ const CheckoutForm = (props) => {
     };
     useEffect(async () => {
         updateCustomerFromCart();
-    },[cart?.customer?.shipping]);
+    }, [cart?.customer?.shipping]);
     // Loading state
     const isOrderProcessing = checkoutLoading || isStripeOrderProcessing;
 
