@@ -14,6 +14,7 @@ import cx from 'classnames';
 import EmptyCart from '../EmptyCart';
 import ChooseShipping from '../ChooseShipping';
 import { useRouter } from 'next/router';
+import LoadingButton from '../../LoadingButton';
 
 const CartItemsContainer = () => {
 
@@ -252,24 +253,17 @@ const CartItemsContainer = () => {
 							</div>
 							<div className="flex flex-wrap justify-end ">
 								{(needCartUpdate?.products || needCartUpdate.shipping)
-									&& <button
-										onClick={updateRemoteCart}
-									>
-										Atualizar Carrinho
-									</button>
+									&& <LoadingButton
+										loading={updateCartProcessing || choosingShippingMethod}
+										handleClick={updateRemoteCart}
+										label={"Atualizar Carrinho"}
+									/>
 								}
-								{/* <Link href="/checkout"> */}
-									<button
-										onClick={handleCheckout}
-										className={cx(
-											'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-											{ 'hover:bg-green-600 hover:text-white hover:border-green-600': true }
-										)}
-									>
-										<span className="woo-next-cart-checkout-txt">Finalizar Compra</span>
-										<i className="fas fa-long-arrow-alt-right" />
-									</button>
-								{/* </Link> */}
+								<LoadingButton
+									loading={updateCartProcessing || choosingShippingMethod}
+									handleClick={handleCheckout}
+									label={"Finalizar Compra"}
+								/>
 							</div>
 						</div>
 					</div>

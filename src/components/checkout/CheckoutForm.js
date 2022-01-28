@@ -48,7 +48,7 @@ const initialState = {
     createAccount: false,
     orderNotes: '',
     billingDifferentThanShipping: false,
-    paymentMethod: 'mercado-pago',
+    paymentMethod: 'woo-mercado-pago-basic',
     shippingMethod: '',
     preference: '',
 };
