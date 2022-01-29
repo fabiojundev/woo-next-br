@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 import Router from 'next/router';
 
 import client from '../src/apollo/client';
 import { handleRedirectsAndReturnData } from '../src/utils/slug';
 import { GET_MENUS } from '../src/queries/get-menus';
-import Header from '../src/components/Header';
-import Footer from '../src/components/Footer';
+import Layout from '../src/components/Layout';
 import SearchBox from '../src/components/search/search-box';
 import LoadMorePosts from '../src/components/news/load-more-posts';
 import { GET_SEARCH_RESULTS, GET_SEARCH_RESULTS_WITH_TOTAL_PAGES } from '../src/queries/search/get-search-results';
@@ -16,102 +15,102 @@ import Loading from '../src/components/loading';
 import { PER_PAGE_FIRST } from '../src/utils/pagination';
 import ResultInfo from '../src/components/search/result-info';
 
-export default function Search( { data } ) {
-  const searchQueryString = process.browser ? ( Router?.query?.s ?? '' ) : '';
+export default function Search({ data }) {
+  const searchQueryString = process.browser ? (Router?.query?.s ?? '') : '';
   const { header, footer, headerMenus, footerMenus, slug } = data || {};
-  const [ searchQuery, setSearchQuery ] = useState( searchQueryString );
-  const [ searchError, setSearchError ] = useState( '' );
-  const [ queryResultPosts, setQueryResultPosts  ] = useState( {} );
-  const [ showResultInfo, setShowResultInfo ] = useState( false );
+  const [searchQuery, setSearchQuery] = useState(searchQueryString);
+  const [searchError, setSearchError] = useState('');
+  const [queryResultPosts, setQueryResultPosts] = useState({});
+  const [showResultInfo, setShowResultInfo] = useState(false);
 
-  const [ fetchPosts, { loading } ] = useLazyQuery( GET_SEARCH_RESULTS_WITH_TOTAL_PAGES, {
+  const [fetchPosts, { loading }] = useLazyQuery(GET_SEARCH_RESULTS_WITH_TOTAL_PAGES, {
     client: client,
     notifyOnNetworkStatusChange: true,
-    onCompleted: ( data ) => {
-      setQueryResultPosts( data?.posts ?? {} );
-      setShowResultInfo( true );
+    onCompleted: (data) => {
+      setQueryResultPosts(data?.posts ?? {});
+      setShowResultInfo(true);
     },
-    onError: ( error ) => {
-      setSearchError( error?.graphQLErrors ?? '' );
+    onError: (error) => {
+      setSearchError(error?.graphQLErrors ?? '');
     }
-  } );
+  });
 
-  const handleSearchFormSubmit = ( event ) => {
+  const handleSearchFormSubmit = (event) => {
 
     event.preventDefault();
-    setShowResultInfo( false );
+    setShowResultInfo(false);
 
-    if ( isEmpty( searchQuery ) ) {
-      setSearchError( 'Please enter text to search' );
-      setQueryResultPosts( {} );
+    if (isEmpty(searchQuery)) {
+      setSearchError('Please enter text to search');
+      setQueryResultPosts({});
       return null;
     }
 
-    setSearchError( '' );
+    setSearchError('');
 
-    fetchPosts( {
+    fetchPosts({
       variables: {
         first: PER_PAGE_FIRST,
         after: null,
         query: searchQuery
       }
-    } );
+    });
   };
 
-  useEffect( () => {
+  useEffect(() => {
     /**
      * If the query params is set, set the searchQuery in the in
      * 1. Set the search input value to that query.
      * 2. Call fetchPosts to get the results as per the query string from query params.
      */
-    if ( searchQueryString ) {
-      setSearchQuery( searchQueryString );
-      fetchPosts( {
+    if (searchQueryString) {
+      setSearchQuery(searchQueryString);
+      fetchPosts({
         variables: {
           first: PER_PAGE_FIRST,
           after: null,
           query: searchQueryString
         }
-      } );
+      });
     }
 
-  }, [ searchQueryString ] );
+  }, [searchQueryString]);
 
-  const totalPostResultCount =  queryResultPosts?.pageInfo?.offsetPagination?.total;
+  const totalPostResultCount = queryResultPosts?.pageInfo?.offsetPagination?.total;
 
   return (
     <>
-      <Header header={ header } headerMenus={ headerMenus?.edges ?? [] } slug={slug}/>
-      <div className="mx-auto min-h-almost-screen">
-        <SearchBox
-          searchQuery={ searchQuery }
-          setSearchQuery={ setSearchQuery }
-          handleSearchFormSubmit={handleSearchFormSubmit}
-        />
-        <ResultInfo showResultInfo={showResultInfo} totalPostResultCount={totalPostResultCount} classnames="mt-4 text-center"/>
-        <ErrorMessage text={searchError} classes="max-w-xl mx-auto -mt-8"/>
-        <Loading showSpinner visible={loading} classes="mx-auto text-center -mt-8"/>
-        <LoadMorePosts
-          posts={queryResultPosts}
-          graphQLQuery={GET_SEARCH_RESULTS}
-          searchQuery={searchQuery}
-          classes="md:container px-5 py-12 mx-auto min-h-almost-screen"
-        />
-      </div>
-      <Footer footer={ footer } footerMenus={ footerMenus?.edges ?? [] }/>
+      <Layout data={data}>
+        <div className="mx-auto min-h-almost-screen">
+          <SearchBox
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearchFormSubmit={handleSearchFormSubmit}
+          />
+          <ResultInfo showResultInfo={showResultInfo} totalPostResultCount={totalPostResultCount} classnames="mt-4 text-center" />
+          <ErrorMessage text={searchError} classes="max-w-xl mx-auto -mt-8" />
+          <Loading showSpinner visible={loading} classes="mx-auto text-center -mt-8" />
+          <LoadMorePosts
+            posts={queryResultPosts}
+            graphQLQuery={GET_SEARCH_RESULTS}
+            searchQuery={searchQuery}
+            classes="md:container px-5 py-12 mx-auto min-h-almost-screen"
+          />
+        </div>
+      </Layout>
     </>
   );
 }
 
 export async function getStaticProps() {
 
-  const { data, errors } = await client.query( {
+  const { data, errors } = await client.query({
     query: GET_MENUS,
-  } );
+  });
 
   const defaultProps = {
     props: {
-      data: {...data, slug: 'search'}
+      data: { ...data, slug: 'search' }
     },
     /**
      * Revalidate means that if a new request comes to server, then every 1 sec it will check
@@ -123,5 +122,5 @@ export async function getStaticProps() {
 
   // return defaultProps;
 
-  return handleRedirectsAndReturnData( defaultProps, data, errors, 'headerMenus' );
+  return handleRedirectsAndReturnData(defaultProps, data, errors, 'headerMenus');
 }
