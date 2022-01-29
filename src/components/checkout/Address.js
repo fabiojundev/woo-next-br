@@ -4,14 +4,16 @@ import StateSelection from "./StatesSelection";
 import InputField from "./form-elements/InputField";
 import ShippingPostcode from '../cart/ShippingPostcode';
 
-const Address = ({ 
-    input, 
-    countries, 
-    states, 
-    handleOnChange, 
-    isFetchingStates, 
+const Address = ({
+    input,
+    countries,
+    states,
+    handleOnChange,
+    isFetchingStates,
     isShipping,
     refetchCart,
+    disabled,
+    setDisabled
 }) => {
 
     const { errors } = input || {};
@@ -57,29 +59,6 @@ const Address = ({
                 containerClassNames="mb-4"
             />
             <div className="flex flex-wrap overflow-hidden sm:-mx-3">
-                <ShippingPostcode 
-                    name="postcode"
-                    inputValue={input?.postcode ?? ''}
-                    required
-                    handleOnChange={handleOnChange}
-                    label="CEP"
-                    errors={errors}
-                    isShipping={isShipping}
-                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
-                    mask="99999-999"
-                    refetchCart={refetchCart}
-                />
-                {/* <InputField
-                    name="postcode"
-                    inputValue={input?.postcode ?? ''}
-                    required
-                    handleOnChange={handleOnChange}
-                    label="CEP"
-                    errors={errors}
-                    isShipping={isShipping}
-                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
-                    mask="99999-999"
-                /> */}
                 <InputField
                     name="phone"
                     inputValue={input?.phone ?? ''}
@@ -88,8 +67,36 @@ const Address = ({
                     label="Celular"
                     errors={errors}
                     isShipping={isShipping}
+                    mask="(99) 99999-9999"
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
                 />
+                {isShipping
+                    ? <ShippingPostcode
+                        name="postcode"
+                        inputValue={input?.postcode ?? ''}
+                        required
+                        handleOnChange={handleOnChange}
+                        label="CEP"
+                        errors={errors}
+                        isShipping={isShipping}
+                        mask="99999-999"
+                        refetchCart={refetchCart}
+                        disabled={disabled}
+                        setDisabled={setDisabled}
+                    />
+                    : <InputField
+                        name="postcode"
+                        inputValue={input?.postcode ?? ''}
+                        required
+                        handleOnChange={handleOnChange}
+                        label="CEP"
+                        errors={errors}
+                        isShipping={isShipping}
+                        containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                        mask="99999-999"
+                    />
+                }
+
             </div>
 
             {/* Country Selection

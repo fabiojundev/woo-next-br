@@ -70,8 +70,14 @@ const CheckoutForm = (props) => {
     const [isStripeOrderProcessing, setIsStripeOrderProcessing] = useState(false);
     const [createdOrderData, setCreatedOrderData] = useState({});
 
+    const [disabled, setDisabled] = useState(false);
+
     // Get Cart Data.
-    const { data, refetch } = useQuery(GET_CART, {
+    const {
+        loading: cartLoading,
+        data,
+        refetch
+    } = useQuery(GET_CART, {
         notifyOnNetworkStatusChange: true,
         onCompleted: () => {
             // Update cart in the localStorage.
@@ -110,17 +116,17 @@ const CheckoutForm = (props) => {
                         .map(([k, v]) => {
                             let val = [k, v];
                             if (overwrite) {
-                                if( [ 
+                                if ([
                                     'firstName',
                                     'lastName',
                                     'email',
                                     'phone',
                                     'address2',
                                     'number',
-                                ].find( el => el == k) ) {
+                                ].find(el => el == k)) {
                                     val = (field && input[field][k])
-                                    ? [k, input[field][k]]
-                                    : [k, v];
+                                        ? [k, input[field][k]]
+                                        : [k, v];
                                 }
                             }
                             else {
@@ -358,7 +364,10 @@ const CheckoutForm = (props) => {
                     onSubmit={handleFormSubmit}
                     className="woo-next-checkout-form"
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+                    <fieldset
+                        className="grid grid-cols-1 md:grid-cols-2 gap-20 disabled:opacity-70"
+                        disabled={disabled ? 'disable' : ''}
+                    >
                         <div>
                             {/*Shipping Details*/}
                             <div className="billing-details">
@@ -373,7 +382,9 @@ const CheckoutForm = (props) => {
                                     isFetchingStates={isFetchingShippingStates}
                                     isShipping
                                     isBillingOrShipping
-                                    refetchCart={refetch}
+                                    refetchCart={refetchCart}
+                                    disabled={disabled}
+                                    setDisabled={setDisabled}
                                 // refetch={refetch}
                                 />
                             </div>
@@ -402,6 +413,8 @@ const CheckoutForm = (props) => {
                                         isShipping={false}
                                         isBillingOrShipping
                                         refetchCart={refetchCart}
+                                        disabled={disabled}
+                                        setDisabled={setDisabled}
                                     />
                                 </div>
                             ) : null}
@@ -444,7 +457,7 @@ const CheckoutForm = (props) => {
                                 && <p>Erro : {requestError} :( Por favor, tente novamente.</p>
                             }
                         </div>
-                    </div>
+                    </fieldset>
                 </form>
             ) : <EmptyCart />}
             {/*	Show message if Order Success*/}
