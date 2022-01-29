@@ -223,6 +223,8 @@ const CartItemsContainer = () => {
 							requestDefaultOptions={defaultOptions}
 							needCartUpdate={needCartUpdate}
 							setNeedCartUpdate={setNeedCartUpdate}
+							refetchCart={refetch}
+							setRequestError={setRequestError}
 						/>
 						{/*Cart Total*/}
 						<div className="p-4 border flex-grow">

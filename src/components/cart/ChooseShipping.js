@@ -40,7 +40,10 @@ const ChooseShipping = ({
 				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
 					? error.graphQLErrors[0]?.message
 					: '';
-				setRequestError(errorMessage);
+				console.warn(error);
+				if (setRequestError) {
+					setRequestError(errorMessage);
+				}
 			}
 		}
 	};

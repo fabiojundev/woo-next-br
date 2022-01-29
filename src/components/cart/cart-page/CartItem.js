@@ -66,6 +66,7 @@ const CartItem = ({
 				} ),
 			});
 
+			localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
 			setCart(updatedCart);
 
 			// if (products.length) {
