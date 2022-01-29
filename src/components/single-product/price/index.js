@@ -36,7 +36,7 @@ const Price = ({ regularPrice = 0, salesPrice, showPercent = false }) => {
         <h6 className="product-price text-gray-800 font-semibold mr-3 mb-5">
             {/* Regular price */}
             {productMeta?.discountPercent
-                ? <span className="product-price mr-2 text-xl text-gray-700">
+                ? <span className="product-price mr-2 text-gray-700">
                     {salesPrice}
                 </span>
                 : null

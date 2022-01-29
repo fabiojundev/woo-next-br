@@ -29,13 +29,18 @@ const Product = (props) => {
 				<div className="product-info">
 					<Link href={`/product/${product?.slug}`} >
 						<a>
-							<h3 className="product-title mt-3 font-medium text-gray-800">
+							<h3 className="product-title mt-3 font-medium">
 								{product.name ? product.name : ''}
 							</h3>
-							<Price salesPrice={product?.price} regularPrice={product?.regularPrice} />
+							<Price 
+								salesPrice={product?.price} 
+								regularPrice={product?.regularPrice} 
+							/>
 						</a>
 					</Link>
-					<AddToCartButton product={product} />
+					<AddToCartButton 
+						product={product} 
+					/>
 				</div>
 
 			</div>
