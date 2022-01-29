@@ -8,14 +8,15 @@ import LoadingButton from '../LoadingButton';
 import LoadingImg from '../LoadingImg';
 import { calculateCartTotals, formatCurrency } from '../../functions';
 import { CollectionPageJsonLd } from 'next-seo';
-import CartItem from './cart-page/CartItem';
 import InputMask from 'react-input-mask';
+import { isEmpty } from 'lodash';
 
 const ChooseShipping = ({
-	requestDefaultOptions,
 	showOnlyRates,
 	needCartUpdate,
-	setNeedCartUpdate
+	setNeedCartUpdate,
+	refetchCart,
+	setRequestError
 }) => {
 
 	const [cart, setCart] = useContext(AppContext);
@@ -28,6 +29,21 @@ const ChooseShipping = ({
 		zipcode,
 		setZipcode
 	] = useState(cart?.customer?.shipping?.postcode ?? '');
+
+	const requestDefaultOptions = {
+		onCompleted: () => {
+			console.log("completed, refetch");
+			refetchCart('cart');
+		},
+		onError: (error) => {
+			if (error) {
+				const errorMessage = !isEmpty(error?.graphQLErrors?.[0])
+					? error.graphQLErrors[0]?.message
+					: '';
+				setRequestError(errorMessage);
+			}
+		}
+	};
 
 	// Update Shipping Zipcode.
 	const [updateShippingAddress, {
@@ -47,16 +63,16 @@ const ChooseShipping = ({
 		setZipcode(event.target.value);
 	};
 
-	const handleCalcShippingClick = async (event) => {
-		console.log("handleCalcShippingClick");
-		if (zipcode?.length >= 8) {
-			await updateShippingAddress({
+	const getShippingRates = (postcode) => {
+		console.log("getShippingRates", postcode.replace(/\D/g, ''));
+		if (postcode?.length >= 8) {
+			updateShippingAddress({
 				variables: {
 					input: {
 						clientMutationId: v4(),
 						shipping: {
 							country: 'BR',
-							postcode: zipcode,
+							postcode: postcode.replace(/\D/g, ''),
 							// overwrite: true
 						},
 					}
@@ -65,36 +81,42 @@ const ChooseShipping = ({
 		}
 	};
 
+	const handleCalcShippingClick = async (event) => {
+		getShippingRates(zipcode);
+	};
+
 	const handleChooseShipping = (event) => {
 		const chosenShippingMethod = event.target.value;
-
-		setShippingMethod(chosenShippingMethod);
 
 		const updatedCart = calculateCartTotals({
 			...cart,
 			shippingMethod: chosenShippingMethod,
 		});
 		console.log("updatedCart", updatedCart);
+		localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+
 		setCart(updatedCart);
+		setShippingMethod(chosenShippingMethod);
 
-		setNeedCartUpdate({
-			...needCartUpdate,
-			shipping: true,
-		})
 
-		// if (chosenShippingMethod != shippingMethod) {
-		// 	console.log("mutate shipping method", chosenShippingMethod, shippingMethod);
-		// 	chooseShippingMethod({
-		// 		variables: {
-		// 			input: {
-		// 				clientMutationId: v4(),
-		// 				shippingMethods: [chosenShippingMethod],
-		// 			}
-		// 		},
-		// 	});
-		// }
+		if (setNeedCartUpdate) {
+			setNeedCartUpdate({
+				...needCartUpdate,
+				shipping: true,
+			})
+		}
+		else if (chosenShippingMethod != shippingMethod) {
+			console.log("mutate shipping method", chosenShippingMethod, shippingMethod);
+			chooseShippingMethod({
+				variables: {
+					input: {
+						clientMutationId: v4(),
+						shippingMethods: [chosenShippingMethod],
+					}
+				},
+			});
+		}
 	};
-
 
 	return (
 		<div className="choose-shipping-wrap flex-grow">

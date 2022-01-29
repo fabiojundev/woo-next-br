@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
 
 import YourOrder from "./YourOrder";
 import PaymentModes from "./PaymentModes";
@@ -18,6 +18,7 @@ import CheckboxField from "./form-elements/CheckboxField";
 import CLEAR_CART_MUTATION from "../../mutations/clear-cart";
 import LoadingButton from '../LoadingButton';
 import EmptyCart from '../cart/EmptyCart';
+import { isEmpty } from 'lodash';
 
 const defaultCustomerInfo = {
     firstName: '',
@@ -51,6 +52,7 @@ const initialState = {
     paymentMethod: 'woo-mercado-pago-basic',
     shippingMethod: '',
     preference: '',
+    firstRender: true,
 };
 
 const CheckoutForm = (props) => {
@@ -76,11 +78,99 @@ const CheckoutForm = (props) => {
             const updatedCart = getFormattedCart(data);
             localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
 
-            console.log('refetch cart', data, updatedCart);
+            console.log('refetch cart', { data, updatedCart });
             // Update cart data in React Context.
             setCart(updatedCart);
+            return updatedCart;
         }
     });
+
+    const refetchCart = async (reloadField) => {
+        if (reloadField) {
+            await refetch();
+            if ('cart' != reloadField) {
+                updateCustomerFromCart(reloadField, true);
+            }
+        }
+    };
+
+    const updateCustomerFromCart = (
+        field = '',
+        overwrite = false
+    ) => {
+        let toUpdate = field
+            ? toUpdate = { ...cart?.customer[field] }
+            : { ...cart?.customer };
+
+        console.log("UPDATE Customer from cart", { field, input, overwrite, toUpdate });
+        if (toUpdate) {
+            if (typeof toUpdate === 'object') {
+                toUpdate = Object.fromEntries(
+                    Object.entries(toUpdate)
+                        .map(([k, v]) => {
+                            let val = [k, v];
+                            if (overwrite) {
+                                if( [ 
+                                    'firstName',
+                                    'lastName',
+                                    'email',
+                                    'phone',
+                                    'address2',
+                                    'number',
+                                ].find( el => el == k) ) {
+                                    val = (field && input[field][k])
+                                    ? [k, input[field][k]]
+                                    : [k, v];
+                                }
+                            }
+                            else {
+                                val = (field && input[field][k])
+                                    ? [k, input[field][k]]
+                                    : [k, v];
+                            }
+                            return val;
+                        }
+                        ))
+            }
+            console.log("toUpdate", { field, toUpdate, input });
+            if (field) {
+                // if ('shipping' == field || 'billing' == field) {
+
+                //     const {
+                //         firstName, 
+                //         lastName, 
+                //         email, 
+                //         phone, 
+                //         address2, 
+                //         number, 
+                //         ...toUpdate1
+                //     } = toUpdate; 
+                //     toUpdate = toUpdate1;
+                //     console.log("toUpdate11", {field, toUpdate, input});
+                // }
+                toUpdate = {
+                    ...input,
+                    [field]: {
+                        ...toUpdate
+                    }
+                };
+            }
+            else {
+                toUpdate = {
+                    ...input,
+                    ...toUpdate
+                };
+            }
+            toUpdate.firstRender = false;
+            // delete input.firstRender;
+            setInput(toUpdate);
+        }
+        return toUpdate;
+    };
+
+    useEffect(async () => {
+        updateCustomerFromCart('shipping', true);
+    }, [cart?.customer?.shipping, input.firstRender]);
 
     // Create New order: Checkout Mutation.
     const [checkout, {
@@ -192,7 +282,11 @@ const CheckoutForm = (props) => {
      *
      * @return {void}
      */
-    const handleOnChange = async (event, isShipping = false, isBillingOrShipping = false) => {
+    const handleOnChange = async (
+        event,
+        isShipping = false,
+        isBillingOrShipping = false
+    ) => {
 
         const { target } = event || {};
 
@@ -253,24 +347,6 @@ const CheckoutForm = (props) => {
 
     }, [orderData]);
 
-    const updateCustomerFromCart = () => {
-        let shipping = cart?.customer?.shipping;
-        // console.log("UPDATE SHIPing from cart",shipping, input);
-        if (shipping) {
-            shipping = Object.fromEntries(
-                Object.entries(shipping)
-                    .map(([k, v]) => [k, input.shipping[k] || v])
-            );
-            // console.log("shipping", shipping);
-            setInput({
-                ...input,
-                shipping
-            });
-        }
-    };
-    useEffect(async () => {
-        updateCustomerFromCart();
-    }, [cart?.customer?.shipping]);
     // Loading state
     const isOrderProcessing = checkoutLoading || isStripeOrderProcessing;
 
@@ -297,6 +373,8 @@ const CheckoutForm = (props) => {
                                     isFetchingStates={isFetchingShippingStates}
                                     isShipping
                                     isBillingOrShipping
+                                    refetchCart={refetch}
+                                // refetch={refetch}
                                 />
                             </div>
                             <div>
@@ -323,6 +401,7 @@ const CheckoutForm = (props) => {
                                         isFetchingStates={isFetchingBillingStates}
                                         isShipping={false}
                                         isBillingOrShipping
+                                        refetchCart={refetchCart}
                                     />
                                 </div>
                             ) : null}
@@ -334,7 +413,8 @@ const CheckoutForm = (props) => {
                             <h2 className="text-xl font-medium mb-4">Seu pedido</h2>
                             <YourOrder
                                 cart={cart}
-                                refetchCart={refetch}
+                                refetchCart={refetchCart}
+                                setRequestError={setRequestError}
                             />
 
                             {/*Payment*/}
