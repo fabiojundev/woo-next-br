@@ -67,7 +67,7 @@ const CheckoutForm = (props) => {
     const [isFetchingShippingStates, setIsFetchingShippingStates] = useState(false);
     const [theBillingStates, setTheBillingStates] = useState([]);
     const [isFetchingBillingStates, setIsFetchingBillingStates] = useState(false);
-    const [isStripeOrderProcessing, setIsStripeOrderProcessing] = useState(false);
+    const [isGatewayProcessing, setIsGatewayProcessing] = useState(false);
     const [createdOrderData, setCreatedOrderData] = useState({});
 
     const [disabled, setDisabled] = useState(false);
@@ -269,7 +269,7 @@ const CheckoutForm = (props) => {
             cart?.products,
             setRequestError,
             clearCartMutation,
-            setIsStripeOrderProcessing,
+            setIsGatewayProcessing,
             setCreatedOrderData
         );
     };
@@ -354,7 +354,7 @@ const CheckoutForm = (props) => {
     }, [orderData]);
 
     // Loading state
-    const isOrderProcessing = checkoutLoading || isStripeOrderProcessing;
+    const isOrderProcessing = checkoutLoading || isGatewayProcessing;
 
     return (
         <>
