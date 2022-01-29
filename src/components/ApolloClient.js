@@ -63,7 +63,7 @@ export const afterware = new ApolloLink( ( operation, forward ) => {
 
 	} );
 } );
-console.log("client", `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`);
+
 const defaultOptions = {
 	watchQuery: {
 		fetchPolicy: "no-cache",

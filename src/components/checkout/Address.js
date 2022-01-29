@@ -2,8 +2,17 @@ import PropTypes from 'prop-types';
 import CountrySelection from "./CountrySelection";
 import StateSelection from "./StatesSelection";
 import InputField from "./form-elements/InputField";
+import ShippingPostcode from '../cart/ShippingPostcode';
 
-const Address = ({ input, countries, states, handleOnChange, isFetchingStates, isShipping }) => {
+const Address = ({ 
+    input, 
+    countries, 
+    states, 
+    handleOnChange, 
+    isFetchingStates, 
+    isShipping,
+    refetchCart,
+}) => {
 
     const { errors } = input || {};
 
@@ -48,7 +57,7 @@ const Address = ({ input, countries, states, handleOnChange, isFetchingStates, i
                 containerClassNames="mb-4"
             />
             <div className="flex flex-wrap overflow-hidden sm:-mx-3">
-                <InputField
+                <ShippingPostcode 
                     name="postcode"
                     inputValue={input?.postcode ?? ''}
                     required
@@ -58,7 +67,19 @@ const Address = ({ input, countries, states, handleOnChange, isFetchingStates, i
                     isShipping={isShipping}
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
                     mask="99999-999"
+                    refetchCart={refetchCart}
                 />
+                {/* <InputField
+                    name="postcode"
+                    inputValue={input?.postcode ?? ''}
+                    required
+                    handleOnChange={handleOnChange}
+                    label="CEP"
+                    errors={errors}
+                    isShipping={isShipping}
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                    mask="99999-999"
+                /> */}
                 <InputField
                     name="phone"
                     inputValue={input?.phone ?? ''}

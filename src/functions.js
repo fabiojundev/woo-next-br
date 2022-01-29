@@ -265,7 +265,7 @@ export const getFormattedCart = (data) => {
 		: [];
 	formattedCart.shippingTotal = formattedCart?.shippingMethods?.find(
 		ship => ship.id == formattedCart?.shippingMethod
-	).cost;
+	)?.cost;
 	formattedCart.totalProductsCount = totalProductsCount;
 	formattedCart.subtotal = data?.cart?.subtotal ?? '';
 	formattedCart.totalProductsPrice = data?.cart?.total ?? '';
