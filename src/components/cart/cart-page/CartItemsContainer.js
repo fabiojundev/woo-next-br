@@ -8,7 +8,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import UPDATE_CART from "../../../mutations/update-cart";
 import GET_CART from "../../../queries/get-cart";
 import CLEAR_CART_MUTATION from "../../../mutations/clear-cart";
-import UPDATE_SHIPPING_METHOD from "../../../mutations/update-shipping-method";
 import { isEmpty } from 'lodash'
 import cx from 'classnames';
 import EmptyCart from '../EmptyCart';
@@ -76,13 +75,6 @@ const CartItemsContainer = () => {
 		error: clearCartError
 	}] = useMutation(CLEAR_CART_MUTATION, defaultOptions);
 
-	// Update Shipping Method.
-	const [chooseShippingMethod, {
-		data: chosenShippingData,
-		loading: choosingShippingMethod,
-		error: chooseShippingError
-	}] = useMutation(UPDATE_SHIPPING_METHOD, defaultOptions);
-
 	/*
 	 * Handle remove product click.
 	 *
@@ -105,6 +97,10 @@ const CartItemsContainer = () => {
 					input: {
 						clientMutationId: v4(),
 						items: updatedItems
+					},
+					shippingMethod: {
+						clientMutationId: v4(),
+						shippingMethods: [cart?.shippingMethod],
 					}
 				},
 			});
@@ -131,22 +127,15 @@ const CartItemsContainer = () => {
 	};
 
 	const updateRemoteCart = async () => {
-		if (needCartUpdate?.products) {
+		if (needCartUpdate?.products || needCartUpdate?.shipping) {
 			console.log("mutate products in cart");
 			await updateCart({
 				variables: {
 					input: {
 						clientMutationId: v4(),
 						items: getUpdatedItems(cart.products, 1, 1)
-					}
-				},
-			});
-		}
-		if (needCartUpdate?.shipping) {
-			console.log("mutate shipping method");
-			await chooseShippingMethod({
-				variables: {
-					input: {
+					},
+					shippingMethod: {
 						clientMutationId: v4(),
 						shippingMethods: [cart.shippingMethod],
 					}
@@ -254,15 +243,8 @@ const CartItemsContainer = () => {
 								</div>
 							</div>
 							<div className="flex flex-wrap justify-end ">
-								{(needCartUpdate?.products || needCartUpdate.shipping)
-									&& <LoadingButton
-										loading={updateCartProcessing || choosingShippingMethod}
-										handleClick={updateRemoteCart}
-										label={"Atualizar Carrinho"}
-									/>
-								}
 								<LoadingButton
-									loading={updateCartProcessing || choosingShippingMethod}
+									loading={updateCartProcessing}
 									handleClick={handleCheckout}
 									label={"Finalizar Compra"}
 								/>

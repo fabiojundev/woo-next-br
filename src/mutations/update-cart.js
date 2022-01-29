@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-
+import { UpdateShippingMethod } from "./update-shipping-method";
 /**
  * Update Cart
  *
@@ -7,7 +7,7 @@ import { gql } from "@apollo/client";
  * When the cart item needs to be deleted, we should pass quantity as 0 in the input along with other fields.
  */
 const UPDATE_CART = gql`
-mutation UPDATE_CART($input: UpdateItemQuantitiesInput!) {
+mutation UPDATE_CART($input: UpdateItemQuantitiesInput!, $shippingMethod: UpdateShippingMethodInput!) {
   updateItemQuantities(input: $input) {
     items {
       key
@@ -96,6 +96,7 @@ mutation UPDATE_CART($input: UpdateItemQuantitiesInput!) {
       }
     }
   }
+  ${UpdateShippingMethod}
 }
 `;
 

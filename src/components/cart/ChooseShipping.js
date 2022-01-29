@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import { v4 } from 'uuid';
 import { useMutation, useQuery } from '@apollo/client';
 import UPDATE_SHIPPING_ADDRESS from "../../mutations/update-shipping-address";
-import UPDATE_SHIPPING_METHOD from "../../mutations/update-shipping-method";
+import {UPDATE_SHIPPING_METHOD} from "../../mutations/update-shipping-method";
 import LoadingButton from '../LoadingButton';
 import LoadingImg from '../LoadingImg';
 import { calculateCartTotals, formatCurrency } from '../../functions';
@@ -112,7 +112,7 @@ const ChooseShipping = ({
 			console.log("mutate shipping method", chosenShippingMethod, shippingMethod);
 			chooseShippingMethod({
 				variables: {
-					input: {
+					shippingMethod: {
 						clientMutationId: v4(),
 						shippingMethods: [chosenShippingMethod],
 					}
