@@ -22,11 +22,7 @@ const CartItemsContainer = () => {
 	const [cart, setCart, saveCartLocal] = useContext(AppContext);
 	const [requestError, setRequestError] = useState('');
 
-	const needCartUpdateInit = {
-		shipping: false,
-		products: false,
-	};
-	const [needCartUpdate, setNeedCartUpdate] = useState(needCartUpdateInit);
+	const [needCartUpdate, setNeedCartUpdate] = useState(false);
 	const router = useRouter();
 
 	// Get Cart Data.
@@ -36,13 +32,14 @@ const CartItemsContainer = () => {
 
 			// Update cart in the localStorage.
 			const updatedCart = getFormattedCart(data);
-			// localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
 			saveCartLocal(updatedCart);
 
-			console.log('cart', data, updatedCart);
+			console.log('cart fetch completed', {data, updatedCart});
 			// Update cart data in React Context.
 			setCart(updatedCart);
-			setNeedCartUpdate(needCartUpdateInit);
+
+			//cart updated!
+			setNeedCartUpdate(false);
 		}
 	});
 
@@ -128,8 +125,11 @@ const CartItemsContainer = () => {
 	};
 
 	const updateRemoteCart = async () => {
-		if (needCartUpdate?.products || needCartUpdate?.shipping) {
-			console.log("mutate products in cart");
+		if (needCartUpdate) {
+			console.log("mutate products and shipping in cart", 
+				getUpdatedItems(cart.products, 1, 1), 
+				cart.shippingMethod
+			);
 			await updateCart({
 				variables: {
 					input: {
@@ -194,7 +194,6 @@ const CartItemsContainer = () => {
 												updateCartProcessing={updateCartProcessing}
 												products={cart.products}
 												handleRemoveProductClick={handleRemoveProductClick}
-												needCartUpdate={needCartUpdate}
 												setNeedCartUpdate={setNeedCartUpdate}
 											/>
 										))
@@ -207,9 +206,6 @@ const CartItemsContainer = () => {
 					{/* Shipping Calculator */}
 					<div className="pt-8 flex flex-wrap gap-2 justify-between">
 						<ChooseShipping
-							cart={cart}
-							requestDefaultOptions={defaultOptions}
-							needCartUpdate={needCartUpdate}
 							setNeedCartUpdate={setNeedCartUpdate}
 							refetchCart={refetch}
 							setRequestError={setRequestError}

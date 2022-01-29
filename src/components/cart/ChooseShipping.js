@@ -13,13 +13,12 @@ import { isEmpty } from 'lodash';
 
 const ChooseShipping = ({
 	showOnlyRates,
-	needCartUpdate,
 	setNeedCartUpdate,
 	refetchCart,
 	setRequestError
 }) => {
 
-	const [cart, setCart] = useContext(AppContext);
+	const [cart, setCart, saveCartLocal] = useContext(AppContext);
 	const [
 		shippingMethod,
 		setShippingMethod
@@ -98,15 +97,13 @@ const ChooseShipping = ({
 		console.log("updatedCart", updatedCart);
 		localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
 
+		saveCartLocal(updatedCart);
 		setCart(updatedCart);
 		setShippingMethod(chosenShippingMethod);
 
-
 		if (setNeedCartUpdate) {
-			setNeedCartUpdate({
-				...needCartUpdate,
-				shipping: true,
-			})
+			console.log("setNeedCartUpdate", updatedCart);
+			setNeedCartUpdate(true);
 		}
 		else if (chosenShippingMethod != shippingMethod) {
 			console.log("mutate shipping method", chosenShippingMethod, shippingMethod);

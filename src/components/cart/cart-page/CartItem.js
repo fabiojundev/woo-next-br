@@ -11,7 +11,6 @@ const CartItem = ({
 	products,
 	updateCartProcessing,
 	handleRemoveProductClick,
-	needCartUpdate,
 	setNeedCartUpdate
 }) => {
 
@@ -44,10 +43,7 @@ const CartItem = ({
 
 
 			if( productCount != newQty ) {
-				setNeedCartUpdate({
-					...needCartUpdate,
-					products: true,
-				})
+				setNeedCartUpdate(true);
 			}
 			// Set the new qty in state.
 			setProductCount(newQty);
