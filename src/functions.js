@@ -27,6 +27,9 @@ export const formatCurrency = (num, currency = 'BRL') => {
 	if ('string' === typeof floatValue) {
 		floatValue = getFloatVal(floatValue);
 	}
+	if( ! floatValue ) {
+		floatValue = 0;
+	}
 	// return floatValue.toLocaleString('pt-BR', {style: 'currency', currency}).replace(' ', '');
 	return ('R$' + floatValue.toFixed(2)).replace('.', ',');
 };

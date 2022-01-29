@@ -59,7 +59,7 @@ const CheckoutForm = (props) => {
 
     const { billingCountries, shippingCountries } = {};
 
-    const [cart, setCart] = useContext(AppContext);
+    const [cart, setCart, saveCartLocal] = useContext(AppContext);
     const [input, setInput] = useState(initialState);
     const [orderData, setOrderData] = useState(null);
     const [requestError, setRequestError] = useState(null);
@@ -82,7 +82,8 @@ const CheckoutForm = (props) => {
         onCompleted: () => {
             // Update cart in the localStorage.
             const updatedCart = getFormattedCart(data);
-            localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+            // localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+            saveCartLocal(updatedCart);
 
             console.log('refetch cart', { data, updatedCart });
             // Update cart data in React Context.

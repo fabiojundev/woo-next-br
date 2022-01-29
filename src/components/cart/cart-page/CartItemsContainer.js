@@ -19,7 +19,7 @@ const CartItemsContainer = () => {
 
 
 	// @TODO wil use it in future variations of the project.
-	const [cart, setCart] = useContext(AppContext);
+	const [cart, setCart, saveCartLocal] = useContext(AppContext);
 	const [requestError, setRequestError] = useState('');
 
 	const needCartUpdateInit = {
@@ -36,7 +36,8 @@ const CartItemsContainer = () => {
 
 			// Update cart in the localStorage.
 			const updatedCart = getFormattedCart(data);
-			localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+			// localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+			saveCartLocal(updatedCart);
 
 			console.log('cart', data, updatedCart);
 			// Update cart data in React Context.
@@ -185,16 +186,14 @@ const CartItemsContainer = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{cart.products.length && (
-										cart.products.map(item => (
+									{cart?.products?.length && (
+										cart?.products?.map(item => (
 											<CartItem
 												key={item.productId}
 												item={item}
 												updateCartProcessing={updateCartProcessing}
 												products={cart.products}
 												handleRemoveProductClick={handleRemoveProductClick}
-												cart={cart}
-												setCart={setCart}
 												needCartUpdate={needCartUpdate}
 												setNeedCartUpdate={setNeedCartUpdate}
 											/>

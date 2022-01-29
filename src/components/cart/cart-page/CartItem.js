@@ -1,21 +1,22 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { v4 } from "uuid";
 import { getUpdatedItems, calculateCartTotals, formatCurrency } from "../../../functions";
 import { Cross, Loading } from "../../icons";
 import Link from 'next/link';
+import { AppContext } from "../../context/AppContext";
+
 
 const CartItem = ({
 	item,
 	products,
 	updateCartProcessing,
 	handleRemoveProductClick,
-	cart,
-	setCart,
 	needCartUpdate,
 	setNeedCartUpdate
 }) => {
 
 	const [productCount, setProductCount] = useState(item.qty);
+	const [cart, setCart, saveCartLocal] = useContext(AppContext);
 
 	/*
 	 * When user changes the qty from product input update the cart in localStorage
@@ -66,23 +67,9 @@ const CartItem = ({
 				} ),
 			});
 
-			localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+			// localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
+			saveCartLocal(updatedCart);
 			setCart(updatedCart);
-
-			// if (products.length) {
-
-			// 	const updatedItems = getUpdatedItems(products, newQty, cartKey);
-
-			// 	updateCart({
-			// 		variables: {
-			// 			input: {
-			// 				clientMutationId: v4(),
-			// 				items: updatedItems
-			// 			}
-			// 		},
-			// 	});
-			// }
-
 		}
 	};
 
