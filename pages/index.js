@@ -7,41 +7,66 @@ import HeroCarousel from "../src/components/home/hero-carousel";
 
 export default function Home(props) {
 
-	const { 
-		data, 
-		products, 
-		productCategories, 
-		heroCarousel 
+	const {
+		data,
+		products,
+		productCategories,
+		heroCarousel
 	} = props || {};
 
 	return (
 		<Layout data={data}>
 			{/*Hero Carousel*/}
 			{/* <HeroCarousel heroCarousel={heroCarousel} /> */}
-			{/*Categories*/}
-			{/* <div className="product-categories-container mx-auto my-32 px-4 xl:px-0">
-				<h2 className="main-title text-xl mb-5 uppercase">
-					<span className="main-title-inner">Categorias</span>
-				</h2>
-				<ParentCategoriesBlock productCategories={productCategories} />
-			</div> */}
 			{/*Products*/}
-			<div className="products mx-auto my-10 px-4 xl:px-0">
-				<h2 className="products-main-title main-title mb-5 text-xl uppercase">
-					<span className="main-title-inner">
-						Produtos
-					</span>
-				</h2>
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-					{products.length ? (
-						products.map(product =>
-							<Product
-								key={product.id}
-								product={product}
-							/>
-						)
-					) : ''}
-				</div>
+			<div className="products 
+							mx-auto 
+							my-10 
+							px-4 
+							xl:px-0 
+							flex flex-wrap flex-row-reverse
+							md:flex-nowrap 
+							gap-4"
+			>
+				<section
+					id="content"
+					className="flex-grow"
+				>
+					<h2 className="products-main-title main-title mb-5 text-xl">
+						<span className="main-title-inner">
+							Produtos
+						</span>
+					</h2>
+					<div
+						className="grid grid-cols-1 
+									sm:grid-cols-2 
+									md:grid-cols-2 
+									lg:grid-cols-3 
+									xl:grid-cols-4 
+									gap-4"
+					>
+						{products.length ? (
+							products.map(product =>
+								<Product
+									key={product.id}
+									product={product}
+								/>
+							)
+						) : ''}
+					</div>
+				</section>
+				<aside
+					id="siderbar"
+					className="w-full 
+								md:w-1/3 
+								lg:w-1/3 
+								xl:w-1/3"
+				>
+					<h2>Categorias</h2>
+					<ParentCategoriesBlock 
+						productCategories={productCategories} 
+					/>
+				</aside>
 			</div>
 
 		</Layout>
