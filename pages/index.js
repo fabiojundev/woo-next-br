@@ -5,6 +5,8 @@ import ParentCategoriesBlock from "../src/components/category/category-block/Par
 import PRODUCTS_AND_CATEGORIES_QUERY from "../src/queries/product-and-categories";
 import HeroCarousel from "../src/components/home/hero-carousel";
 import ContactWhatsApp from '../src/components/ContactWhatsApp';
+import InstagramEmbed from '../src/components/InstagramEmbed.html';
+
 
 export default function Home(props) {
 
@@ -26,11 +28,11 @@ export default function Home(props) {
 							xl:px-0 
 							flex flex-wrap flex-row-reverse
 							md:flex-nowrap 
-							gap-4"
+							gap-8"
 			>
 				<section
 					id="content"
-					className="flex-grow"
+					className="flex-grow z-10 bg-white"
 				>
 					<h2 className="products-main-title mb-5 text-xl">
 						<ContactWhatsApp />
@@ -66,6 +68,11 @@ export default function Home(props) {
 					</h2>
 					<ParentCategoriesBlock 
 						productCategories={productCategories} 
+					/>
+					{/* <InstagramEmbed /> */}
+					<div
+						className="w-full" 
+						dangerouslySetInnerHTML={ {__html: InstagramEmbed} } 
 					/>
 				</aside>
 			</div>

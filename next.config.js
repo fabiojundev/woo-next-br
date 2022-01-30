@@ -11,6 +11,19 @@ module.exports = {
 
         return config;
     },
+    webpack: (config, options) => {
+        config.module.rules.push({
+            test: /\.html/,
+            use: [
+                options.defaultLoaders.babel,
+                {
+                    loader: 'html-loader',
+                },
+            ],
+        })
+
+        return config;
+    },
     sassOptions: {
         includePaths: [path.join(__dirname, "styles")],
     },
