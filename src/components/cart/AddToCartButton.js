@@ -40,7 +40,7 @@ const AddToCart = (props) => {
     });
 
     const onChange = (event) => {
-        const qty = parseInt( event.target.value );
+        const qty = parseInt(event.target.value);
         productQryInput.quantity = qty;
         setQuantity(qty);
     };
@@ -64,7 +64,7 @@ const AddToCart = (props) => {
         },
         onError: (error) => {
             if (error) {
-                console.log("ERROR adding to cart", error );
+                console.log("ERROR adding to cart", error);
                 setRequestError(error?.graphQLErrors?.[0]?.message ?? '');
             }
         }
@@ -95,17 +95,19 @@ const AddToCart = (props) => {
                         >
                         </input>
                     )}
-                    <button
-                        disabled={addToCartLoading}
-                        onClick={handleAddToCartClick}
-                        className={cx(
-                            'bg-green-default',
-                            { 'opacity-100 cursor-pointer': !addToCartLoading },
-                            { 'opacity-50 cursor-not-allowed': addToCartLoading }
-                        )}
-                    >
-                        {addToCartLoading ? 'Adicionando...' : 'Comprar'}
-                    </button>
+                    <div className={ showQuantity ? "" : "text-right"}>
+                        <button
+                            disabled={addToCartLoading}
+                            onClick={handleAddToCartClick}
+                            className={cx(
+                                'bg-green-default',
+                                { 'opacity-100 cursor-pointer': !addToCartLoading },
+                                { 'opacity-50 cursor-not-allowed': addToCartLoading }
+                            )}
+                        >
+                            {addToCartLoading ? 'Adicionando...' : 'Comprar'}
+                        </button>
+                    </div>
                 </>
 
             }

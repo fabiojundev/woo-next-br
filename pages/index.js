@@ -27,7 +27,7 @@ export default function Home(props) {
 							my-10 
 							xl:px-0 
 							flex flex-wrap flex-row-reverse
-							md:flex-nowrap 
+							md:flex-nowrap							
 							gap-8"
 			>
 				<section
@@ -42,7 +42,8 @@ export default function Home(props) {
 									sm:grid-cols-2 
 									md:grid-cols-2 
 									lg:grid-cols-3 
-									xl:grid-cols-4 
+									xl:grid-cols-4
+									justify-items-center
 									gap-4"
 					>
 						{products.length ? (
