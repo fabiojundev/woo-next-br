@@ -94,7 +94,7 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
                             return (
                                 <li
                                     key={index}
-                                    className={`${opacity} w-100px h-100px mr-2 cursor-pointer`}
+                                    className={`${opacity} w-100px h-100px mr-2 ml-0 cursor-pointer list-none`}
                                     onClick={handleThumbClick(index)}
                                 >
                                     <img

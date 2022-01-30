@@ -1,6 +1,10 @@
 import { isEmpty } from "lodash";
 
-const Price = ({ regularPrice = 0, salesPrice, showPercent = false }) => {
+const Price = ({ 
+    regularPrice = 0, 
+    salesPrice, 
+    showPercent = false 
+}) => {
 
     if (isEmpty(salesPrice)) {
         return null;
@@ -33,14 +37,7 @@ const Price = ({ regularPrice = 0, salesPrice, showPercent = false }) => {
     const productMeta = discountPercent(regularPrice, salesPrice);
 
     return (
-        <h6 className="product-price text-gray-800 font-semibold mr-3 mb-5">
-            {/* Regular price */}
-            {productMeta?.discountPercent
-                ? <span className="product-price mr-2 text-gray-700">
-                    {salesPrice}
-                </span>
-                : null
-            }
+        <h6 className="product-price text-gray-800 mr-3 mb-5">
 
             {/* Discounted price */}
             {(regularPrice != salesPrice)
@@ -52,6 +49,13 @@ const Price = ({ regularPrice = 0, salesPrice, showPercent = false }) => {
                     </span>
                 )
             }
+            {/* Regular price */}
+            {productMeta?.discountPercent
+                ? <span className="product-price mr-2 text-green-default text-lg">
+                    {salesPrice}
+                </span>
+                : null
+            }
 
             {/* Discount percent */}
             {showPercent
@@ -61,7 +65,8 @@ const Price = ({ regularPrice = 0, salesPrice, showPercent = false }) => {
                     >
                         {productMeta?.discountPercent}
                     </span>
-                )}
+                )    
+            }
         </h6>
     )
 }

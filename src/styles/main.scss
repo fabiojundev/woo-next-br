@@ -8,28 +8,37 @@
 
 @layer base {
     h1 {
-      @apply text-2xl;
-      @apply mb-4;
+      @apply text-3xl mb-4 text-green-default;
     }
     h2 {
-      @apply text-xl;
-      @apply mb-2;
+      @apply text-xl mb-2;
     }
     h3 {
       @apply text-xl;
       @apply mb-2;
     }
     a {
-        @apply text-green-700;
+        @apply text-green-default;
     }
     a:hover {
         @apply text-green-500;
     }
     p {
-        @apply mb-5;
+        @apply mb-5 text-gray-default;
+    }
+    li {
+      @apply list-item list-disc ml-8 mb-2;
     }
     button {
-      @apply px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500;
+      @apply px-5 py-3 
+            rounded 
+            mr-3 
+            text-sm 
+            border-solid border border-current 
+            tracking-wide 
+            text-white 
+            font-bold 
+            bg-green-default;
     }
     button:hover {
       @apply bg-green-600 text-white border-green-600;

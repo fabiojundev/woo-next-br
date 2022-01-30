@@ -80,7 +80,7 @@ const AddToCart = (props) => {
             {/*	Check if its an external product then put its external buy link */}
             {"ExternalProduct" === product.__typename ? (
                 <a href={product?.externalUrl ?? '/'} target="_blank"
-                    className="px-3 py-1 rounded-sm mr-3 text-sm border-solid border border-current inline-block hover:bg-purple-600 hover:text-white hover:border-purple-600">
+                    className="px-3 py-1 rounded-sm mr-3 text-sm border-solid border border-current inline-block">
                     Comprar
                 </a>
             ) :
@@ -99,8 +99,8 @@ const AddToCart = (props) => {
                         disabled={addToCartLoading}
                         onClick={handleAddToCartClick}
                         className={cx(
-                            'px-5 py-3 rounded mr-3 text-sm border-solid border border-current tracking-wide text-white font-bold bg-green-500',
-                            { 'hover:bg-green-600 hover:text-white hover:border-green-600': !addToCartLoading },
+                            'bg-green-default',
+                            { 'opacity-100 cursor-pointer': !addToCartLoading },
                             { 'opacity-50 cursor-not-allowed': addToCartLoading }
                         )}
                     >
@@ -111,9 +111,7 @@ const AddToCart = (props) => {
             }
             {showViewCart ? (
                 <Link href="/cart">
-                    <button
-                        className="px-5 py-3 rounded-sm text-sm border-solid border border-current inline-block hover:bg-green-600 hover:text-white hover:border-green-600"
-                    >
+                    <button>
                         Ver Carrinho
                     </button>
                 </Link>

@@ -30,7 +30,12 @@ module.exports = {
       },
       maxHeight: {
         '500px' : '31.25rem'
-      }
+      },
+      colors: {
+        'gray-default': '#4a4e57',
+        'green-default': '#65bc7b',
+        'bg-green-default': '#65bc7b',
+      },  
     },
   },
   variants: {},

@@ -33,13 +33,12 @@ export default function Product(props) {
                             />
                         </div>
                         <div className="product-info">
-                            <h1 className="products-main-title text-3xl text-green-600">
+                            <h1 className="products-main-title">
                                 {product.name}
                             </h1>
                             <Price
                                 salesPrice={product?.price}
                                 regularPrice={product?.regularPrice}
-                                showPercent={true}
                             />
                             <hr className='mb-2' />
                             <div
@@ -63,6 +62,7 @@ export default function Product(props) {
                         <h2>Descrição</h2>
                         <hr className="mb-4" />
                         <div
+                            className="columns-1 md:columns-2 gap-10"
                             dangerouslySetInnerHTML={{
                                 __html: product.description,
                             }}
