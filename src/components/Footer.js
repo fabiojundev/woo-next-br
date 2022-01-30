@@ -2,6 +2,7 @@ import { Instagram, WhatsApp, Email } from "./icons";
 import MenuPrincipal from "./Menu";
 import Image from "./image";
 import Link from 'next/link';
+import ContactWhatsApp from "./ContactWhatsApp";
 
 const Footer = () => (
 	<>
@@ -10,15 +11,10 @@ const Footer = () => (
 				<div className="m-2 p-4">
 					<h4>ENTRE EM CONTATO</h4>
 					<div className="social-links mt-8 mb-2">
-						<div>
-							<a
-								className="flex my-2 items-center hover:text-gray-600"
-								href="https://api.whatsapp.com/send?phone=5511948024005"
-							>
-								<WhatsApp className="mr-2" />
-								(11) 94802-4005
-							</a>
-						</div>
+						<ContactWhatsApp 
+							text="(11) 94802-4005"
+							className="flex my-2 items-center hover:text-gray-600"
+						/>
 						<div>
 							<a
 								className="flex my-2 items-center hover:text-gray-600"

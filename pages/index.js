@@ -4,6 +4,7 @@ import client from '../src/components/ApolloClient';
 import ParentCategoriesBlock from "../src/components/category/category-block/ParentCategoriesBlock";
 import PRODUCTS_AND_CATEGORIES_QUERY from "../src/queries/product-and-categories";
 import HeroCarousel from "../src/components/home/hero-carousel";
+import ContactWhatsApp from '../src/components/ContactWhatsApp';
 
 export default function Home(props) {
 
@@ -22,7 +23,6 @@ export default function Home(props) {
 			<div className="products 
 							mx-auto 
 							my-10 
-							px-4 
 							xl:px-0 
 							flex flex-wrap flex-row-reverse
 							md:flex-nowrap 
@@ -32,10 +32,8 @@ export default function Home(props) {
 					id="content"
 					className="flex-grow"
 				>
-					<h2 className="products-main-title main-title mb-5 text-xl">
-						<span className="main-title-inner">
-							Produtos
-						</span>
+					<h2 className="products-main-title mb-5 text-xl">
+						<ContactWhatsApp />
 					</h2>
 					<div
 						className="grid grid-cols-1 
@@ -62,7 +60,10 @@ export default function Home(props) {
 								lg:w-1/3 
 								xl:w-1/3"
 				>
-					<h2>Categorias</h2>
+					<ContactWhatsApp />
+					<h2 className="pt-8 px-2">
+						Categorias
+					</h2>
 					<ParentCategoriesBlock 
 						productCategories={productCategories} 
 					/>
