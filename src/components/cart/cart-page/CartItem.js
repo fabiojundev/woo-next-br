@@ -4,6 +4,7 @@ import { getUpdatedItems, calculateCartTotals, formatCurrency } from "../../../f
 import { Cross, Loading } from "../../icons";
 import Link from 'next/link';
 import { AppContext } from "../../context/AppContext";
+import QuantityInput from '../../QuantityInput';
 
 
 const CartItem = ({
@@ -95,14 +96,13 @@ const CartItem = ({
 
 			{/* Qty Input */}
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
-				{/* @TODO Need to update this with graphQL query */}
-				<input
+				<QuantityInput 
 					type="number"
 					min="1"
 					data-cart-key={item.cartKey}
 					className={`woo-next-cart-qty-input form-control border border-solid p-2 w-16 text-center ${updateCartProcessing ? 'opacity-25 cursor-not-allowed' : ''} `}
 					value={productCount}
-					onChange={(event) => handleQtyChange(event, item.cartKey)}
+					handleChange={(event) => handleQtyChange(event, item.cartKey)}				
 				/>
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">

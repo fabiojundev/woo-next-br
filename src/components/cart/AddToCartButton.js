@@ -8,6 +8,7 @@ import { AppContext } from "../context/AppContext";
 import { getFormattedCart } from "../../functions";
 import GET_CART from "../../queries/get-cart";
 import ADD_TO_CART from "../../mutations/add-to-cart";
+import QuantityInput from "../QuantityInput";
 
 const AddToCart = (props) => {
 
@@ -86,14 +87,11 @@ const AddToCart = (props) => {
             ) :
                 <>
                     {showQuantity && (
-                        <input
-                            type="number"
-                            min="1"
-                            className="border border-solid rounded p-2 mr-2 w-12 text-right"
+                        <QuantityInput 
+                            label="Quantidade"
                             value={quantity}
-                            onChange={onChange}
-                        >
-                        </input>
+                            handleChange={onChange}
+                        />
                     )}
                     <div className={ showQuantity ? "" : "text-right"}>
                         <button
