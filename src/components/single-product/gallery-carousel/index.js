@@ -52,36 +52,16 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
                     })
                 }
                 <div className="image-nav">
-                    <button
-                        className="slider-button left focus:outline-none"
+                    <div
+                        className="absolute top-0 left-0 w-1/2 h-full"
                         onClick={prevSlide}
                     >
-                        <svg
-                            width="20px"
-                            className="inline-block"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                        </svg>
-                    </button>
-                    <button
-                        className="slider-button right focus:outline-none"
+                    </div>
+                    <div
+                        className="absolute top-0 right-0 w-1/2 h-full"
                         onClick={nextSlide}
                     >
-                        <svg
-                            width="20px"
-                            className="inline-block"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </button>
+                    </div>
                 </div>
             </div>
             <div className="gallery-thumbs relative w-full">
