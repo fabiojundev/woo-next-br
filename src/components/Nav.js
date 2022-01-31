@@ -42,15 +42,24 @@ const Nav = ({ slug }) => {
 						linkClassName="block lg:inline-block"
 					/>
 
-					<div className="text-sm font-medium">
-						<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
-							<svg xmlns="http://www.w3.org/2000/svg" className="hidden lg:block m-auto" fill="none" viewBox="0 0 24 24" width="18" length="auto" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-						</a>
-						<CartIcon />
+					<div className="flex flex-col md:flex-row md:flex-nowrap gap4 flex-grow self-start items-start gap-4">
+						{/* <div className="">
+							<a href="#responsive-header" className="block pt-1 lg:inline-block lg:mt-0 text-black hover:text-black">
+								<svg xmlns="http://www.w3.org/2000/svg" className="lg:block m-auto" fill="none" viewBox="0 0 24 24" width="18" length="auto" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+							</a>
+
+						</div> */}
+						<div className="">
+							<CartIcon />
+						</div>
+						<div className="pt-1">
+							<NavSearch />
+
+						</div>
 					</div>
 
 					<div className="flex-col-reverse flex lg:flex-row">
-						<NavSearch />
+
 					</div>
 				</div>
 

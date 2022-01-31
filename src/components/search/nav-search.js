@@ -20,7 +20,7 @@ const NavSearch = () => {
 
   return (
     isOpen ? (
-      <div className="mt-4 md:mt-0">
+      <div className="">
       <SearchForm
         handleOpen={onClick}
         searchQuery={ searchQuery }
@@ -29,8 +29,8 @@ const NavSearch = () => {
       />
     </div>
     ) : (
-      <div className="cursor-pointer">
-        <SearchIcon onClick={onClick} className="h-4 w-4 fill-current"/>
+      <div className="cursor-pointer block h-4 w-4 inline-block">
+        <SearchIcon onClick={onClick} className="h-4 w-4 fill-black"/>
       </div>
     )
   );

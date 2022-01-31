@@ -22,7 +22,7 @@ const Post = ({ data }) => {
 			<figure className="overflow-hidden mb-4">
 				<Image {...data?.post?.featuredImage?.node} width="400" height="225" layout="fill" containerClassNames="w-96 sm:-w-600px md:w-400px h-56 sm:h-338px md:h-225px" title={data?.post?.title ?? ''} />
 			</figure>
-			<h1 className="font-bold mb-3 text-lg hover:text-blue-500" dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.title ?? '') }} />
+			<h1 dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.title ?? '') }} />
 
 			<div dangerouslySetInnerHTML={{ __html: sanitize(data?.post?.content ?? {}) }} />
 		</Layout>

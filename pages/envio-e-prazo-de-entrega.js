@@ -20,13 +20,6 @@ const EnvioEPrazoDeEntrega = ({ data }) => {
 			<div 
                 className="single-post container mx-auto my-16 px-4 xl:px-0"
             >
-			<h1 
-				className="font-bold mb-3 text-lg hover:text-blue-500" 
-			>
-				<span
-					dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.title ?? '') }} 
-				/>
-			</h1>
 			<div 
 				dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.content ?? {}) }} 
 			/>
