@@ -17,6 +17,9 @@
       @apply text-xl;
       @apply mb-2;
     }
+    h4 {
+      @apply font-semibold text-sm;
+    }
     a {
         @apply text-green-default;
     }
