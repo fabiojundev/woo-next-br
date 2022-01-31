@@ -94,14 +94,14 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
                             return (
                                 <li
                                     key={index}
-                                    className={`${opacity} w-100px h-100px mr-2 ml-0 cursor-pointer list-none`}
+                                    className={`${opacity} w-16 h-16 mr-2 ml-0 cursor-pointer list-none`}
                                     onClick={handleThumbClick(index)}
                                 >
                                     <img
                                         src={item?.mediaItemUrl}
                                         loading="lazy"
                                         alt={item?.altText ? item?.altText : item?.title}
-                                        className="h-100px"
+                                        className="h-16"
                                     />
                                 </li>
                             )
