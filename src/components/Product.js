@@ -13,7 +13,7 @@ const Product = (props) => {
 			<div className="product mb-5">
 
 
-				<Link href={`/product/${product?.slug}`} >
+				<Link href={`/produto/${product?.slug}`} >
 					<a>
 						<Image
 							className="object-cover bg-gray-100"
@@ -27,7 +27,7 @@ const Product = (props) => {
 					</a>
 				</Link>
 				<div className="product-info">
-					<Link href={`/product/${product?.slug}`} >
+					<Link href={`/produto/${product?.slug}`} >
 						<a>
 							<h3 className="product-title mt-3 font-medium">
 								{product.name ? product.name : ''}

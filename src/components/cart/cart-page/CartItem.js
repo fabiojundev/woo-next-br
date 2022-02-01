@@ -73,7 +73,7 @@ const CartItem = ({
 	return (
 		<tr className="woo-next-cart-item block relative sm:table-row" key={item.productId}>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
-				<Link href={`/product/${item?.slug}`} >
+				<Link href={`/produto/${item?.slug}`} >
 					<a className="flex flex-wrap justify-center items-center sm:flex-no-wrap sm:justify-start">
 						<span className="my-4">
 							<img
