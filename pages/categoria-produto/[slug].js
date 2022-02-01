@@ -2,8 +2,12 @@ import Layout from "../../src/components/Layout";
 import client from "../../src/components/ApolloClient";
 import Product from "../../src/components/Product";
 import {PRODUCT_BY_CATEGORY_SLUG, PRODUCT_CATEGORIES_SLUGS} from "../../src/queries/product-by-category";
+import ParentCategoriesBlock from "../../src/components/category/category-block/ParentCategoriesBlock";
 import {isEmpty} from "lodash";
 import {useRouter} from "next/router";
+import ContactWhatsApp from '../../src/components/ContactWhatsApp';
+import InstagramEmbed from '../../src/components/InstagramEmbed.html';
+
 
 export default function CategorySingle( props ) {
 
@@ -12,23 +16,71 @@ export default function CategorySingle( props ) {
     // If the page is not yet generated, this will be displayed
     // initially until getStaticProps() finishes running
     if (router.isFallback) {
-        return <div>Loading...</div>
+        return <div>Carregando...</div>
     }
 
-    const { categoryName, products } = props;
+    const { categoryName, products, productCategories } = props;
 
     return (
         <Layout>
-            <div className="product-categories-container container mx-auto my-16 px-4 xl:px-0">
-                { categoryName ? <h3 className="text-2xl mb-5 uppercase">{ categoryName }</h3> : '' }
-                <div className="product-categories grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-                    { undefined !== products && products?.length ? (
-                        products.map( product => <Product key={ product?.id } product={ product } /> )
-                    ) : ''}
-                </div>
-            </div>
-        </Layout>
-    )
+			{/*Hero Carousel*/}
+			{/* <HeroCarousel heroCarousel={heroCarousel} /> */}
+			{/*Products*/}
+			<div className="products 
+							mx-auto 
+							my-10 
+							xl:px-0 
+							flex flex-wrap flex-row-reverse
+							md:flex-nowrap							
+							gap-8"
+			>
+				<section
+					id="content"
+					className="flex-grow z-10 bg-white"
+				>
+					{ categoryName ? <h3 className="text-2xl mb-5 uppercase">{ categoryName }</h3> : '' }
+					<div
+						className="grid grid-cols-1 
+									sm:grid-cols-2 
+									md:grid-cols-2 
+									lg:grid-cols-3 
+									xl:grid-cols-4
+									justify-items-center
+									gap-4"
+					>
+						{products.length ? (
+							products.map(product =>
+								<Product
+									key={product.id}
+									product={product}
+								/>
+							)
+						) : ''}
+					</div>
+				</section>
+				<aside
+					id="siderbar"
+					className="w-full 
+								md:w-1/3 
+								lg:w-1/3 
+								xl:w-1/3"
+				>
+					<ContactWhatsApp />
+					<h2 className="pt-8 px-2">
+						Categorias
+					</h2>
+					<ParentCategoriesBlock 
+						productCategories={productCategories} 
+					/>
+					<div
+						className="w-full" 
+						dangerouslySetInnerHTML={ {__html: InstagramEmbed} } 
+					/>
+				</aside>
+			</div>
+
+		</Layout>
+    );
 };
 
 export async function getStaticProps(context) {
@@ -43,7 +95,10 @@ export async function getStaticProps(context) {
     return {
         props: {
             categoryName: data?.productCategory?.name ?? '',
-            products: data?.productCategory?.products?.nodes ?? []
+            products: data?.productCategory?.products?.nodes ?? [],
+            productCategories: data?.productCategories?.nodes
+				? data.productCategories.nodes
+				: [],
         },
         revalidate: 1
     }

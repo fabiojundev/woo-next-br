@@ -70,7 +70,6 @@ export default function Home(props) {
 					<ParentCategoriesBlock 
 						productCategories={productCategories} 
 					/>
-					{/* <InstagramEmbed /> */}
 					<div
 						className="w-full" 
 						dangerouslySetInnerHTML={ {__html: InstagramEmbed} } 

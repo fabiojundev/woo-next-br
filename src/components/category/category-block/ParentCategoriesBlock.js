@@ -8,7 +8,7 @@ const ParentCategoriesBlock = ( props ) => {
 		<ul 
 			className="product-categories"
 		>
-			{ productCategories.length ? (
+			{ productCategories?.length ? (
 				productCategories.map( ( productCategory, index ) => 
 					<ProductCategoryBlock 
 						key={ productCategory?.id ?? index }  

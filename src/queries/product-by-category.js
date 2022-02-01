@@ -51,11 +51,23 @@ export const PRODUCT_BY_CATEGORY_SLUG = gql` query PRODUCT_BY_CATEGORY_SLUG($slu
 		}
 	  }
 	}
+	productCategories(where:{exclude:[16]}) {
+		nodes {
+		  id
+		  name
+		  slug
+		  image {
+			id
+			sourceUrl
+			srcSet
+		  }
+		}
+	  }
   }
   `;
 
 export const PRODUCT_CATEGORIES_SLUGS = gql` query PRODUCT_CATEGORIES_SLUGS {
-    productCategories {
+    productCategories(where:{exclude:[16]}) {
     nodes {
       id
       slug
