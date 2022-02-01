@@ -30,7 +30,7 @@ const CartItem = ({
 
 		if (process.browser) {
 
-			event.stopPropagation();
+			// event.stopPropagation();
 
 			// If the previous update cart mutation request is still processing, then return.
 			if (updateCartProcessing) {
@@ -77,7 +77,7 @@ const CartItem = ({
 					<a className="flex flex-wrap justify-center items-center sm:flex-no-wrap sm:justify-start">
 						<span className="my-4">
 							<img
-								className="w-32 sm:w-24"
+								className="w-full sm:w-24"
 								width="90px"
 								src={item.image.sourceUrl}
 								srcSet={item.image.srcSet}
@@ -97,10 +97,7 @@ const CartItem = ({
 			{/* Qty Input */}
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				<QuantityInput 
-					type="number"
-					min="1"
 					data-cart-key={item.cartKey}
-					className={`woo-next-cart-qty-input form-control border border-solid p-2 w-16 text-center ${updateCartProcessing ? 'opacity-25 cursor-not-allowed' : ''} `}
 					value={productCount}
 					handleChange={(event) => handleQtyChange(event, item.cartKey)}				
 				/>
@@ -110,7 +107,7 @@ const CartItem = ({
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				{/* Remove item */}
-				<span className="woo-next-cart-close-icon m-3 cursor-pointer text-green-500 absolute top-0 right-0 sm:relative"
+				<span className="woo-next-cart-close-icon mt-1 cursor-pointer text-green-500 absolute top-0 right-0 sm:relative"
 					onClick={(event) => handleRemoveProductClick(event, item.cartKey, products)}>
 					<Cross />
 				</span>

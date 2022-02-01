@@ -87,11 +87,13 @@ const AddToCart = (props) => {
             ) :
                 <>
                     {showQuantity && (
-                        <QuantityInput 
-                            label="Quantidade"
-                            value={quantity}
-                            handleChange={onChange}
-                        />
+                        <div className="w-32">
+                            <QuantityInput 
+                                label="Quantidade"
+                                value={quantity}
+                                handleChange={onChange}
+                            />
+                        </div>
                     )}
                     <div className={ showQuantity ? "" : "text-right"}>
                         <button

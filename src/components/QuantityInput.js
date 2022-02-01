@@ -9,10 +9,10 @@ const QuantityInput = (props) => {
 
 	const min = props.min
 		? parseInt(props.min)
-		: 0;
+		: 1;
 	const max = props.max
 		? parseInt(props.max)
-		: 99999999999;
+		: 99;
 
 	const onMinusClick = event => {
 		let qty = parseInt(value) - 1;
@@ -20,8 +20,10 @@ const QuantityInput = (props) => {
 			qty = min;
 		}
 
-		event.target.value = qty;
-		handleChange(event);
+		const ev = {
+			target: { value: qty}
+		};
+		handleChange(ev);
 
 	};
 	const onPlusClick = event => {
@@ -30,8 +32,10 @@ const QuantityInput = (props) => {
 			qty = max;
 		}
 
-		event.target.value = qty;
-		handleChange(event);
+		const ev = {
+			target: { value: qty}
+		};
+		handleChange(ev);
 	};
 
 	const onChange = event => {
@@ -51,9 +55,13 @@ const QuantityInput = (props) => {
 	}
 
 	return (
-		<div className="qty-field-wrap flex flex-col py-4 w-40">
-			{label && <label>{label}</label>}
-			<div className="quantity buttons_added pt-2">
+		<div className="qty-field-wrap flex flex-col justify-center py-4">
+			{label && 
+				<label className="pb-2">
+					{label}
+				</label>
+			}
+			<div className="quantity flex justify-center text-sm">
 				<input
 					type="button"
 					value="-"
@@ -69,14 +77,16 @@ const QuantityInput = (props) => {
 					type="text"
 					inputMode="numeric"
 					step="1"
+					min={min}
+					max={max}
 					value={value}
 					title={label}
 					autoComplete="off"
 					onChange={onChange}
 					className="input-text 
 								w-12 h-10 
-								text-center 
-								border-b border-solid border-t border-x-0 
+								text-sm text-center 
+								border-solid border-b border-t border-x-0 
 								box-content 
 								appearance-none"
 					{...nprops}
