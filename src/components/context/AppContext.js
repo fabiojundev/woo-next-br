@@ -11,14 +11,14 @@ export const AppProvider = (props) => {
 
 	useEffect(() => {
 
-		// @TODO Will add option to show the cart with localStorage later.
-		if (process.browser) {
+		if (typeof window !== "undefined") {
 
 			let cartData = localStorage.getItem(WOO_NEXT_CART);
 			cartData = ( cartData && cartData !== "undefined" && cartData !== null )
 				? JSON.parse(cartData)
 				: {};
 
+			//console.log("LOADING LOCAL", WOO_NEXT_CART, cartData, process.browser );
 			setCart(cartData);
 		}
 
@@ -26,6 +26,7 @@ export const AppProvider = (props) => {
 
 	const saveCartLocal = (updatedCart) => {
 		if(updatedCart) {
+			//console.log("SAVING LOCAL", WOO_NEXT_CART, updatedCart );
 			localStorage.setItem(
 				WOO_NEXT_CART,
 				JSON.stringify(updatedCart)

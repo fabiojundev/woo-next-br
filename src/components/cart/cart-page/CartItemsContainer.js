@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { AppContext } from "../../context/AppContext";
-import { getFormattedCart, getUpdatedItems, formatCurrency } from '../../../functions';
+import { getFormattedCart, getUpdatedItems, calculateCartTotals, formatCurrency } from '../../../functions';
 import CartItem from "./CartItem";
 import { v4 } from 'uuid';
 import { useMutation, useQuery } from '@apollo/client';
@@ -87,7 +87,16 @@ const CartItemsContainer = () => {
 		event.stopPropagation();
 		if (products.length) {
 
-			// By passing the newQty to 0 in updateCart Mutation, it will remove the item.
+			const updatedCart = calculateCartTotals({
+				...cart,
+				products: products.filter(prod =>
+					prod.cartKey !== cartKey
+				),
+			});
+
+			saveCartLocal(updatedCart);
+			setCart(updatedCart);
+
 			const newQty = 0;
 			const updatedItems = getUpdatedItems(products, newQty, cartKey);
 
@@ -103,6 +112,7 @@ const CartItemsContainer = () => {
 					}
 				},
 			});
+
 		}
 	};
 
@@ -172,8 +182,6 @@ const CartItemsContainer = () => {
 										className="fill-white inline-block"
 									/>
 								</button>
-								{clearCartProcessing ? <p>Esvaziando...</p> : ''}
-								{updateCartProcessing ? <p>Atualizando...</p> : null}
 							</div>
 						</div>
 						<hr />
@@ -247,16 +255,17 @@ const CartItemsContainer = () => {
 									label={"Finalizar Compra"}
 								/>
 							</div>
+							{clearCartProcessing ? <p>Esvaziando...</p> : ''}
+							{updateCartProcessing ? <p>Atualizando...</p> : null}
+							{/* Display Errors if any */}
+							{requestError
+								? <div className="row woo-next-cart-total-container mt-5 text-red-700">
+									{requestError}
+								</div>
+								: ''
+							}
 						</div>
 					</div>
-
-					{/* Display Errors if any */}
-					{requestError
-						? <div className="row woo-next-cart-total-container mt-5 text-red-700">
-							{requestError}
-						</div>
-						: ''
-					}
 				</div>
 			) : <EmptyCart />}
 		</div>
