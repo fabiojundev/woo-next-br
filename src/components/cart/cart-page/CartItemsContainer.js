@@ -158,7 +158,7 @@ const CartItemsContainer = () => {
 
 	const handleCheckout = async () => {
 		await updateRemoteCart();
-		router.push('/checkout');
+		router.push('/finalizar-compra');
 	};
 
 	return (
