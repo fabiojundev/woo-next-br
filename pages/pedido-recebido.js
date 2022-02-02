@@ -9,14 +9,14 @@ import ShoppingCart from "../src/components/icons/ShoppingCart";
 import { formatCurrency } from "../src/functions";
 
 const PedidoRecebidoContent = () => {
-    const [cart, setCart, deleteCartLocal] = useContext(AppContext);
+    const [cart, setCart, saveCartLocal, deleteCartLocal] = useContext(AppContext);
     const [isFetchingOrder, setFetchingOrder] = useState(false);
     const [orderData, setOrderData] = useState({});
     const orderId = process.browser ? Router.query.external_reference : null;
 
 
     useEffect(() => {
-        console.log("Router", Router.query, orderId);
+        // console.log("Router", Router.query, orderId);
         setFetchingOrder(true);
         if (process.browser) {
             deleteCartLocal();

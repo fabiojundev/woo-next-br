@@ -35,11 +35,19 @@ export const AppProvider = (props) => {
 	};
 
 	const deleteCartLocal = () => {
+		//console.log("REMOVE CART LOCAL", WOO_NEXT_CART);
 		localStorage.removeItem(WOO_NEXT_CART);
 	};
 
 	return (
-		<AppContext.Provider value={[cart, setCart, saveCartLocal, deleteCartLocal]}>
+		<AppContext.Provider
+			value={[
+				cart,
+				setCart,
+				saveCartLocal,
+				deleteCartLocal
+			]}
+		>
 			{props.children}
 		</AppContext.Provider>
 	);
