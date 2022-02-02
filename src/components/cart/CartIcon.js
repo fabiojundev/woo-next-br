@@ -9,7 +9,7 @@ const CartIcon = () => {
 	const totalPrice = ( null !== cart && Object.keys( cart ).length ) ? cart.totalProductsPrice : '';
 
 	return (
-		<Link href="/cart">
+		<Link href="/carrinho">
 			<a className="block lg:inline-block lg:mt-0 text-black hover:text-black">
 				<span className='flex flex-nowrap'>
 				<svg xmlns="http://www.w3.org/2000/svg" className="m-auto" fill="none" viewBox="0 0 24 24" width="18" length="auto" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
