@@ -41,7 +41,7 @@ export const handleMercadoPagoCheckout = async (
         setRequestError,
         ''
     );
-    const cartCleared = 0 && await clearTheCart(
+    const cartCleared = await clearTheCart(
         clearCartMutation,
         createCustomerOrder?.error
     );
