@@ -14,7 +14,7 @@ export const AppProvider = (props) => {
 		if (typeof window !== "undefined") {
 
 			let cartData = localStorage.getItem(WOO_NEXT_CART);
-			cartData = ( cartData && cartData !== "undefined" && cartData !== null )
+			cartData = (cartData && cartData !== "undefined" && cartData !== null)
 				? JSON.parse(cartData)
 				: {};
 
@@ -25,17 +25,21 @@ export const AppProvider = (props) => {
 	}, []);
 
 	const saveCartLocal = (updatedCart) => {
-		if(updatedCart) {
+		if (updatedCart) {
 			//console.log("SAVING LOCAL", WOO_NEXT_CART, updatedCart );
 			localStorage.setItem(
 				WOO_NEXT_CART,
 				JSON.stringify(updatedCart)
-			);	
+			);
 		}
 	};
 
+	const deleteCartLocal = () => {
+		localStorage.removeItem(WOO_NEXT_CART);
+	};
+
 	return (
-		<AppContext.Provider value={[cart, setCart, saveCartLocal]}>
+		<AppContext.Provider value={[cart, setCart, saveCartLocal, deleteCartLocal]}>
 			{props.children}
 		</AppContext.Provider>
 	);
