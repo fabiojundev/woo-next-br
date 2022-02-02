@@ -87,16 +87,6 @@ const createCheckoutSessionAndRedirect = async (
                     id: preference?.id,
                 },
                 tokenizer: getMercadoPagoLineItems(products, input),
-                // theme: {
-                //     elementsColor: '#2ddc52',
-                //     headerColor: '#2ddc52'
-                // },
-                // render: {
-                //     container: '.mp-container',
-                //     label: 'Pagar MP'
-                // },
-                // autoOpen: true,
-                // notificationUrl: process.env.NEXT_PUBLIC_MP_IPN_URL,
             };
 
             console.log(opt);
@@ -124,7 +114,7 @@ export const getMercadoPagoLineItems = (products, input) => {
         summary: {
             title: 'Resumo da sua Compra',
             productLabel: 'Subtotal produtos',
-            product: subtotal,
+            charge: subtotal,
             shipping: shippingCost,
             // arrears: 18,
             // taxes: 20,
@@ -176,9 +166,12 @@ export const MercadoPagoCheckout = ({ products, orderId, input, preference }) =>
                 orderId,
                 preference
             );
-            if( preference?.init_point ) {
-                // console.log("redir to: ", preference?.init_point);
-                router.push(preference?.init_point);
+            if (preference?.init_point) {
+                const redir = process.env.MP_SANDBOX
+                    ? preference?.sandbox_init_point
+                    : preference?.init_point;
+                console.log("redir to: ", redir);
+                router.push(redir);
             }
         }
     }, [mercadopago, orderId])

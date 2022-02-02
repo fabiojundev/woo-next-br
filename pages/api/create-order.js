@@ -52,10 +52,11 @@ export default async function handler(req, res) {
 
         responseData.preference = {
             id: preferences?.id,
-            init_point: preferences?.init_point
+            init_point: preferences?.init_point,
+            sandbox_init_point: preferences?.sandbox_init_point,
         };
 
-        console.log("response data", responseData);
+        console.log("response data", responseData, preferences);
         res.json(responseData)
 
     } catch (error) {
