@@ -142,22 +142,8 @@ const CheckoutForm = (props) => {
                     toUpdate?.shipping?.email = cart.email;
                 }
             }
-            console.log("toUpdate", { field, toUpdate, input });
-            if (field) {
-                // if ('shipping' == field || 'billing' == field) {
 
-                //     const {
-                //         firstName, 
-                //         lastName, 
-                //         email, 
-                //         phone, 
-                //         address2, 
-                //         number, 
-                //         ...toUpdate1
-                //     } = toUpdate; 
-                //     toUpdate = toUpdate1;
-                //     console.log("toUpdate11", {field, toUpdate, input});
-                // }
+            if (field) {
                 toUpdate = {
                     ...input,
                     [field]: {
