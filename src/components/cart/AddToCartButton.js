@@ -88,14 +88,14 @@ const AddToCart = (props) => {
                 <>
                     {showQuantity && (
                         <div className="w-32">
-                            <QuantityInput 
+                            <QuantityInput
                                 label="Quantidade"
                                 value={quantity}
                                 handleChange={onChange}
                             />
                         </div>
                     )}
-                    <div className={ showQuantity ? "" : "text-right"}>
+                    <div className={showQuantity ? "" : "text-right"}>
                         <button
                             disabled={addToCartLoading}
                             onClick={handleAddToCartClick}
@@ -107,17 +107,17 @@ const AddToCart = (props) => {
                         >
                             {addToCartLoading ? 'Adicionando...' : 'Comprar'}
                         </button>
+                        {showViewCart ? (
+                            <Link href="/carrinho">
+                                <button>
+                                    Ver Carrinho
+                                </button>
+                            </Link>
+                        ) : ''}
                     </div>
                 </>
 
             }
-            {showViewCart ? (
-                <Link href="/carrinho">
-                    <button>
-                        Ver Carrinho
-                    </button>
-                </Link>
-            ) : ''}
             {requestError ? (
                 <div className="my-2">
                     <span className="p-2 text-sm text-white bg-red-500">
