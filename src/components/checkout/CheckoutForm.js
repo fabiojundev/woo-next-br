@@ -136,8 +136,11 @@ const CheckoutForm = (props) => {
                                     : [k, v];
                             }
                             return val;
-                        }
-                        ))
+                        })
+                );
+                if ( isEmpty( toUpdate?.shipping?.email ) && cart?.email) {
+                    toUpdate?.shipping?.email = cart.email;
+                }
             }
             console.log("toUpdate", { field, toUpdate, input });
             if (field) {

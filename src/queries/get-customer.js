@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GetCustomer = `
 customer {
+  email
   shipping {
     address1
     address2
