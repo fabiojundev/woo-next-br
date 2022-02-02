@@ -107,9 +107,19 @@ const CartItem = ({
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				{/* Remove item */}
-				<span className="woo-next-cart-close-icon mt-1 cursor-pointer text-green-500 absolute top-0 right-0 sm:relative"
-					onClick={(event) => handleRemoveProductClick(event, item.cartKey, products)}>
-					<Cross />
+				<span 
+					className="woo-next-cart-close-icon
+								mt-1 
+								cursor-pointer
+								absolute 
+								top-0 right-0 
+								sm:relative"
+					onClick={(event) => handleRemoveProductClick(event, item.cartKey, products)}
+					title="Excluir"
+				>
+					<Cross 
+						className="fill-red-600"
+					/>
 				</span>
 			</td>
 		</tr>

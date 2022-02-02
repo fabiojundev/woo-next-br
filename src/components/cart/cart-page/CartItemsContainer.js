@@ -14,6 +14,7 @@ import EmptyCart from '../EmptyCart';
 import ChooseShipping from '../ChooseShipping';
 import { useRouter } from 'next/router';
 import LoadingButton from '../../LoadingButton';
+import TrashIcon from '../../icons/TrashIcon';
 
 const CartItemsContainer = () => {
 
@@ -34,7 +35,7 @@ const CartItemsContainer = () => {
 			const updatedCart = getFormattedCart(data);
 			saveCartLocal(updatedCart);
 
-			console.log('cart fetch completed', {data, updatedCart});
+			console.log('cart fetch completed', { data, updatedCart });
 			// Update cart data in React Context.
 			setCart(updatedCart);
 
@@ -126,8 +127,8 @@ const CartItemsContainer = () => {
 
 	const updateRemoteCart = async () => {
 		if (needCartUpdate) {
-			console.log("mutate products and shipping in cart", 
-				getUpdatedItems(cart.products, 1, 1), 
+			console.log("mutate products and shipping in cart",
+				getUpdatedItems(cart.products, 1, 1),
 				cart.shippingMethod
 			);
 			await updateCart({
@@ -155,19 +156,21 @@ const CartItemsContainer = () => {
 			{cart ? (
 				<div className="woo-next-cart-wrapper container">
 					<div className="border border-solid p-4">
-						<div className="cart-header flex flex-wrap justify-between">
+						<div className="cart-header flex flex-nowrap justify-between">
 							<h1 className="text-2xl mb-5">
 								Você possui {cart.totalProductsCount} itens no Carrinho
 							</h1>
 							{/*Clear entire cart*/}
 							<div className="clear-cart text-right mb-2">
 								<button
-									className="px-4 py-1 bg-gray-500 text-white rounded-sm w-auto"
+									className="mr-0 ml-2 p-2 bg-gray-500 text-white rounded-md"
 									onClick={(event) => handleClearCart(event)}
 									disabled={clearCartProcessing}
+									title="Esvaziar Carrinho"
 								>
-									<span className="woo-next-cart">Esvaziar Carrinho</span>
-									<i className="fa fa-arrow-alt-right" />
+									<TrashIcon
+										className="fill-white inline-block"
+									/>
 								</button>
 								{clearCartProcessing ? <p>Esvaziando...</p> : ''}
 								{updateCartProcessing ? <p>Atualizando...</p> : null}
@@ -203,8 +206,8 @@ const CartItemsContainer = () => {
 						</div>
 					</div>
 
-					{/* Shipping Calculator */}
 					<div className="pt-8 flex flex-wrap gap-2 justify-between">
+						{/* Shipping Calculator */}
 						<ChooseShipping
 							setNeedCartUpdate={setNeedCartUpdate}
 							refetchCart={refetch}
@@ -215,7 +218,7 @@ const CartItemsContainer = () => {
 							<h2 className="self-center text-xl text-bold">Total no Carrinho</h2>
 							<hr className="my-4 " />
 							<div className="flex justify-between">
-								<h3 className="text-xl">Subtotal</h3>
+								<h3 className="text-xl">Produtos</h3>
 								<div className="font-bold">
 									{formatCurrency(cart.productsTotal)}
 								</div>
