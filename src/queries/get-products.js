@@ -6,6 +6,11 @@ import SeoFragment from "./fragments/seo";
  */
 const GET_PRODUCTS = gql`query {
   products(first: 50) {
+    pageInfo {
+      offsetPagination {
+        total
+      }
+    }
     nodes {
       id
       productId: databaseId

@@ -37,6 +37,11 @@ const PRODUCTS_AND_CATEGORIES_QUERY = gql`query {
     }
   }
   products(first: 12) {
+    pageInfo {
+      offsetPagination {
+        total
+      }
+    }
     nodes {
       id
       productId: databaseId
