@@ -42,7 +42,11 @@ const Pagination = ( {pagesCount, postName} ) => {
 					)
 				);
 			} )}
-			<Next currentPageNo={currentPageNo} pagesCount={pagesCount} postName={postName}/>
+			<Next 
+				currentPageNo={currentPageNo} 
+				pagesCount={pagesCount} 
+				postName={postName}
+			/>
 		</div>
 	);
 };
