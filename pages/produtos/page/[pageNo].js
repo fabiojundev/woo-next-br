@@ -6,18 +6,12 @@ import {
 	PER_PAGE_REST 
 } from '../../../src/utils/pagination';
 import client from '../../../src/apollo/client';
-import Layout from '../../../src/components/Layout';
-import Products from '../../../src/components/products';
 import PRODUCTS_AND_CATEGORIES_QUERY from '../../../src/queries/product-and-categories';
 import { GET_TOTAL_PRODUCTS_COUNT } from '../../../src/queries/get-products-count';
 import { handleRedirectsAndReturnData } from '../../../src/utils/slug';
+import ProductsLayout from '../../../src/components/products/ProductsLayout';
 
 const Page = (props) => {
-	const {
-		data, 
-		products,
-		productsPageCount 
-	} = props || {};
 	const router = useRouter();
 
 	// Redirecting to /blog if we are on page 1
@@ -28,12 +22,9 @@ const Page = (props) => {
 	}
 
 	return (
-		<Layout data={data}>
-			<Products
-				products={products}
-				productsPageCount={productsPageCount}
-			/>
-		</Layout>
+		<ProductsLayout 
+			{...props}
+		/>
 	);
 };
 
