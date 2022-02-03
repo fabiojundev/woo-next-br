@@ -32,15 +32,18 @@ const Product = (props) => {
 							<h3 className="product-title mt-3 font-medium">
 								{product.name ? product.name : ''}
 							</h3>
-							<Price 
-								salesPrice={product?.price} 
-								regularPrice={product?.regularPrice} 
+							<Price
+								salesPrice={product?.price}
+								regularPrice={product?.regularPrice}
 							/>
 						</a>
 					</Link>
-					<AddToCartButton 
-						product={product} 
-					/>
+					{product?.visibleProducts?.nodes?.find(node => node.slug === 'outofstock')
+						? <div>Produto Esgotado</div>
+						: <AddToCartButton
+							product={product}
+						/>
+					}
 				</div>
 
 			</div>

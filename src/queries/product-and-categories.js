@@ -44,6 +44,12 @@ const PRODUCTS_AND_CATEGORIES_QUERY = gql`query {
       slug
       description
       shortDescription
+      visibleProducts {
+        nodes {
+          slug
+          count
+        }
+      }
       image {
         id
         altText

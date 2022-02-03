@@ -47,13 +47,18 @@ export default function Product(props) {
                                     __html: product.shortDescription,
                                 }}
                             />
-                            <ShippingCosts
-                                productId={product?.productId}
-                            />
-                            <AddToCartButton
-                                product={product}
-                                showQuantity={true}
-                            />
+                            {product?.visibleProducts?.nodes?.find(node => node.slug === 'outofstock')
+                                ? <div>Produto Esgotado</div>
+                                : <>
+                                    <ShippingCosts
+                                        productId={product?.productId}
+                                    />
+                                    <AddToCartButton
+                                        product={product}
+                                        showQuantity={true}
+                                    />
+                                </>
+                            }
                         </div>
                     </div>
                     <div

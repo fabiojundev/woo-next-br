@@ -440,7 +440,7 @@ const CheckoutForm = (props) => {
                             {/* Checkout Loading*/}
                             {
                                 isOrderProcessing
-                                && <p>Procesando Pedido...</p>
+                                && <p>Processando Pedido...</p>
                             }
                             {
                                 requestError

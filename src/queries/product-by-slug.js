@@ -12,6 +12,12 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 	  slug
 	  description
 	  shortDescription
+	  visibleProducts {
+        nodes {
+          slug
+          count
+        }
+      }
 	  seo {
 		...SeoFragment
 	  }
