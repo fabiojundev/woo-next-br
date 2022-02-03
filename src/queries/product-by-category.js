@@ -1,10 +1,10 @@
-import {gql} from "@apollo/client";
+import { gql } from "@apollo/client";
 
-export const PRODUCT_BY_CATEGORY_SLUG = gql` query PRODUCT_BY_CATEGORY_SLUG($slug: ID!) {
+export const PRODUCT_BY_CATEGORY_SLUG = gql` query PRODUCT_BY_CATEGORY_SLUG($slug: ID!, $first: Int) {
 	productCategory(id: $slug, idType: SLUG) {
 	  id
 	  name
-	  products(first: 2) {
+	  products(first: $first) {
 		pageInfo {
 			offsetPagination {
 				total
@@ -72,10 +72,17 @@ export const PRODUCT_BY_CATEGORY_SLUG = gql` query PRODUCT_BY_CATEGORY_SLUG($slu
   `;
 
 export const PRODUCT_CATEGORIES_SLUGS = gql` query PRODUCT_CATEGORIES_SLUGS {
-    productCategories(where:{exclude:[16]}) {
-    nodes {
-      id
-      slug
-    }
-  }
-}`;
+	productCategories(where: {exclude: [16]}) {
+	  nodes {
+		id
+		slug
+		productsCount: products {
+		  pageInfo {
+			offsetPagination {
+			  total
+			}
+		  }
+		}
+	  }
+	}
+  }`;

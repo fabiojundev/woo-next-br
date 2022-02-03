@@ -1,77 +1,82 @@
-import Layout from "../../src/components/Layout";
 import client from "../../src/components/ApolloClient";
-// import Product from "../../src/components/Product";
-import { PER_PAGE_FIRST, totalPagesCount } from '../../src/utils/pagination';
-import Products from "../../src/components/products";
-import {PRODUCT_BY_CATEGORY_SLUG, PRODUCT_CATEGORIES_SLUGS} from "../../src/queries/product-by-category";
-import ParentCategoriesBlock from "../../src/components/category/category-block/ParentCategoriesBlock";
-import {isEmpty} from "lodash";
-import {useRouter} from "next/router";
-import ContactWhatsApp from '../../src/components/ContactWhatsApp';
-import InstagramEmbed from '../../src/components/InstagramEmbed.html';
+import { PER_PAGE_FIRST, PER_PAGE_REST, totalPagesCount } from '../../src/utils/pagination';
+import { PRODUCT_BY_CATEGORY_SLUG, PRODUCT_CATEGORIES_SLUGS } from "../../src/queries/product-by-category";
+import { isEmpty } from "lodash";
+import { useRouter } from "next/router";
 import ProductsLayout from "../../src/components/products/ProductsLayout";
 
-
-export default function CategorySingle( props ) {
+export default function CategorySingle(props) {
 
     const router = useRouter()
 
-    // If the page is not yet generated, this will be displayed
-    // initially until getStaticProps() finishes running
     if (router.isFallback) {
         return <div>Carregando...</div>
     }
 
-    const { 
-			categoryName, 
-			products,
-			productsPageCount,
-			productCategories 
-	} = props;
-
     return (
-		<ProductsLayout 
-			{...props}
-		/>
+        <ProductsLayout
+            {...props}
+        />
     );
 };
 
-export async function getStaticProps(context) {
+export async function getStaticProps({ params }) {
 
-    const {params: { slug }} = context
+    let { slug, pageNo } = params || {};
+    pageNo = pageNo ? pageNo : 1;
 
-    const {data} = await client.query(({
+    const { data } = await client.query(({
         query: PRODUCT_BY_CATEGORY_SLUG,
-        variables: { slug }
+        variables: {
+            slug,
+            first: pageNo * PER_PAGE_FIRST,
+        }
     }));
+
+    const products = data?.productCategory?.products?.nodes
+        ? data?.productCategory?.products?.nodes.filter(
+            (prod, index) => index >= ((pageNo - 1) * PER_PAGE_FIRST))
+        : [];
 
     return {
         props: {
             categoryName: data?.productCategory?.name ?? '',
-            products: data?.productCategory?.products?.nodes ?? [],
-			productsPageCount: totalPagesCount(data?.productCategory?.products?.pageInfo?.pagesCount ?? 0),
+            products,
+            productsPageCount: totalPagesCount(
+                data?.productCategory?.products?.pageInfo?.offsetPagination?.total ?? 0
+            ),
             productCategories: data?.productCategories?.nodes
-				? data.productCategories.nodes
-				: [],
+                ? data.productCategories.nodes
+                : [],
         },
         revalidate: 1
     }
 
 }
 
-export async function getStaticPaths () {
+export async function getStaticPaths() {
     const { data } = await client.query({
         query: PRODUCT_CATEGORIES_SLUGS
     })
 
-    const pathsData = []
+    let pathsData = [];
 
     data?.productCategories?.nodes && data?.productCategories?.nodes.map((productCategory) => {
         if (!isEmpty(productCategory?.slug)) {
-            pathsData.push({ params: { slug: productCategory?.slug } })
+            const totalProductsCount = productCategory?.productsCount?.pageInfo?.offsetPagination?.total ?? 0;
+            const pagesCount = Math.ceil((totalProductsCount - PER_PAGE_FIRST) / PER_PAGE_REST + 1);
+
+            const paths = new Array(pagesCount).fill('').map((_, index) => ({
+                params: {
+                    slug: productCategory?.slug,
+                    pageNo: (index + 1).toString(),
+                },
+            }));
+            pathsData = [...pathsData, ...paths];
         }
     })
 
+    // console.log(pathsData);
     return {
         paths: pathsData,
         fallback: true
