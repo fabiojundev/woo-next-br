@@ -1,6 +1,8 @@
 import Layout from "../../src/components/Layout";
 import client from "../../src/components/ApolloClient";
-import Product from "../../src/components/Product";
+// import Product from "../../src/components/Product";
+import { PER_PAGE_FIRST, totalPagesCount } from '../../src/utils/pagination';
+import Products from "../../src/components/products";
 import {PRODUCT_BY_CATEGORY_SLUG, PRODUCT_CATEGORIES_SLUGS} from "../../src/queries/product-by-category";
 import ParentCategoriesBlock from "../../src/components/category/category-block/ParentCategoriesBlock";
 import {isEmpty} from "lodash";
@@ -19,7 +21,12 @@ export default function CategorySingle( props ) {
         return <div>Carregando...</div>
     }
 
-    const { categoryName, products, productCategories } = props;
+    const { 
+			categoryName, 
+			products,
+			productsPageCount,
+			productCategories 
+	} = props;
 
     return (
         <Layout>
@@ -39,24 +46,10 @@ export default function CategorySingle( props ) {
 					className="flex-grow z-10 bg-white"
 				>
 					{ categoryName ? <h3 className="text-2xl mb-5 uppercase">{ categoryName }</h3> : '' }
-					<div
-						className="grid grid-cols-1 
-									sm:grid-cols-2 
-									md:grid-cols-2 
-									lg:grid-cols-3 
-									xl:grid-cols-4
-									justify-items-center
-									gap-4"
-					>
-						{products.length ? (
-							products.map(product =>
-								<Product
-									key={product.id}
-									product={product}
-								/>
-							)
-						) : ''}
-					</div>
+					<Products
+						products={products}
+						productsPageCount={productsPageCount}
+					/>
 				</section>
 				<aside
 					id="siderbar"
@@ -96,6 +89,7 @@ export async function getStaticProps(context) {
         props: {
             categoryName: data?.productCategory?.name ?? '',
             products: data?.productCategory?.products?.nodes ?? [],
+			productsPageCount: totalPagesCount(data?.productCategory?.products?.pageInfo?.pagesCount ?? 0),
             productCategories: data?.productCategories?.nodes
 				? data.productCategories.nodes
 				: [],

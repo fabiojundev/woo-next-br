@@ -1,11 +1,12 @@
 import Layout from '../src/components/Layout';
-import Product from "../src/components/Product";
 import client from '../src/components/ApolloClient';
 import ParentCategoriesBlock from "../src/components/category/category-block/ParentCategoriesBlock";
 import PRODUCTS_AND_CATEGORIES_QUERY from "../src/queries/product-and-categories";
+import { PER_PAGE_FIRST, totalPagesCount } from '../src/utils/pagination';
 import HeroCarousel from "../src/components/home/hero-carousel";
 import ContactWhatsApp from '../src/components/ContactWhatsApp';
 import InstagramEmbed from '../src/components/InstagramEmbed.html';
+import Products from '../src/components/products';
 
 
 export default function Home(props) {
@@ -13,6 +14,7 @@ export default function Home(props) {
 	const {
 		data,
 		products,
+		productsPageCount,
 		productCategories,
 		heroCarousel
 	} = props || {};
@@ -37,24 +39,10 @@ export default function Home(props) {
 					<h2 className="products-main-title mb-5 text-xl">
 						<ContactWhatsApp />
 					</h2>
-					<div
-						className="grid grid-cols-1 
-									sm:grid-cols-2 
-									md:grid-cols-2 
-									lg:grid-cols-3 
-									xl:grid-cols-4
-									justify-items-center
-									gap-4"
-					>
-						{products.length ? (
-							products.map(product =>
-								<Product
-									key={product.id}
-									product={product}
-								/>
-							)
-						) : ''}
-					</div>
+					<Products 
+						products={products}
+						productsPageCount={productsPageCount}
+					/>
 				</section>
 				<aside
 					id="siderbar"
@@ -85,6 +73,11 @@ export async function getStaticProps() {
 
 	const { data } = await client.query({
 		query: PRODUCTS_AND_CATEGORIES_QUERY,
+		variables: {
+			uri: '/produtos/',
+			perPage: PER_PAGE_FIRST,
+			offset: null,
+		},
 	});
 
 	return {
@@ -96,6 +89,7 @@ export async function getStaticProps() {
 			products: data?.products?.nodes
 				? data.products.nodes
 				: [],
+			productsPageCount: totalPagesCount( data?.products?.pageInfo?.offsetPagination?.total ?? 0 ),
 			heroCarousel: data?.heroCarousel?.nodes[0]?.children?.nodes
 				? data.heroCarousel.nodes[0].children.nodes
 				: [],
