@@ -1,12 +1,6 @@
-import Layout from '../src/components/Layout';
 import client from '../src/components/ApolloClient';
-import ParentCategoriesBlock from "../src/components/category/category-block/ParentCategoriesBlock";
 import PRODUCTS_AND_CATEGORIES_QUERY from "../src/queries/product-and-categories";
 import { PER_PAGE_FIRST, totalPagesCount } from '../src/utils/pagination';
-import HeroCarousel from "../src/components/home/hero-carousel";
-import ContactWhatsApp from '../src/components/ContactWhatsApp';
-import InstagramEmbed from '../src/components/InstagramEmbed.html';
-import Products from '../src/components/products';
 import ProductsLayout from '../src/components/products/ProductsLayout';
 
 export default function Home(props) {
@@ -24,8 +18,7 @@ export async function getStaticProps() {
 		query: PRODUCTS_AND_CATEGORIES_QUERY,
 		variables: {
 			uri: '/produtos/',
-			perPage: PER_PAGE_FIRST,
-			offset: null,
+			first: PER_PAGE_FIRST,
 		},
 	});
 

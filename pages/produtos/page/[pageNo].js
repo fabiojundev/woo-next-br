@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
-import { 
-	getPageOffset, 
-	totalPagesCount, 
-	PER_PAGE_FIRST, 
-	PER_PAGE_REST 
+import {
+	getPageOffset,
+	totalPagesCount,
+	PER_PAGE_FIRST,
+	PER_PAGE_REST
 } from '../../../src/utils/pagination';
 import client from '../../../src/apollo/client';
 import PRODUCTS_AND_CATEGORIES_QUERY from '../../../src/queries/product-and-categories';
@@ -22,7 +22,7 @@ const Page = (props) => {
 	}
 
 	return (
-		<ProductsLayout 
+		<ProductsLayout
 			{...props}
 		/>
 	);
@@ -32,29 +32,27 @@ export default Page;
 
 export async function getStaticProps({ params }) {
 
-	const { pageNo } = params || {};
-	const offset = getPageOffset(pageNo);
+	let { pageNo } = params || {};
+
+	pageNo = pageNo ? pageNo : 1;
 	const { data } = await client.query({
 		query: PRODUCTS_AND_CATEGORIES_QUERY,
 		variables: {
 			uri: '/produtos/',
-			perPage: '1' === pageNo
-				? PER_PAGE_FIRST
-				: PER_PAGE_REST,
-			offset: offset,
+			first: pageNo * PER_PAGE_FIRST,
 		},
 	});
-	// console.log("data", data);
 
+	const products = data?.products?.nodes
+		? data.products.nodes.filter((prod, index) => index >= ((pageNo - 1) * PER_PAGE_FIRST))
+		: [];
 	return {
 		props: {
 			data,
 			productCategories: data?.productCategories?.nodes
 				? data.productCategories.nodes
 				: [],
-			products: data?.products?.nodes
-				? data.products.nodes
-				: [],
+			products: products,
 			productsPageCount: totalPagesCount(data?.products?.pageInfo?.offsetPagination?.total ?? 0),
 			heroCarousel: data?.heroCarousel?.nodes[0]?.children?.nodes
 				? data.heroCarousel.nodes[0].children.nodes
