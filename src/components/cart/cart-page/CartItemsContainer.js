@@ -178,9 +178,9 @@ const CartItemsContainer = () => {
 									disabled={clearCartProcessing}
 									title="Esvaziar Carrinho"
 								>
-									<TrashIcon
+									{/* <TrashIcon
 										className="fill-white inline-block"
-									/>
+									/> */}
 								</button>
 							</div>
 						</div>

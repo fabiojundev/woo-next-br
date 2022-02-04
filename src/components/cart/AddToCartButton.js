@@ -86,34 +86,34 @@ const AddToCart = (props) => {
                 </a>
             ) :
                 <>
-                    {showQuantity && (
-                        <div className="w-32">
+                    <div className="flex flex-wrap items-end">
+                        {showQuantity && (
                             <QuantityInput
                                 label="Quantidade"
                                 value={quantity}
                                 handleChange={onChange}
                             />
+                        )}
+                        <div className="py-4">
+                            <button
+                                disabled={addToCartLoading}
+                                onClick={handleAddToCartClick}
+                                className={cx(
+                                    'bg-green-default',
+                                    { 'opacity-100 cursor-pointer': !addToCartLoading },
+                                    { 'opacity-50 cursor-not-allowed': addToCartLoading }
+                                )}
+                            >
+                                {addToCartLoading ? 'Adicionando...' : 'Comprar'}
+                            </button>
+                            {showViewCart ? (
+                                <Link href="/carrinho">
+                                    <button>
+                                        Ver Carrinho
+                                    </button>
+                                </Link>
+                            ) : ''}
                         </div>
-                    )}
-                    <div className={showQuantity ? "" : "text-right"}>
-                        <button
-                            disabled={addToCartLoading}
-                            onClick={handleAddToCartClick}
-                            className={cx(
-                                'bg-green-default',
-                                { 'opacity-100 cursor-pointer': !addToCartLoading },
-                                { 'opacity-50 cursor-not-allowed': addToCartLoading }
-                            )}
-                        >
-                            {addToCartLoading ? 'Adicionando...' : 'Comprar'}
-                        </button>
-                        {showViewCart ? (
-                            <Link href="/carrinho">
-                                <button>
-                                    Ver Carrinho
-                                </button>
-                            </Link>
-                        ) : ''}
                     </div>
                 </>
 

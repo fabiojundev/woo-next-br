@@ -55,7 +55,7 @@ const QuantityInput = (props) => {
 	}
 
 	return (
-		<div className="qty-field-wrap flex flex-col justify-center py-4">
+		<div className="qty-field-wrap flex flex-col justify-center py-4 pr-4">
 			{label && 
 				<label className="pb-2">
 					{label}
