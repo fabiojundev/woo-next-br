@@ -50,12 +50,11 @@ body {
   top: 45%;
   left: 0;
   background: #000;
-  opacity: .6;
-  padding: 10px;
-  font-size: 20px;
+  opacity: .3;
+  padding: 5px 10px;
   &.right {
     left: unset;
-    right: 0;
+    right: -12px;
   }
 }
 

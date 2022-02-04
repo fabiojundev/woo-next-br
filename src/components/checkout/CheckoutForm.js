@@ -375,7 +375,6 @@ const CheckoutForm = (props) => {
                                     refetchCart={refetchCart}
                                     disabled={disabled}
                                     setDisabled={setDisabled}
-                                // refetch={refetch}
                                 />
                             </div>
                             <div>

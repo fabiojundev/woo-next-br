@@ -31,7 +31,9 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
 
     return (
         <div className="md:mr-4">
-            <div className="banner-img1 relative w-full mb-4">
+            <div 
+                className="banner-img1 relative w-full mb-4"
+            >
                 {
                     gallery.map((item, index) => {
                         const hidden = (slide === index || 1 === gallery.length)
@@ -56,31 +58,13 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
                         className="slider-button left focus:outline-none"
                         onClick={prevSlide}
                     >
-                        <svg
-                            width="20px"
-                            className="inline-block"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                        </svg>
+                        {"<"}
                     </button>
                     <button
                         className="slider-button right focus:outline-none"
                         onClick={nextSlide}
                     >
-                        <svg
-                            width="20px"
-                            className="inline-block"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
+                        {">"}
                     </button>
                 </div>
             </div>
