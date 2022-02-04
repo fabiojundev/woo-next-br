@@ -26,6 +26,7 @@ const Products = ({ products, productsPageCount }) => {
 						<Product
 							key={product.id}
 							product={product}
+							showBuyButton={false}
 						/>
 					)
 				) : ''}
