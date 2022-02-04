@@ -171,18 +171,18 @@ const CartItemsContainer = () => {
 								Você possui {cart.totalProductsCount} itens no Carrinho
 							</h1>
 							{/*Clear entire cart*/}
-							<div className="clear-cart text-right mb-2">
+							{/* <div className="clear-cart text-right mb-2">
 								<button
 									className="mr-0 ml-2 p-2 bg-gray-500 text-white rounded-md"
 									onClick={(event) => handleClearCart(event)}
 									disabled={clearCartProcessing}
 									title="Esvaziar Carrinho"
 								>
-									{/* <TrashIcon
+									<TrashIcon
 										className="fill-white inline-block"
-									/> */}
+									/>
 								</button>
-							</div>
+							</div> */}
 						</div>
 						<hr />
 						<div className="grid grid-cols-1 gap-0 xl:gap-4 mb-5">
