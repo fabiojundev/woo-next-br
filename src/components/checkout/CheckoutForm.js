@@ -436,6 +436,15 @@ const CheckoutForm = (props) => {
                                 input={input}
                                 preference={createdOrderData?.preference}
                             />
+                            <p className="text-sm text-red-600">
+                            {
+                                input.shipping?.errors && Object.values(input.shipping.errors)?.map(err =>(
+                                    <div className="pt-2">
+                                        Erro: {err}
+                                    </div>
+                                ))
+                            }
+                            </p>
 
                             {/* Checkout Loading*/}
                             {
