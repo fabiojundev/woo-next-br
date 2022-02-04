@@ -14,6 +14,7 @@ import { isEmpty } from 'lodash';
 const ChooseShipping = ({
 	showOnlyRates,
 	setNeedCartUpdate,
+	loadingCart,
 	refetchCart,
 	setRequestError
 }) => {
@@ -138,7 +139,7 @@ const ChooseShipping = ({
 								/>
 								<LoadingButton
 									label={"Atualizar"}
-									loading={updatingShippinZipcode}
+									loading={updatingShippinZipcode || loadingCart}
 									type="button"
 									handleClick={handleCalcShippingClick}
 								/>

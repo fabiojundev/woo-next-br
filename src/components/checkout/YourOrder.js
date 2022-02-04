@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash';
 import { formatCurrency } from '../../functions';
 
 const YourOrder = ({
-	// cart,
+	loadingCart,
 	refetchCart,
 	setRequestError
 }) => {
@@ -43,6 +43,7 @@ const YourOrder = ({
 						</tbody>
 					</table>
 					<ChooseShipping
+						loadingCart={loadingCart}
 						showOnlyRates={true}
 						refetchCart={refetchCart}
 						setRequestError={setRequestError}

@@ -218,6 +218,7 @@ const CartItemsContainer = () => {
 						{/* Shipping Calculator */}
 						<ChooseShipping
 							setNeedCartUpdate={setNeedCartUpdate}
+							loadingCart={loading}
 							refetchCart={refetch}
 							setRequestError={setRequestError}
 						/>

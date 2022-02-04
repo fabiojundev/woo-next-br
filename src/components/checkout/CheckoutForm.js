@@ -74,7 +74,7 @@ const CheckoutForm = (props) => {
 
     // Get Cart Data.
     const {
-        loading: cartLoading,
+        loading: loadingCart,
         data,
         refetch
     } = useQuery(GET_CART, {
@@ -416,6 +416,7 @@ const CheckoutForm = (props) => {
                             <h2 className="text-xl font-medium mb-4">Seu pedido</h2>
                             <YourOrder
                                 cart={cart}
+                                loadingCart={loadingCart}
                                 refetchCart={refetchCart}
                                 setRequestError={setRequestError}
                             />
