@@ -6,7 +6,7 @@ import { PRODUCT_BY_SLUG_QUERY, PRODUCT_SLUGS } from '../../src/queries/product-
 import { isEmpty } from 'lodash';
 import GalleryCarousel from "../../src/components/single-product/gallery-carousel";
 import Price from "../../src/components/single-product/price";
-import ShippingCosts from "../../src/components/single-product/shipping-costs";
+import ShippingCosts from "../../src/components/single-product/ShippingCosts";
 
 export default function Product(props) {
     const { product } = props;

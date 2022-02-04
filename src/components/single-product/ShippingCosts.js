@@ -1,12 +1,11 @@
 import { isEmpty } from "lodash";
 import { useState } from "react";
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
-import cx from 'classnames';
 import { GET_CUSTOMER } from "../../queries/get-customer";
 import GET_SHIPPING_COSTS from "../../queries/get-shipping-costs";
 import UPDATE_SHIPPING_ADDRESS from "../../mutations/update-shipping-address";
-import Image from "../image";
 import LoadingButton from "../LoadingButton";
+import InputMask from 'react-input-mask';
 
 const ShippingCosts = ({ productId, quantity = 1 }) => {
 
@@ -78,11 +77,10 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
         },
     });
 
-    const handleGetShippingClick = () => {
-        console.log("handleGetShippingClick", zipcode);
+    const handleGetShippingClick = async () => {
         setRequestError(null);
         if (zipcode?.length == 9) {
-            const address = getShippingCosts(
+            await getShippingCosts(
                 {
                     skip: shippingQryInput?.zipcode?.length < 8,
                     variables: {
@@ -92,7 +90,6 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                     },
                 }
             );
-            console.log(address);
         }
     };
 
@@ -132,14 +129,13 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                 <div>
                     Calcular frete
                 </div>
-                <input
+                <InputMask
                     className="border border-solid rounded p-2 mr-2 w-32"
                     type="text"
-                    id="wppdev_wt_zipcode"
                     value={zipcode}
                     onChange={handleZipcodeChange}
-                    maxLength="9"
                     placeholder="00000-000"
+                    mask="99999-999"
                     autoComplete="postal-code"
                 />
                 <LoadingButton
