@@ -1,14 +1,16 @@
 # [WooCommerce Nextjs React Theme](https://woo-next-br-fabio-jun.vercel.app/) :rocket:
 [![Project Status: Active.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-## Important Note ⭐:
-This is a fork from [imhran-sayed's project](https://github.com/imranhsayed/woo-next/), customized for brazilian market.
-
-Este é um [fork do projeto do imhran-sayed](https://github.com/imranhsayed/woo-next/), personalizado para o mercado brazileiro.
+## Description ⭐:
+This is a theme designed to work with WooCommerce headless WordPress site.
+Some of the technologies used:
+* The theme was built using React lib and NextJS to generate the page on the server side.
+* Uses GraphQL queries and mutations with Apollo client to retrieve information from the server, manage the cart and create the order. 
+* Shipping cost information is present in the product page and is integrated with Correios-BR.
 
 ## Live Demo:
 
-[Live Demo Site](woo-next-br-fabio-jun.vercel.app)
+[Live Demo Site](https://woo-next-br-fabio-jun.vercel.app/)
 
 ## Demo Desktop :video_camera:
 
@@ -29,17 +31,18 @@ Este é um [fork do projeto do imhran-sayed](https://github.com/imranhsayed/woo-
 
 # Features:
 
-1. WooCommerce Store in React, containg the following pages: Products, Single Product, AddToCart, Cart and Checkout.
-2. SSR - Server Side Rendering using NextJs.
-3. SEO friendly, integrated with Add WPGraphQL SEO plugin.
-4. Automatic Code Splitting
-5. Hot Reloading
-6. Prefetching
-8. Incremental Static (Re)generation ( Next.js 12 support )
-9. GraphQL with Apollo Client
-10. Tailwindcss
-11. Integrated with Mercado Pago CheckoutPro Gateway
-12. New brazilian gateways in the near future.
+* WooCommerce Store in React, containg the following pages: Products, Single Product, AddToCart, Cart and Checkout.
+* SSR - Server Side Rendering using NextJs.
+* SEO friendly, integrated with Add WPGraphQL SEO plugin.
+* Paginated Blog Posts from the WordPress backend.
+* Automatic Code Splitting
+* Hot Reloading
+* Prefetching
+* Incremental Static (Re)generation ( Next.js 12 support )
+* GraphQL with Apollo Client
+* Tailwindcss
+* Integrated with Mercado Pago CheckoutPro Gateway
+* New brazilian gateways in the near future.
 
 ## Getting Started :rocket:
 
@@ -60,6 +63,7 @@ These instructions will get you a copy of the project up and running on your loc
 * [wp-graphql](https://wordpress.org/plugins/wp-graphql/) Exposes graphql for WordPress ( **Tested with v-1.6.12** of this plugin )
 * [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema ( **Tested with v-0.10.7** of this plugin )
 * [add-wpgraphql-seo](https://wordpress.org/plugins/add-wpgraphql-seo/) Extends WPGraphQL Schema to use with Yoast SEO ( **Tested with v-4.16.0** of this plugin )
+* [wp-graphql-offset-pagination](https://github.com/valu-digital/wp-graphql-offset-pagination) Extends WPGraphQL Schema to accept pagination in blog posts ( **Tested with v-0.20.0** of this plugin )
 
 * Make sure Woocommerce plugin is also installed in your WordPress site. You can also import default wooCommerce products that come with wooCommerce Plugin for development ( if you don't have any products in your WordPress install ) `WP Dashboard > Tools > Import > WooCommerce products(CSV)`: The WooCommerce default products csv file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
 
