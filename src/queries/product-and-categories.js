@@ -4,26 +4,7 @@ import SeoFragment from "./fragments/seo";
 /**
  * GraphQL categories and products query.
  */
-const PRODUCTS_AND_CATEGORIES_QUERY = gql`query($first: Int) {
-  heroCarousel: productCategories(where: {slug: "offers"}) {
-    nodes {
-      id
-      children {
-        nodes {
-          id
-          name
-          slug
-          databaseId
-          description
-          image {
-            id
-            sourceUrl
-            srcSet
-          }
-        }
-      }
-    }
-  }
+const PRODUCTS_AND_CATEGORIES_QUERY = gql`query( $perPage: Int, $offset: Int) {
   productCategories(where:{exclude:[16]}) {
     nodes {
       id
@@ -36,7 +17,7 @@ const PRODUCTS_AND_CATEGORIES_QUERY = gql`query($first: Int) {
       }
     }
   }
-  products(first: $first) {
+  products(where: { offsetPagination: { size: $perPage, offset: $offset }}) {
     pageInfo {
       offsetPagination {
         total

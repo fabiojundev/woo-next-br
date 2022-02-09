@@ -34,25 +34,23 @@ export async function getStaticProps({ params }) {
 
 	let { pageNo } = params || {};
 
+	const offset = getPageOffset( pageNo );
 	pageNo = pageNo ? pageNo : 1;
-	const { data } = await client.query({
+	const { data, errors } = await client.query({
 		query: PRODUCTS_AND_CATEGORIES_QUERY,
 		variables: {
-			uri: '/produtos/',
-			first: pageNo * PER_PAGE_FIRST,
+			perPage: '1' === pageNo ? PER_PAGE_FIRST : PER_PAGE_REST,
+			offset,
 		},
 	});
 
-	const products = data?.products?.nodes
-		? data.products.nodes.filter((prod, index) => index >= ((pageNo - 1) * PER_PAGE_FIRST))
-		: [];
 	return {
 		props: {
-			data,
+			data: data || {},
 			productCategories: data?.productCategories?.nodes
 				? data.productCategories.nodes
 				: [],
-			products: products,
+			products: data?.products?.nodes || [],
 			productsPageCount: totalPagesCount(data?.products?.pageInfo?.offsetPagination?.total ?? 0),
 			heroCarousel: data?.heroCarousel?.nodes[0]?.children?.nodes
 				? data.heroCarousel.nodes[0].children.nodes

@@ -14,17 +14,17 @@ export default function Home(props) {
 
 export async function getStaticProps() {
 
-	const { data } = await client.query({
+	const { data, errors } = await client.query({
 		query: PRODUCTS_AND_CATEGORIES_QUERY,
 		variables: {
-			uri: '/produtos/',
-			first: PER_PAGE_FIRST,
+			perPage: PER_PAGE_FIRST,
+			offset: 0,
 		},
 	});
 
 	return {
 		props: {
-			data,
+			data: data || {},
 			productCategories: data?.productCategories?.nodes
 				? data.productCategories.nodes
 				: [],
