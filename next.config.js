@@ -3,6 +3,30 @@ const allowedImageWordPressDomain = new URL(process.env.NEXT_PUBLIC_WORDPRESS_UR
 
 module.exports = {
     trailingSlash: true,
+    async rewrites() {
+        return [
+            {
+                source: '/loja/',
+                destination: '/',
+            },
+            {
+                source: '/envio-e-prazo-de-entrega/',
+                destination: '/pagina/envio-e-prazo-de-entrega/',
+            },
+            {
+                source: '/politica-de-privacidade/',
+                destination: '/pagina/politica-de-privacidade/',
+            },
+            {
+                source: '/garantia-e-politica-de-reembolso/',
+                destination: '/pagina/garantia-e-politica-de-reembolso/',
+            },
+            {
+                source: '/sobre-nos/',
+                destination: '/pagina/sobre-nos/',
+            },
+        ]
+    },
     webpackDevMiddleware: (config) => {
         config.watchOptions = {
             poll: 1000,

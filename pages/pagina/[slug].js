@@ -1,4 +1,4 @@
-import client from '../../src/apollo/client';
+import client from '../../src/components/ApolloClient';
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 import Layout from '../../src/components/Layout';
@@ -20,14 +20,13 @@ const Page = ({ data }) => {
 	// console.log("PAGE", data);
 	return (
 		<Layout data={data}>
-			<h1 
-				className="font-bold mb-3 text-lg hover:text-blue-500" 
-				dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.title ?? '') }} 
-			/>
-
-			<div 
-				dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.content ?? {}) }} 
-			/>
+			<div
+				className="single-post container mx-auto my-16 px-4 xl:px-0"
+			>
+				<div
+					dangerouslySetInnerHTML={{ __html: sanitize(data?.page?.content ?? {}) }}
+				/>
+			</div>
 		</Layout>
 	);
 };
@@ -79,7 +78,6 @@ export async function getStaticPaths() {
 		query: GET_PAGES_URI
 	});
 
-	console.log( data);
 	const pathsData = [];
 
 	data?.pages?.nodes && data?.pages?.nodes.map(page => {
