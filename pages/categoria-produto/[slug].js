@@ -43,7 +43,7 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             categoryName: data?.productCategories?.nodes?.[0]?.name ?? '',
-            products: data?.products?.nodes,
+            products: data?.products?.nodes ?? [],
             productsPageCount: totalPagesCount( data?.products?.pageInfo?.offsetPagination?.total ?? 0 ),
             productCategories: data?.productCategories?.nodes
                 ? data.productCategories.nodes
