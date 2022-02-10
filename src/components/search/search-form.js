@@ -12,7 +12,7 @@ const SearchForm = ( {searchQuery, setSearchQuery, handleSearchFormSubmit, handl
   };
 
   return (
-    <form className="flex w-full justify-center" onSubmit={handleSearchFormSubmit}>
+    <form className="flex w-full md:justify-center" onSubmit={handleSearchFormSubmit}>
       <div className="block relative w-4/5 flex">
             <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
               <SearchIcon className="h-4 w-4 fill-current text-gray-500"/>

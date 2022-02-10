@@ -17,7 +17,13 @@ const Nav = ({ slug }) => {
 				<div className="flex items-center flex-shrink-0 text-black mr-20">
 					<Link href="/">
 						<a>
-							<Image src="/logo-75x75.jpg" alt="Cama de Cultivo - logo" width="75" height="75" className="mr-4" />
+							<Image 
+								src="/logo-75x75.jpg" 
+								alt="Cama de Cultivo - logo" 
+								width="75" 
+								height="75" 
+								className="mr-4" 
+							/>
 						</a>
 					</Link>
 				</div>
@@ -36,13 +42,28 @@ const Nav = ({ slug }) => {
 				</div>
 
 				{/*MMenu in mobile*/}
-				<div className={`${isMenuVisible ? 'max-h-full h-full' : 'h-0'} w-full overflow-hidden lg:h-full flex-grow lg:flex lg:items-center lg:w-auto`}>
+				<div className={` ${isMenuVisible ? 'visible' : 'hidden'} 
+							px-4
+							w-full 
+							overflow-hidden 
+							lg:h-full 
+							flex-grow 
+							lg:flex lg:items-center lg:w-auto`}
+				>
 					<MenuPrincipal
 						className="text-gray-900"
 						linkClassName="block lg:inline-block"
 					/>
 
-					<div className="flex flex-col md:flex-row md:flex-nowrap gap4 flex-grow self-start items-start gap-4">
+					<div className="
+							flex flex-col 
+							md:flex-nowrap 
+							lg:flex-row lg:items-baseline 
+							gap-4
+							flex-grow 
+							self-start 
+							items-start"
+					>
 						{/* <div className="">
 							<a href="#responsive-header" className="block pt-1 lg:inline-block lg:mt-0 text-black hover:text-black">
 								<svg xmlns="http://www.w3.org/2000/svg" className="lg:block m-auto" fill="none" viewBox="0 0 24 24" width="18" length="auto" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
