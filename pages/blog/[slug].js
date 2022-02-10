@@ -1,4 +1,4 @@
-import client from '../../src/apollo/client';
+import client from '../../src/components/ApolloClient';
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 import Layout from '../../src/components/Layout';

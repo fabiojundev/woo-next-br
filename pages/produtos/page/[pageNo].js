@@ -5,7 +5,7 @@ import {
 	PER_PAGE_FIRST,
 	PER_PAGE_REST
 } from '../../../src/utils/pagination';
-import client from '../../../src/apollo/client';
+import client from '../../../src/components/ApolloClient';
 import PRODUCTS_AND_CATEGORIES_QUERY from '../../../src/queries/product-and-categories';
 import { GET_TOTAL_PRODUCTS_COUNT } from '../../../src/queries/get-products-count';
 import { handleRedirectsAndReturnData } from '../../../src/utils/slug';

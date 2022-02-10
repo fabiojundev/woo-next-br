@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { getPageOffset, PER_PAGE_FIRST, PER_PAGE_REST } from '../../../src/utils/pagination';
-import client from '../../../src/apollo/client';
+import client from '../../../src/components/ApolloClient';
 import Layout from '../../../src/components/Layout';
 import Pagination from '../../../src/components/blog/pagination';
 import Posts from '../../../src/components/blog/posts';

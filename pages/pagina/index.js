@@ -1,5 +1,5 @@
 
-// import client from '../../src/apollo/client';
+// import client from '../../src/components/ApolloClient';
 import client from '../../src/components/ApolloClient';
 import Layout from '../../src/components/Layout';
 import { PER_PAGE_FIRST, totalPagesCount } from '../../src/utils/pagination';

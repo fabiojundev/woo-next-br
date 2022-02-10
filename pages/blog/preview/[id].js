@@ -1,4 +1,4 @@
-import client from '../../../src/apollo/client';
+import client from '../../../src/components/ApolloClient';
 import Layout from '../../../src/components/Layout';
 import {handleRedirectsAndReturnData} from '../../../src/utils/slug';
 import {getAuthToken} from '../../../src/utils/cookies';
