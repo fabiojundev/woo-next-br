@@ -24,7 +24,7 @@ const Page = (props) => {
 	return (
 		<ProductsLayout
 			{...props}
-			path={`categoria-produto/${router.query.slug}/`}
+			path={`categoria-produto/${router.query.slug}`}
 		/>
 	);
 };

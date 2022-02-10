@@ -56,7 +56,7 @@ These instructions will get you a copy of the project up and running on your loc
 2. `cd woo-next-br`
 3. `yarn install`
 
-## Add GraphQl support for WordPress
+## Add GraphQL support for WordPress
 
 1. Download and activate the following plugins , in your WordPress plugin directory:
 
