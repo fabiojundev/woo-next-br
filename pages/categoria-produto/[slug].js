@@ -1,6 +1,11 @@
 import client from "../../src/components/ApolloClient";
 import { PER_PAGE_FIRST, PER_PAGE_REST, totalPagesCount } from '../../src/utils/pagination';
-import { PRODUCT_BY_CATEGORY_SLUG, PRODUCT_CATEGORIES_SLUGS } from "../../src/queries/product-by-category";
+import { 
+    PRODUCT_BY_CATEGORY_SLUG, 
+    PRODUCT_CATEGORIES_SLUGS, 
+} from "../../src/queries/product-by-category";
+import PRODUCTS_AND_CATEGORIES_QUERY from "../../src/queries/product-and-categories";
+
 import { isEmpty } from "lodash";
 import { useRouter } from "next/router";
 import ProductsLayout from "../../src/components/products/ProductsLayout";
@@ -16,6 +21,7 @@ export default function CategorySingle(props) {
     return (
         <ProductsLayout
             {...props}
+            path={`categoria-produto/${router.query.slug}/`}
         />
     );
 };
@@ -26,25 +32,19 @@ export async function getStaticProps({ params }) {
     pageNo = pageNo ? pageNo : 1;
 
     const { data } = await client.query(({
-        query: PRODUCT_BY_CATEGORY_SLUG,
+        query: PRODUCTS_AND_CATEGORIES_QUERY,
         variables: {
-            slug,
-            first: pageNo * PER_PAGE_FIRST,
+            slug: [slug],
+            perPage: PER_PAGE_FIRST,
+            offset: (pageNo - 1) * PER_PAGE_FIRST,
         }
     }));
 
-    const products = data?.productCategory?.products?.nodes
-        ? data?.productCategory?.products?.nodes.filter(
-            (prod, index) => index >= ((pageNo - 1) * PER_PAGE_FIRST))
-        : [];
-
     return {
         props: {
-            categoryName: data?.productCategory?.name ?? '',
-            products,
-            productsPageCount: totalPagesCount(
-                data?.productCategory?.products?.pageInfo?.offsetPagination?.total ?? 0
-            ),
+            categoryName: data?.productCategories?.nodes?.[0]?.name ?? '',
+            products: data?.products?.nodes,
+            productsPageCount: totalPagesCount( data?.products?.pageInfo?.offsetPagination?.total ?? 0 ),
             productCategories: data?.productCategories?.nodes
                 ? data.productCategories.nodes
                 : [],

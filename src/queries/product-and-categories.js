@@ -4,7 +4,7 @@ import SeoFragment from "./fragments/seo";
 /**
  * GraphQL categories and products query.
  */
-const PRODUCTS_AND_CATEGORIES_QUERY = gql`query( $perPage: Int, $offset: Int) {
+const PRODUCTS_AND_CATEGORIES_QUERY = gql`query( $slug: [String], $perPage: Int, $offset: Int) {
   productCategories(where:{exclude:[16]}) {
     nodes {
       id
@@ -17,7 +17,7 @@ const PRODUCTS_AND_CATEGORIES_QUERY = gql`query( $perPage: Int, $offset: Int) {
       }
     }
   }
-  products(where: { offsetPagination: { size: $perPage, offset: $offset }}) {
+  products(where: { offsetPagination: { size: $perPage, offset: $offset }, categoryIn: $slug }) {
     pageInfo {
       offsetPagination {
         total

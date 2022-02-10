@@ -14,7 +14,7 @@ export default function ProductsLayout(props) {
 		productsPageCount,
 		productCategories,
 		categoryName,
-		heroCarousel
+		path
 	} = props || {};
 
 	return (
@@ -41,6 +41,7 @@ export default function ProductsLayout(props) {
 					<Products 
 						products={products}
 						productsPageCount={productsPageCount}
+						path={path}
 					/>
 				</section>
 				<aside

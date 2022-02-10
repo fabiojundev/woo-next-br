@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 import Pagination from '../blog/pagination';
 
 
-const Products = ({ products, productsPageCount }) => {
+const Products = ({ 
+	products, 
+	productsPageCount,
+	path, 
+}) => {
 
 	if (isEmpty(products) && !isArray(products)) {
 		return null;
@@ -33,7 +37,7 @@ const Products = ({ products, productsPageCount }) => {
 			</div>
 			<Pagination
 				pagesCount={productsPageCount}
-				postName="produtos"
+				postName={path || "produtos"}
 			/>
 		</>
 	);
