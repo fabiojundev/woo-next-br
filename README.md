@@ -97,7 +97,7 @@ Este é um [fork do projeto do imhran-sayed](https://github.com/imranhsayed/woo-
 Thanks to all the people who contributed to the code of this project 🤝
 
 <div>
-    <img src="https://github.com/fabiojundev.png?size=30" alt="Imran Sayed">
+    <img src="https://github.com/fabiojundev.png?size=30" alt="Fabio Jun">
     <img src="https://github.com/imranhsayed.png?size=30" alt="Imran Sayed">
     <img src="https://github.com/w3bdesign.png?size=30" alt="Daniel F">
     <img src="https://github.com/delunix.png?size=30" alt="Fandi Rahmawan">
@@ -108,10 +108,6 @@ Thanks to all the people who contributed to the code of this project 🤝
 ## Contributing :busts_in_silhouette:
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning :bookmark_tabs:
-
-I use [Git](https://github.com/) for versioning.
 
 ## Author :bust_in_silhouette:
 
