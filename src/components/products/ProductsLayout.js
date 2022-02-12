@@ -46,6 +46,7 @@ export default function ProductsLayout(props) {
 				</section>
 				<aside
 					id="siderbar"
+					title="Barra Lateral"
 					className="w-full 
 								md:w-1/3 
 								lg:w-1/3 

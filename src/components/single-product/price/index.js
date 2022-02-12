@@ -1,9 +1,10 @@
 import { isEmpty } from "lodash";
+import { getFloatVal } from "../../../../src/functions.js";
 
-const Price = ({ 
-    regularPrice = 0, 
-    salesPrice, 
-    showPercent = false 
+const Price = ({
+    regularPrice = 0,
+    salesPrice,
+    showPercent = false
 }) => {
 
     if (isEmpty(salesPrice)) {
@@ -21,16 +22,23 @@ const Price = ({
             return null;
         }
 
-        const formattedRegularPrice = parseFloat(regularPrice?.substring(2));
-        const formattedSalesPrice = parseFloat(salesPrice?.substring(2)) - 2;
+        const formattedRegularPrice = getFloatVal(regularPrice);
+        const formattedSalesPrice = getFloatVal(salesPrice);
 
-        let discountPercent = ((formattedRegularPrice - formattedSalesPrice) / formattedRegularPrice) * 100;
-        const numberFormatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+        let discountPercent = (formattedRegularPrice - formattedSalesPrice) / formattedRegularPrice * 100;
+        const numberFormatter = new Intl.NumberFormat(
+            'pt-BR', 
+            { maximumFractionDigits: 1 }
+        );
         discountPercent = numberFormatter.format(discountPercent);
 
         return {
-            discountPercent: formattedSalesPrice !== formattedRegularPrice ? `(${discountPercent}% de desconto)` : null,
-            strikeThroughClass: formattedSalesPrice < formattedRegularPrice ? 'product-regular-price mr-2 line-through text-sm text-gray-600 font-normal' : ''
+            discountPercent: formattedSalesPrice !== formattedRegularPrice 
+                ? `(${discountPercent}% de desconto)` 
+                : null,
+            strikeThroughClass: formattedSalesPrice < formattedRegularPrice 
+                ? 'product-regular-price mr-2 line-through text-sm text-gray-600 font-normal' 
+                : '',
         }
     }
 
@@ -50,12 +58,9 @@ const Price = ({
                 )
             }
             {/* Regular price */}
-            {productMeta?.discountPercent
-                ? <span className="product-price mr-2 text-green-default text-lg">
-                    {salesPrice}
-                </span>
-                : null
-            }
+            <span className="product-price mr-2 text-green-default text-lg">
+                {salesPrice}
+            </span>
 
             {/* Discount percent */}
             {showPercent
@@ -65,7 +70,7 @@ const Price = ({
                     >
                         {productMeta?.discountPercent}
                     </span>
-                )    
+                )
             }
         </h6>
     )
