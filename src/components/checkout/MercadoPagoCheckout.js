@@ -174,7 +174,7 @@ export const MercadoPagoCheckout = ({ products, orderId, input, preference }) =>
                 router.push(redir);
             }
         }
-    }, [mercadopago, orderId])
+    }, [mercadopago, orderId, products, input, preference, router]);
 
     return (
         <>

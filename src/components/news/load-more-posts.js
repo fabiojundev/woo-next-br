@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 
 import Posts from '../blog/posts';
 import { PER_PAGE_FIRST } from '../../utils/pagination';
 import { GET_LOAD_MORE_NEWS } from '../../queries/news/get-load-more-news';
 
-const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
+const LoadMorePosts = ({ posts, classes, graphQLQuery, searchQuery }) => {
 
   /**
    * First set the posts data and pageInfo received from server side,
@@ -15,18 +15,18 @@ const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
    * it sever side posts can be fetched, and the new endcursor( contained in pageInfo )
    * can be sent to get the next set of posts.
    */
-  const [ postsData, setPostsData ] = useState( posts?.edges ?? [] );
-  const [ pageInfo, setPageInfo ] = useState( posts?.pageInfo );
+  const [postsData, setPostsData] = useState(posts?.edges ?? []);
+  const [pageInfo, setPageInfo] = useState(posts?.pageInfo);
 
-  const [ error, setError ] = useState( null );
+  const [error, setError] = useState(null);
 
   /**
    * If value of 'posts' passed to this component changes, set new post data and page info.
    */
-  useEffect( () => {
-    setPostsData( posts?.edges );
-    setPageInfo( posts?.pageInfo );
-  }, [ posts?.edges ] );
+  useEffect(() => {
+    setPostsData(posts?.edges);
+    setPageInfo(posts?.pageInfo);
+  }, [posts.edges, posts.pageInfo]);
 
   /**
    * Set posts.
@@ -35,8 +35,8 @@ const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
    *
    * @return {void}
    */
-  const setPosts = ( posts ) => {
-    if ( ! posts || ! posts?.edges || ! posts?.pageInfo ) {
+  const setPosts = (posts) => {
+    if (!posts || !posts?.edges || !posts?.pageInfo) {
       return;
     }
 
@@ -46,25 +46,25 @@ const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
      * when user clicks on loadmore again, next set of posts can be fetched again.
      * Same process if repeated to it gets concatenated everytime to the existing posts array.
      */
-    const newPosts = postsData.concat( posts?.edges );
-    setPostsData( newPosts );
-    setPageInfo( { ...posts?.pageInfo } );
+    const newPosts = postsData.concat(posts?.edges);
+    setPostsData(newPosts);
+    setPageInfo({ ...posts?.pageInfo });
   };
 
-  const [ fetchPosts, { loading } ] = useLazyQuery( graphQLQuery, {
+  const [fetchPosts, { loading }] = useLazyQuery(graphQLQuery, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: ( data ) => {
+    onCompleted: (data) => {
 
       /**
        * Call setPosts to concat the new set of posts to existing one and update pageInfo
        * that contains the cursor and the information about whether we have the next page.
        */
-      setPosts( data?.posts ?? [] );
+      setPosts(data?.posts ?? []);
     },
-    onError: ( error ) => {
-      setError( error?.graphQLErrors ?? '' );
+    onError: (error) => {
+      setError(error?.graphQLErrors ?? '');
     },
-  } );
+  });
 
   /**
    * Calls fetchPosts
@@ -74,7 +74,7 @@ const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
    *
    * @param {String} endCursor Endcursor used to fetch the next set of posts.
    */
-  const loadMoreItems = ( endCursor = null ) => {
+  const loadMoreItems = (endCursor = null) => {
 
     let queryVariables = {
       first: PER_PAGE_FIRST,
@@ -82,13 +82,13 @@ const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
     };
 
     // If its a search query then add the query in the query variables.
-    if ( ! isEmpty( searchQuery ) ) {
+    if (!isEmpty(searchQuery)) {
       queryVariables.query = searchQuery;
     }
 
-    fetchPosts( {
+    fetchPosts({
       variables: queryVariables,
-    } );
+    });
   };
 
   /**
@@ -100,25 +100,25 @@ const LoadMorePosts = ( { posts, classes, graphQLQuery, searchQuery } ) => {
   const { endCursor, hasNextPage } = pageInfo || {};
 
   return (
-    <div className={ classes }>
-      <Posts posts={ postsData }/>
-      { hasNextPage ? (
+    <div className={classes}>
+      <Posts posts={postsData} />
+      {hasNextPage ? (
         <div className="w-full flex justify-center lg:my-10">
-          { loading ? (
+          {loading ? (
             <div className="flex justify-center w-full border border-white px-3 py-2 my-8">
               Loading...
             </div>
           ) : (
             <button
               className="flex items-center cursor-pointer	bg-gray-100 hover:bg-gray-600 hover:text-white transition-colors duration-500 border border-gray-500 px-4 py-3"
-              onClick={ () => loadMoreItems( endCursor ) }
+              onClick={() => loadMoreItems(endCursor)}
             >
               Load more
             </button>
-          ) }
+          )}
         </div>
-      ) : null }
-      { error && <div className="w-full flex justify-center my-10">No articles available</div> }
+      ) : null}
+      {error && <div className="w-full flex justify-center my-10">No articles available</div>}
     </div>
   );
 };
