@@ -139,7 +139,7 @@ const CheckoutForm = (props) => {
                         })
                 );
                 if ( isEmpty( toUpdate?.shipping?.email ) && cart?.email) {
-                    toUpdate?.shipping?.email = cart.email;
+                    toUpdate.shipping.email = cart.email;
                 }
             }
 
