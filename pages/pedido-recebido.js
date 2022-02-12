@@ -37,7 +37,7 @@ const PedidoRecebidoContent = () => {
             }
         }
 
-    }, [orderId]);
+    }, [orderId, setCart, deleteCartLocal]);
 
     return (
         <div className="h-almost-screen">

@@ -32,7 +32,7 @@ const ThankYouContent = () => {
             }
         }
 
-    }, [session_id]);
+    }, [session_id, setCart]);
 
     return (
         <div className="h-almost-screen">

@@ -74,7 +74,7 @@ export default function Search({ data }) {
       });
     }
 
-  }, [searchQueryString]);
+  }, [searchQueryString, fetchPosts]);
 
   const totalPostResultCount = queryResultPosts?.pageInfo?.offsetPagination?.total;
 
