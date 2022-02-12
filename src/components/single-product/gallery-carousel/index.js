@@ -1,7 +1,7 @@
 import { isEmpty, isArray } from 'lodash';
 import { useState, useRef } from 'react';
 
-const GalleryCarousel = ({ mainImageUrl, gallery }) => {
+const GalleryCarousel = ({ gallery }) => {
 
     if (isEmpty(gallery) || !isArray(gallery)) {
         return null;
@@ -42,9 +42,11 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
                         return (
                             <div
                                 key={index}
-                                className={`${hidden} banner-img-container relative`}
+                                className={`banner-img-container relative`}
                             >
                                 <img
+                                    className={`${hidden}`}
+                                    title="Imagem do Produto"
                                     src={item?.mediaItemUrl}
                                     loading="lazy"
                                     alt={item?.altText ? item?.altText : item?.title}
@@ -55,12 +57,14 @@ const GalleryCarousel = ({ mainImageUrl, gallery }) => {
                 }
                 <div className="image-nav">
                     <button
+                        title="Anterior"
                         className="slider-button left focus:outline-none"
                         onClick={prevSlide}
                     >
                         {"<"}
                     </button>
                     <button
+                        title="Próximo"
                         className="slider-button right focus:outline-none"
                         onClick={nextSlide}
                     >

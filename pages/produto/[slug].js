@@ -25,9 +25,11 @@ export default function Product(props) {
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="product-images">
                             <GalleryCarousel
-                                mainImageUrl={product?.image?.sourceUrl}
                                 gallery={[
-                                    { mediaItemUrl: product?.image?.sourceUrl },
+                                    { 
+                                        ...product?.image,
+                                        mediaItemUrl: product?.image?.sourceUrl 
+                                    },
                                     ...product?.galleryImages?.nodes
                                 ]}
                             />
