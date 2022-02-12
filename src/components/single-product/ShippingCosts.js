@@ -9,10 +9,6 @@ import InputMask from 'react-input-mask';
 
 const ShippingCosts = ({ productId, quantity = 1 }) => {
 
-    if (!productId) {
-        return null;
-    }
-
     const [zipcode, setZipcode] = useState('');
     const [customer, setCustomer] = useState({});
     const [requestError, setRequestError] = useState(null);
@@ -123,7 +119,7 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
         },
     });
 
-    return (
+    return ( productId &&
         <>
             <div className="w-full block my-6">
                 <div>

@@ -7,11 +7,12 @@ import Previous from './previous';
 import Next from './next';
 
 const Pagination = ( {pagesCount, postName} ) => {
+	const router = useRouter();
+
 	if ( ! pagesCount || ! postName ) {
 		return null;
 	}
 
-	const router = useRouter();
 	const currentPageNo = parseInt( router?.query?.pageNo ) || 1;
 
 	const paginationLinks = createPaginationLinks( currentPageNo, pagesCount );

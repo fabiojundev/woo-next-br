@@ -4,11 +4,11 @@ import Image from 'next/image';
 
 const GalleryCarousel = ({ gallery }) => {
 
+    const [slide, setSlide] = useState(0);
+
     if (isEmpty(gallery) || !isArray(gallery)) {
         return null;
     }
-
-    const [slide, setSlide] = useState(0);
 
     const handleThumbClick = index => (ev) => {
         setSlide(index);
