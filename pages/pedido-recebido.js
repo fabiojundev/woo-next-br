@@ -109,7 +109,7 @@ const PedidoRecebidoContent = () => {
                                 </tr>
                             </tbody>
                         </table>
-                        <Link href="/">
+                        <Link href="/" passHref>
                             <button className="px-5 py-3 rounded-sm w-auto">
                                 Comprar mais
                             </button>

@@ -110,7 +110,7 @@ const AddToCart = (props) => {
                                 {addToCartLoading ? 'Adicionando...' : 'Comprar'}
                             </button>
                             {showViewCart ? (
-                                <Link href="/carrinho">
+                                <Link href="/carrinho" passHref>
                                     <button>
                                         Ver Carrinho
                                     </button>
