@@ -2,7 +2,7 @@ import Layout from '../Layout';
 import ParentCategoriesBlock from "../category/category-block/ParentCategoriesBlock";
 import HeroCarousel from "../home/hero-carousel";
 import ContactWhatsApp from '../ContactWhatsApp';
-// import InstagramEmbed from '../InstagramEmbed.html';
+import InstagramEmbed from '../InstagramEmbed.html';
 import Products from '../products';
 
 
@@ -59,11 +59,10 @@ export default function ProductsLayout(props) {
 					<ParentCategoriesBlock 
 						productCategories={productCategories} 
 					/>
-					{/* <div
+					<div
 						className="w-full" 
 						dangerouslySetInnerHTML={ {__html: InstagramEmbed} } 
-					/> */}
-					{/* <InstagramEmbed/> */}
+					/>
 				</aside>
 			</div>
 

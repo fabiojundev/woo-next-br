@@ -8,7 +8,6 @@ describe('Price', () => {
 
         const { container } = render(<Price />);
         expect(container.childElementCount).toEqual(0);
-        screen.debug();
     });
 
     it('Same Price', () => {
@@ -20,7 +19,6 @@ describe('Price', () => {
             />
         );
         screen.getByText("R$10,90");
-        screen.debug();
     });
 
     it('Different Price', () => {
