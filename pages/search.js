@@ -41,7 +41,7 @@ export default function Search({ data }) {
     setShowResultInfo(false);
 
     if (isEmpty(searchQuery)) {
-      setSearchError('Please enter text to search');
+      setSearchError('Por favor, digite o termo de busca');
       setQueryResultPosts({});
       return null;
     }
@@ -87,9 +87,20 @@ export default function Search({ data }) {
             setSearchQuery={setSearchQuery}
             handleSearchFormSubmit={handleSearchFormSubmit}
           />
-          <ResultInfo showResultInfo={showResultInfo} totalPostResultCount={totalPostResultCount} classnames="mt-4 text-center" />
-          <ErrorMessage text={searchError} classes="max-w-xl mx-auto -mt-8" />
-          <Loading showSpinner visible={loading} classes="mx-auto text-center -mt-8" />
+          <ResultInfo 
+            showResultInfo={showResultInfo} 
+            totalPostResultCount={totalPostResultCount} 
+            classnames="mt-4 text-center" 
+          />
+          <ErrorMessage 
+            text={searchError} 
+            classes="max-w-xl mx-auto -mt-8" 
+          />
+          <Loading 
+            showSpinner 
+            visible={loading} 
+            classes="mx-auto text-center -mt-8" 
+          />
           <LoadMorePosts
             posts={queryResultPosts}
             graphQLQuery={GET_SEARCH_RESULTS}

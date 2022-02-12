@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types';
 import SearchForm from './search-form';
 
-const SearchBox = ( {searchQuery, setSearchQuery, handleSearchFormSubmit} ) => {
+const SearchBox = ({
+  searchQuery,
+  setSearchQuery,
+  handleSearchFormSubmit
+}) => {
 
   return (
-    <div className="bg-gradient-to-r from-green-400 to-blue-500 px-6">
+    <div className="px-6">
       <div className="info max-w-xl mx-auto py-10">
-        <br/>
-        <h2 className="text-center text-white py-4 text-3xl uppercase font-bold">Find your needs</h2>
+        <br />
+        <h2 className="text-center py-4 text-3xl">Pesquisar</h2>
         <SearchForm
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
