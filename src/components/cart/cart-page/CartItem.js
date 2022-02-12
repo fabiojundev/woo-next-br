@@ -5,6 +5,7 @@ import { Cross, Loading } from "../../icons";
 import Link from 'next/link';
 import { AppContext } from "../../context/AppContext";
 import QuantityInput from '../../QuantityInput';
+import Image from 'next/image';
 
 
 const CartItem = ({
@@ -74,14 +75,19 @@ const CartItem = ({
 		<tr className="woo-next-cart-item block relative sm:table-row" key={item.productId}>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				<Link href={`/produto/${item?.slug}`} >
-					<a className="flex flex-wrap justify-center items-center sm:flex-no-wrap sm:justify-start">
-						<span className="my-4">
-							<img
-								className="w-full sm:w-24"
-								width="90px"
+					<a className="flex flex-wrap 
+						justify-center items-center 
+						sm:flex-nowrap sm:justify-start"
+					>
+						<span className="py-4 w-full sm:w-24">
+							<Image
+								width="100%"
+								height="100%"
+								layout="responsive"
+								objectFit='contain'
 								src={item.image.sourceUrl}
 								srcSet={item.image.srcSet}
-								alt={item.image.title}
+								alt={item.image.title || ''}
 							/>
 						</span>
 						<span className="m-4">

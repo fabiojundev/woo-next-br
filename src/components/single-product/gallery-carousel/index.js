@@ -1,5 +1,6 @@
 import { isEmpty, isArray } from 'lodash';
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 
 const GalleryCarousel = ({ gallery }) => {
 
@@ -31,7 +32,7 @@ const GalleryCarousel = ({ gallery }) => {
 
     return (
         <div className="md:mr-4">
-            <div 
+            <div
                 className="banner-img1 relative w-full mb-4"
             >
                 {
@@ -44,13 +45,19 @@ const GalleryCarousel = ({ gallery }) => {
                                 key={index}
                                 className={`banner-img-container relative`}
                             >
-                                <img
-                                    className={`${hidden}`}
-                                    title="Imagem do Produto"
-                                    src={item?.mediaItemUrl}
-                                    loading="lazy"
-                                    alt={item?.altText ? item?.altText : item?.title}
-                                />
+                                <span className={hidden}>
+                                    <Image
+                                        className={`prod-img ${hidden}`}
+                                        title={`Imagem do Produto - ${item.title}`}
+                                        src={item?.mediaItemUrl}
+                                        loading="lazy"
+                                        width="100%"
+                                        height="100%"
+                                        layout="responsive"
+                                        objectFit='contain'
+                                        alt={item?.altText ? item?.altText : item?.title}
+                                    />
+                                </span>
                             </div>
                         )
                     })
@@ -85,11 +92,15 @@ const GalleryCarousel = ({ gallery }) => {
                                     className={`${opacity} w-16 h-16 mr-2 ml-0 cursor-pointer list-none`}
                                     onClick={handleThumbClick(index)}
                                 >
-                                    <img
+                                    <Image
                                         src={item?.mediaItemUrl}
                                         loading="lazy"
                                         alt={item?.altText ? item?.altText : item?.title}
                                         className="h-16"
+                                        width="100%"
+                                        height="100%"
+                                        layout="responsive"
+                                        objectFit='contain'
                                     />
                                 </li>
                             )

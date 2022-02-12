@@ -27,7 +27,7 @@ describe('GalleryCarousel', () => {
     });
     it('Render Gallery', async () => {
 
-        const images = screen.getAllByTitle("Imagem do Produto");
+        const images = screen.getAllByTitle(/Imagem do Produto/);
         expect(images).toHaveLength(3);
 
         screen.getByTitle("Anterior");
@@ -36,7 +36,7 @@ describe('GalleryCarousel', () => {
 
     it('Click Gallery Next Image', async () => {
 
-        const images = screen.getAllByTitle("Imagem do Produto");
+        const images = screen.getAllByTitle(/Imagem do Produto/);
         expect(images).toHaveLength(3);
 
         screen.getByTitle("Próximo");
@@ -66,7 +66,7 @@ describe('GalleryCarousel', () => {
 
     it('Click Gallery Previous Image', async () => {
 
-        const images = screen.getAllByTitle("Imagem do Produto");
+        const images = screen.getAllByTitle(/Imagem do Produto/);
         expect(images).toHaveLength(3);
 
         screen.getByTitle("Anterior");

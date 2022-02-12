@@ -76,7 +76,7 @@ const Footer = () => (
 				<div className="m-2 p-4">
 					<h4 className="mb-8">SITE SEGURO</h4>
 					<Image
-
+						alt="Site Seguro"
 						sourceUrl="/google-safe-browsing.png"
 						width="239"
 						height="162"

@@ -24,7 +24,7 @@ const Product = (props) => {
 							loading="lazy"
 							sourceUrl={product?.image?.sourceUrl ?? ''}
 							showDefault={true}
-							altText={product?.image?.altText ?? product?.slug}
+							alt={product?.image?.altText ?? product.slug}
 						/>
 					</a>
 				</Link>
