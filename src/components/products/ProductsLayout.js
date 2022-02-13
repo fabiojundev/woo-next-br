@@ -4,7 +4,7 @@ import HeroCarousel from "../home/hero-carousel";
 import ContactWhatsApp from '../ContactWhatsApp';
 import InstagramEmbed from '../InstagramEmbed.html';
 import Products from '../products';
-
+import Pagination from '../blog/pagination';
 
 export default function ProductsLayout(props) {
 
@@ -40,8 +40,10 @@ export default function ProductsLayout(props) {
 					{ categoryName ? <h3 className="text-2xl mb-5 uppercase">{ categoryName }</h3> : '' }
 					<Products 
 						products={products}
-						productsPageCount={productsPageCount}
-						path={path}
+					/>
+					<Pagination
+						pagesCount={productsPageCount}
+						postName={path || "produtos"}
 					/>
 				</section>
 				<aside

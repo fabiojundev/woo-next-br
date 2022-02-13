@@ -1,13 +1,9 @@
 import { isEmpty, isArray } from 'lodash';
 import Product from '../product';
 import PropTypes from 'prop-types';
-import Pagination from '../blog/pagination';
-
 
 const Products = ({ 
 	products, 
-	productsPageCount,
-	path, 
 }) => {
 
 	if (isEmpty(products) && !isArray(products)) {
@@ -36,10 +32,6 @@ const Products = ({
 					)
 				) : ''}
 			</div>
-			<Pagination
-				pagesCount={productsPageCount}
-				postName={path || "produtos"}
-			/>
 		</>
 	);
 };
