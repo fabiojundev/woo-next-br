@@ -7,7 +7,10 @@ const ParentCategoryBlock = ( props ) => {
 	const { category } = props;
 
 	return (
-		<li className="produc-category list-none ml-0">
+		<li 
+			className="produc-category list-none ml-0"
+			title="Categoria de Produto"
+		>
 			<Link href={`/categoria-produto/${category?.slug}`}>
 				<a>
 					<div className="p-2">

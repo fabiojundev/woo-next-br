@@ -18,7 +18,10 @@ const Pagination = ( {pagesCount, postName} ) => {
 	const paginationLinks = createPaginationLinks( currentPageNo, pagesCount );
 
 	return (
-		<div className="flex justify-center my-8">
+		<div 
+			className="flex justify-center my-8"
+			title="Paginação"
+		>
 
 			<Previous currentPageNo={currentPageNo} postName={postName}/>
 

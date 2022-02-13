@@ -12,9 +12,10 @@ const Product = (props) => {
 	return (
 		// @TODO Need to handle Group products differently.
 		undefined !== product && 'GroupProduct' !== product.__typename ? (
-			<div className="product mb-5 border border-solid">
-
-
+			<div
+				className="product mb-5 border border-solid"
+				title="Produto"
+			>
 				<Link href={`/produto/${product?.slug}`} >
 					<a>
 						<Image
