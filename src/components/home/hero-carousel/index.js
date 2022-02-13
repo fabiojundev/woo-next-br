@@ -1,12 +1,9 @@
 import { isEmpty, isArray } from 'lodash';
 import Link from "next/link";
 import {useState, useEffect, useRef} from 'react';
+import Image from 'next/image';
 
 const HeroCarousel = ({heroCarousel}) => {
-
-    if ( isEmpty(heroCarousel) || ! isArray( heroCarousel ) ) {
-    	return null;
-    }
 
     const autoPlay = true;
     const slideDuration = 2; // in seconds
@@ -53,9 +50,9 @@ const HeroCarousel = ({heroCarousel}) => {
             const interval = setInterval(() => nextSlide(), slideDuration * 1000 );
             return () => clearInterval( interval );
         }
-    }, [])
+    });
 
-    return (
+    return (! isEmpty(heroCarousel) && isArray( heroCarousel ) &&
         <div className="banner flex flex-col sm:flex-row justify-between overflow-hidden">
             <div className="banner-img sm:w-8/12">
                 {
@@ -63,8 +60,11 @@ const HeroCarousel = ({heroCarousel}) => {
                         const opacity = ( activeIndex === index || 1 === heroCarousel.length ) ? 'opacity-100' : 'opacity-0';
                         return (
                             <div key={item?.id}className={`${opacity} banner-img-container absolute top-0 left-0`}>
-                                <img
-                                    src={item?.image?.sourceUrl} srcSet={item?.image?.srcSet} loading="lazy"
+                                <Image
+                                    src={item?.image?.sourceUrl} 
+                                    srcSet={item?.image?.srcSet} 
+                                    loading="lazy"
+                                    alt={item?.image?.altText ?? ''}
                                 />
                             </div>
                         )

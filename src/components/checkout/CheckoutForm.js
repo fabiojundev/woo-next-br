@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
 
 import YourOrder from "./YourOrder";
@@ -101,7 +101,7 @@ const CheckoutForm = (props) => {
         }
     };
 
-    const updateCustomerFromCart = (
+    const updateCustomerFromCart = useCallback ((
         field = '',
         overwrite = false
     ) => {
@@ -138,7 +138,7 @@ const CheckoutForm = (props) => {
                             return val;
                         })
                 );
-                if ( isEmpty( toUpdate?.shipping?.email ) && cart?.email) {
+                if (isEmpty(toUpdate?.shipping?.email) && cart?.email) {
                     toUpdate.shipping.email = cart.email;
                 }
             }
@@ -162,11 +162,12 @@ const CheckoutForm = (props) => {
             setInput(toUpdate);
         }
         return toUpdate;
-    };
+    }, [cart]);
 
-    useEffect(async () => {
+    useEffect(() => {
+
         updateCustomerFromCart('shipping', true);
-    }, [cart?.customer?.shipping, input.firstRender]);
+    }, [cart?.customer?.shipping, input.firstRender, updateCustomerFromCart]);
 
     // Create New order: Checkout Mutation.
     const [checkout, {
@@ -334,14 +335,18 @@ const CheckoutForm = (props) => {
         setInput(newState);
     }
 
-    useEffect(async () => {
+    useEffect(() => {
 
-        if (null !== orderData) {
+        async function doCheckout() {
             // Call the checkout mutation when the value for orderData changes/updates.
             await checkout();
+        };
+
+        if (null !== orderData) {
+            doCheckout();
         }
 
-    }, [orderData]);
+    }, [orderData, checkout]);
 
     // Loading state
     const isOrderProcessing = checkoutLoading || isGatewayProcessing;
@@ -437,13 +442,17 @@ const CheckoutForm = (props) => {
                                 preference={createdOrderData?.preference}
                             />
                             <p className="text-sm text-red-600">
-                            {
-                                input.shipping?.errors && Object.values(input.shipping.errors)?.map(err =>(
-                                    <div className="pt-2">
-                                        Erro: {err}
-                                    </div>
-                                ))
-                            }
+                                {
+                                    input.shipping?.errors 
+                                        && Object.values(input.shipping.errors)?.map( (err, index) => (
+                                        <div 
+                                            key={index}
+                                            className="pt-2"
+                                        >
+                                            Erro: {err}
+                                        </div>
+                                    ))
+                                }
                             </p>
 
                             {/* Checkout Loading*/}

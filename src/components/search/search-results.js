@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import SearchIcon from '../icons/SearchIcon';
 
 const SearchResults = ( {searchQuery, setSearchQuery} ) => {
   return (
