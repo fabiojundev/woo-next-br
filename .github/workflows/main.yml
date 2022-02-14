@@ -9,9 +9,6 @@ on:
   pull_request:
     branches: [ prod ]
 
-env:
-  NEXT_PUBLIC_WORDPRESS_URL: https://cms.camadecultivo.com.br
-
 jobs:
   build:
 
@@ -23,6 +20,11 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: Create env file
+    run: |
+        touch .env
+        echo NEXT_PUBLIC_WORDPRESS_URL="https://cms.camadecultivo.com.br" >> .env
+
     - uses: actions/checkout@v2
     - name: Check Integration
       uses: actions/setup-node@v2
