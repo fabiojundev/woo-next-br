@@ -24,7 +24,8 @@ jobs:
       run: |
           touch .env
           echo NEXT_PUBLIC_WORDPRESS_URL="https://cms.camadecultivo.com.br" >> .env
-
+      env:
+        NEXT_PUBLIC_WORDPRESS_URL: "https://cms.camadecultivo.com.br"
     - uses: actions/checkout@v2
     - name: Check Integration
       uses: actions/setup-node@v2
