@@ -30,9 +30,8 @@ jobs:
     - name: Create env file
       run: |
           touch .env
-          echo NEXT_PUBLIC_WORDPRESS_URL="https://cms.camadecultivo.com.br" >> .env
-          echo NEXT_PUBLIC_WORDPRESS_URL1="https://cms.camadecultivo.com.br" >> .env
+          echo NEXT_PUBLIC_WORDPRESS_URL="${{ secrets.PUBLIC_WORDPRESS_URL }}" >> .env
           cat .env
-    - run: yarn build
+#    - run: yarn build
 #    - run: yarn lint
     - run: yarn test:ci
