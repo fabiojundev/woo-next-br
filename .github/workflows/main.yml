@@ -20,14 +20,6 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Create env file
-      run: |
-          touch .env
-          echo NEXT_PUBLIC_WORDPRESS_URL="https://cms.camadecultivo.com.br" >> .env
-          echo NEXT_PUBLIC_WORDPRESS_URL1="https://cms.camadecultivo.com.br" >> .env
-          cat .env
-      env:
-        NEXT_PUBLIC_WORDPRESS_URL: "https://cms.camadecultivo.com.br"
     - uses: actions/checkout@v2
     - name: Check Integration
       uses: actions/setup-node@v2
@@ -35,6 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install
+    - name: Create env file
+      run: |
+          touch .env
+          echo NEXT_PUBLIC_WORDPRESS_URL="https://cms.camadecultivo.com.br" >> .env
+          echo NEXT_PUBLIC_WORDPRESS_URL1="https://cms.camadecultivo.com.br" >> .env
+          cat .env
     - run: yarn build
 #    - run: yarn lint
     - run: yarn test:ci
