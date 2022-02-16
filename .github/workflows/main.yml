@@ -24,6 +24,8 @@ jobs:
       run: |
           touch .env
           echo NEXT_PUBLIC_WORDPRESS_URL="https://cms.camadecultivo.com.br" >> .env
+          echo NEXT_PUBLIC_WORDPRESS_URL1="https://cms.camadecultivo.com.br" >> .env
+          cat .env
       env:
         NEXT_PUBLIC_WORDPRESS_URL: "https://cms.camadecultivo.com.br"
     - uses: actions/checkout@v2
@@ -33,6 +35,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install
-#    - run: yarn build
+    - run: yarn build
 #    - run: yarn lint
     - run: yarn test:ci
