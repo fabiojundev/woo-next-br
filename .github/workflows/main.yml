@@ -30,7 +30,7 @@ jobs:
     - name: Create env file
       run: |
           touch .env
-          echo NEXT_PUBLIC_WORDPRESS_URL="${{ secrets.PUBLIC_WORDPRESS_URL }}" >> .env
+          echo NEXT_PUBLIC_WORDPRESS_URL=${{ secrets.PUBLIC_WORDPRESS_URL }} >> .env
           cat .env
 #    - run: yarn build
 #    - run: yarn lint
