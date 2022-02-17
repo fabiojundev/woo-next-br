@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest --watch",
+    "test": "jest --watch --detectOpenHandles",
     "test:ci": "jest --",
     "coverage": "jest --collectCoverage --",
     "lint": "next lint",
