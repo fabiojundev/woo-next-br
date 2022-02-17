@@ -133,12 +133,14 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                     placeholder="00000-000"
                     mask="99999-999"
                     autoComplete="postal-code"
+                    title="Digite o CEP"
                 />
                 <LoadingButton
                     label={"OK"}
                     loading={loading}
                     type="button"
                     handleClick={handleGetShippingClick}
+                    title="Calcular Frete"
                 />
             </div>
             {data?.shippingCosts && (
@@ -149,7 +151,10 @@ const ShippingCosts = ({ productId, quantity = 1 }) => {
                     <table className="mb-6">
                         <tbody>
                             {data?.shippingCosts?.shippingCosts.map(rate => (
-                                <tr key={rate.name}>
+                                <tr 
+                                    key={rate.name}
+                                    title="Frete e prazo de entrega"
+                                >
                                     <td className="pr-8">{rate.name}</td>
                                     <td className="pr-8">{rate.cost}</td>
                                     <td className="pr-8">{rate.forecast}</td>

@@ -3,11 +3,12 @@ import Image from "./image";
 import LoadingImg from './LoadingImg';
 
 
-const LoadingButton = ( {loading, handleClick, label, type} ) => {
+const LoadingButton = ( {loading, handleClick, label, type, ...props} ) => {
 
 	return (loading
 		? <LoadingImg />
 		: <button
+			{...props}
 			disabled={loading}
 			className={cx(
 				'bg-green-default',
