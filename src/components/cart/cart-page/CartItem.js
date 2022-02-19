@@ -29,7 +29,7 @@ const CartItem = ({
 	 */
 	const handleQtyChange = (event, cartKey) => {
 
-		if (process.browser) {
+		if (typeof window !== "undefined") {
 
 			// event.stopPropagation();
 
@@ -39,12 +39,12 @@ const CartItem = ({
 			}
 
 			// If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
-			const newQty = (event.target.value) 
-				? parseInt(event.target.value) 
+			const newQty = (event.target.value)
+				? parseInt(event.target.value)
 				: 1;
 
 
-			if( productCount != newQty ) {
+			if (productCount != newQty) {
 				setNeedCartUpdate(true);
 			}
 			// Set the new qty in state.
@@ -53,7 +53,7 @@ const CartItem = ({
 			const updatedCart = calculateCartTotals({
 				...cart,
 				products: products.map(prod => {
-					if( prod.cartKey === cartKey ) {
+					if (prod.cartKey === cartKey) {
 						return {
 							...prod,
 							qty: newQty,
@@ -62,7 +62,7 @@ const CartItem = ({
 					else {
 						return prod;
 					}
-				} ),
+				}),
 			});
 
 			// localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
@@ -102,10 +102,11 @@ const CartItem = ({
 
 			{/* Qty Input */}
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
-				<QuantityInput 
+				<QuantityInput
 					data-cart-key={item.cartKey}
 					value={productCount}
-					handleChange={(event) => handleQtyChange(event, item.cartKey)}				
+					handleChange={(event) => handleQtyChange(event, item.cartKey)}
+					label="Quantidade"
 				/>
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
@@ -113,7 +114,7 @@ const CartItem = ({
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
 				{/* Remove item */}
-				<span 
+				<span
 					className="woo-next-cart-close-icon
 								mt-1 
 								cursor-pointer
@@ -123,7 +124,7 @@ const CartItem = ({
 					onClick={(event) => handleRemoveProductClick(event, item.cartKey, products)}
 					title="Excluir"
 				>
-					<Cross 
+					<Cross
 						className="fill-red-600"
 					/>
 				</span>

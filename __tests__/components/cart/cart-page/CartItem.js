@@ -1,0 +1,105 @@
+import React from 'react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
+import CartItem from '../../../../src/components/cart/cart-page/CartItem';
+import { AppContext } from "../../../../src/components/context/AppContext";
+
+describe('CartItem', () => {
+
+    const getProduct = (id, qty = 1) => ({
+        id: id,
+        qty: qty,
+        productId: id,
+        price: "R$10,00",
+        totalPrice: `R$${10 * qty},00`,
+        name: `Product ${id}`,
+        description: `Product ${id} description`,
+        type: "simple",
+        onSale: false,
+        slug: "product-" + id,
+        averageRating: 5,
+        reviewCount: 10,
+        image: {
+            id: "11",
+            sourceUrl: "https://via.placeholder.com/150",
+            altText: "Image alt for product " + id
+        },
+        galleryImages: {
+            nodes: [
+                {
+                    id: "111",
+                    sourceUrl: "https://via.placeholder.com/150",
+                    altText: "Gallery image alt for product " + id
+                },
+            ],
+        },
+
+    });
+
+    const customRender = () => {
+        render(
+            <AppContext.Provider
+                value={[
+                    {},
+                    () => { },
+                    () => { },
+                    () => { },
+                ]}
+            >
+                <table>
+                    <tbody>
+                        <CartItem
+                            item={getProduct(1, 2)}
+                            products={[
+                                getProduct(1),
+                                getProduct(2),
+                                getProduct(3),
+                            ]}
+                            updateCartProcessing={false}
+                            handleRemoveProductClick={() => { }}
+                            setNeedCartUpdate={() => { }}
+                        />
+                    </tbody>
+                </table>
+            </AppContext.Provider>
+        );
+    };
+
+    it('Render CartItem', () => {
+
+        customRender();
+        screen.getByText(/Product 1/);
+        screen.getByText("R$10,00");
+        screen.getByDisplayValue("-");
+        screen.getByDisplayValue("+");
+        screen.getByDisplayValue("2");
+        screen.getByText("R$20,00");
+        screen.getByTitle("Excluir");
+    });
+
+    it('Click CartItem Plus Quantity', async () => {
+
+        customRender();
+        const qty = screen.getByRole("textbox", { title: "Quantidade" });
+        expect(qty).toHaveValue("2");
+
+        userEvent.click(screen.getByDisplayValue("+"));
+
+        expect(qty).toHaveValue("3");
+    });
+
+    it('Click CartItem Minus Quantity', async () => {
+
+        customRender();
+        const qty = screen.getByRole("textbox", { title: "Quantidade" });
+        expect(qty).toHaveValue("2");
+
+        userEvent.click(screen.getByDisplayValue("-"));
+
+        expect(qty).toHaveValue("1");
+    });
+
+});
+

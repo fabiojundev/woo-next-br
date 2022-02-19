@@ -197,7 +197,7 @@ const CartItemsContainer = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{cart?.products?.length && (
+									{cart?.products?.length > 0 && (
 										cart?.products?.map(item => (
 											<CartItem
 												key={item.productId}
