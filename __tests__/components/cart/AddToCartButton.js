@@ -7,46 +7,14 @@ import { GET_CUSTOMER } from "../../../src/queries/get-customer";
 import ADD_TO_CART from "../../../src/mutations/add-to-cart";
 import GET_CART from "../../../src/queries/get-cart";
 import { act } from 'react-dom/test-utils';
-import { v4 as uuidv4 } from 'uuid';
 import uuid from 'uuid';
-// import { v4 } from 'uuid';
-// import * as uuid from 'uuid';
-
-// import * as uuid from 'uuid';
-// // import { v4 as uuidv4 } from 'uuid';
-// jest.mock('uuid', () => {
-//     return {
-//         uuidv4: jest.fn(() => '123')
-//     };
-// });
-// const uuid = uuidv4();
 
 jest.mock('uuid', () => {
     return {
-      __esModule: true,
-      v4: jest.fn().mockReturnValue('123'),
+        __esModule: true,
+        v4: jest.fn().mockReturnValue('123'),
     };
-  });
-// jest.mock('uuid', () => ({ v4: () => '123' }));
-// jest.mock('uuid', () => ({ v4: () => '123' }));
-// jest.mock('uuid', () => () => '123');
-// uuidv4 = jest.fn().mockReturnValue('123');
-// uuidv4.mockImplementation(() => {
-//     return '123';
-// });
-
-// const uuidMock = jest.fn().mockImplementation(() => {
-//     return {
-//         v4: jest.fn(() => '123'),
-//     };
-// });
-// jest.mock('uuid', () => {
-//     return uuidMock;
-// });
-
-// beforeEach(() => {
-//     jest.mock('uuid', () => ({ v4: () => '123' }));
-// });
+});
 
 describe('AddToCartButton', () => {
 
@@ -180,7 +148,7 @@ describe('AddToCartButton', () => {
                 variables: {
                     input: {
                         clientMutationId: '123',
-                        productId: 1,
+                        productId: "1",
                         quantity: 1,
                     },
                 },
@@ -241,13 +209,9 @@ describe('AddToCartButton', () => {
         screen.getByDisplayValue("+");
     });
 
-    it.skip('Add product to cart', async () => {
+    it('Add product to cart', async () => {
 
         customRender();
-
-        // uuid.mockImplementation(() => '123');
-        // jest.spyOn(uuid, 'v4').mockReturnValue('123');
-        // const uuidSpy = jest.spyOn(uuid, 'v4');
 
         userEvent.click(screen.getByRole("button", { name: /Comprar/i }));
 
