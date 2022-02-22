@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AddToCartButton from "../../../src/components/cart/AddToCartButton";
 import { MockedProvider } from '@apollo/client/testing';
@@ -8,6 +8,8 @@ import ADD_TO_CART from "../../../src/mutations/add-to-cart";
 import GET_CART from "../../../src/queries/get-cart";
 import { act } from 'react-dom/test-utils';
 import uuid from 'uuid';
+
+afterEach(cleanup);
 
 jest.mock('uuid', () => {
     return {

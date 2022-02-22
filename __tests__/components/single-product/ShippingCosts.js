@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ShippingCosts from "../../../src/components/single-product/ShippingCosts";
 import { MockedProvider } from '@apollo/client/testing';
@@ -7,6 +7,8 @@ import { GET_CUSTOMER } from "../../../src/queries/get-customer";
 import GET_SHIPPING_COSTS from "../../../src/queries/get-shipping-costs";
 import UPDATE_SHIPPING_ADDRESS from "../../../src/mutations/update-shipping-address";
 import { act } from 'react-dom/test-utils';
+
+afterEach(cleanup);
 
 describe('ShippingCosts', () => {
 

@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Price from "../../../src/components/single-product/price";
+
+afterEach(cleanup);
 
 describe('Price', () => {
 

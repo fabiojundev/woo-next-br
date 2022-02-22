@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import GalleryCarousel from "../../../src/components/single-product/gallery-carousel";
 import userEvent from '@testing-library/user-event';
+
+afterEach(cleanup);
 
 describe('GalleryCarousel', () => {
     beforeEach(() => {

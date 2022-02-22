@@ -1,10 +1,12 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import CartItem from '../../../../src/components/cart/cart-page/CartItem';
 import { AppContext } from "../../../../src/components/context/AppContext";
+
+afterEach(cleanup);
 
 describe('CartItem', () => {
 
