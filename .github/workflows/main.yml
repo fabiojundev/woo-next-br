@@ -8,6 +8,8 @@ on:
     branches: [ prod ]
   pull_request:
     branches: [ prod ]
+  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
   build:
