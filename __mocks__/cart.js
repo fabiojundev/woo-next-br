@@ -56,21 +56,55 @@ export const emptyCart = {
 
 export const loadedCart = {
     contents: {
-        "nodes": []
+        nodes: [
+            {
+                key: 'product-1',
+                product: {
+                    node: {
+                        ...productNode.node,
+                        productId: 472,
+                    },
+                },
+                variation: null,
+                quantity: 1,
+                total: "R$34,90",
+                subtotal: "R$34,90",
+                subtotalTax: "R$0,00"
+            },
+            {
+                key: 'product-2',
+                product: productNode,
+                variation: null,
+                quantity: 1,
+                total: "R$1,10",
+                subtotal: "R$1,10",
+                subtotalTax: "R$0,00"
+            },
+        ]
     },
     appliedCoupons: null,
-    subtotal: "R$0,00",
+    subtotal: "R$36,00",
     subtotalTax: "R$0,00",
     shippingTax: "R$0,00",
-    shippingTotal: "R$000",
-    total: "R$0,00",
+    shippingTotal: "R$0,00",
+    total: "R$36,00",
     totalTax: "R$0,00",
-    feeTax: "R$0, 00",
+    feeTax: "R$0,00",
     feeTotal: "R$0,00",
     discountTax: "R$0,00",
     discountTotal: "R$0,00",
-    availableShippingMethods: [],
-    chosenShippingMethods: [],
+    availableShippingMethods: [{
+        packageDetails: "produto 1 + produto 2",
+        rates: [
+            {
+                cost: "10.00",
+                id: 'flat_rate',
+                label: 'Frete',
+                methodId: 'flat_rate',
+            }
+        ]
+    }],
+    chosenShippingMethods: ['flat_rate'],
     needsShippingAddress: false
 
 };
@@ -80,7 +114,7 @@ export const getGqlMocks = (loadCart) => ([
         request: {
             query: GET_CART,
         },
-        result: {
+        newData: jest.fn(() => ({
             data: {
                 cart: loadCart ? loadedCart : emptyCart,
                 customer: {
@@ -88,7 +122,7 @@ export const getGqlMocks = (loadCart) => ([
                     shipping: loadCart ? shipping : emptyShipping,
                 }
             }
-        },
+        })),
     },
     {
         request: {
