@@ -82,5 +82,43 @@ describe('CartItemsContainer', () => {
         // screen.debug();
     });
 
+    it('Increase CartItem quantity in cart', async () => {
+
+        customRender(true);
+
+        //get cart items after render
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText(/Carrinho vazio/i)).not.toBeInTheDocument();
+            expect(screen.queryAllByText(/Nome do Produto/i)).toHaveLength(2);
+            expect(screen.getAllByText("R$34,90")).toHaveLength(2);
+        });
+
+        fireEvent.click(screen.getAllByText("+")[0]);
+        screen.getByText("R$69,80");
+        expect(screen.getAllByText("R$34,90")).toHaveLength(1);
+    });
+
+    it('Decrease CartItem quantity in cart', async () => {
+
+        customRender(true);
+
+        //get cart items after render
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText(/Carrinho vazio/i)).not.toBeInTheDocument();
+            expect(screen.queryAllByText(/Nome do Produto/i)).toHaveLength(2);
+            expect(screen.getAllByText("R$1,10")).toHaveLength(1);
+        });
+
+        fireEvent.click(screen.getAllByText("-")[1]);
+        expect(screen.getAllByText("R$1,10")).toHaveLength(2);
+    });
 });
 
