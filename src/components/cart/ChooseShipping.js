@@ -33,7 +33,7 @@ const ChooseShipping = ({
 	const requestDefaultOptions = {
 		onCompleted: () => {
 			console.log("completed, refetch");
-			refetchCart('cart');
+			refetchCart();
 		},
 		onError: (error) => {
 			if (error) {
@@ -96,7 +96,6 @@ const ChooseShipping = ({
 			shippingMethod: chosenShippingMethod,
 		});
 		console.log("updatedCart", updatedCart);
-		localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
 
 		saveCartLocal(updatedCart);
 		setCart(updatedCart);
@@ -136,6 +135,7 @@ const ChooseShipping = ({
 									placeholder="CEP"
 									data-placeholder="CEP"
 									onChange={handleZipcodeChange}
+									title="CEP"
 								/>
 								<LoadingButton
 									label={"Atualizar"}

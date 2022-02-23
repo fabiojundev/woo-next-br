@@ -2,11 +2,13 @@ import ADD_TO_CART from "../src/mutations/add-to-cart";
 import UPDATE_CART from "../src/mutations/update-cart";
 import GET_CART from "../src/queries/get-cart";
 import { GET_CUSTOMER } from "../src/queries/get-customer";
+import UPDATE_SHIPPING_ADDRESS from "../src/mutations/update-shipping-address";
+import UPDATE_SHIPPING_METHOD from "../src/mutations/update-shipping-method";
 import CLEAR_CART_MUTATION from "../src/mutations/clear-cart";
 import { productNode } from "./product";
 
 export const shipping = {
-    address1: "Rua Conselheiro Furtado, 123",
+    address1: "Rua Conde de Sarzedas, 123",
     address2: "Apt 1",
     city: "Sao Paulo",
     state: "SP",
@@ -54,6 +56,24 @@ export const emptyCart = {
 
 };
 
+export const shippingRates = [{
+    packageDetails: "produto 1 + produto 2",
+    rates: [
+        {
+            cost: "10.00",
+            id: 'flat_rate',
+            label: 'Frete',
+            methodId: 'flat_rate',
+        },
+        {
+            cost: "20.00",
+            id: 'PAC',
+            label: 'PAC',
+            methodId: 'PAC',
+        }
+    ]
+}];
+
 export const loadedCart = {
     contents: {
         nodes: [
@@ -93,36 +113,59 @@ export const loadedCart = {
     feeTotal: "R$0,00",
     discountTax: "R$0,00",
     discountTotal: "R$0,00",
-    availableShippingMethods: [{
-        packageDetails: "produto 1 + produto 2",
-        rates: [
-            {
-                cost: "10.00",
-                id: 'flat_rate',
-                label: 'Frete',
-                methodId: 'flat_rate',
-            }
-        ]
-    }],
+    availableShippingMethods: [],
     chosenShippingMethods: ['flat_rate'],
-    needsShippingAddress: false
+    needsShippingAddress: true
 
 };
 
-export const getGqlMocks = (loadCart) => ([
+export const loadedCartWithRates = {
+    ...loadedCart,
+    availableShippingMethods: shippingRates,
+    shippingTotal: "R$10,00",
+    total: "R$47,10",
+};
+
+const { contents, appliedCoupons, ...chooseShippingResult } = loadedCart;
+
+let queryCalled = false;
+export const getGqlMocks = (loadCart, withShipping) => ([
     {
         request: {
             query: GET_CART,
         },
-        newData: jest.fn(() => ({
-            data: {
-                cart: loadCart ? loadedCart : emptyCart,
-                customer: {
-                    email: loadCart ? "email@email.com" : '',
-                    shipping: loadCart ? shipping : emptyShipping,
-                }
+        result: jest.fn(() => {
+            let ret = {};
+            if (queryCalled) {
+                ret = {
+                    data: {
+                        cart: loadCart
+                            ? loadedCartWithRates
+                            : emptyCart,
+                        customer: {
+                            email: loadCart ? "email@email.com" : '',
+                            shipping
+                        }
+                    }
+                };
             }
-        })),
+            else {
+                ret = {
+                    data: {
+                        cart: loadCart
+                            ? withShipping ? loadedCartWithRates : loadedCart
+                            : emptyCart,
+                        customer: {
+                            email: loadCart ? "email@email.com" : '',
+                            shipping: withShipping ? shipping : emptyShipping,
+                        }
+                    }
+                };
+            }
+            console.log("queryCalled", queryCalled, loadCart, withShipping, ret);
+            queryCalled = true;
+            return ret;
+        }),
     },
     {
         request: {
@@ -195,4 +238,43 @@ export const getGqlMocks = (loadCart) => ([
             },
         },
     },
+    {
+        request: {
+            query: UPDATE_SHIPPING_ADDRESS,
+            variables: {
+                input: {
+                    clientMutationId: '123',
+                    shipping: {
+                        country: 'BR',
+                        postcode: '01512000',
+                    },
+                },
+            },
+        },
+        result: {
+            data: {
+                updateCustomer: {
+                    customer: {
+                        shipping
+                    },
+                },
+            },
+        },
+    },
+    // {
+    //     request: {
+    //         query: UPDATE_SHIPPING_METHOD,
+    //         variables: {
+    //             shippingMethod: {
+    //                 clientMutationId: '123',
+    //                 shippingMethods: ['flat_rate'],
+    //             }
+    //         },
+    //     },
+    //     result: {
+    //         data: {
+    //             cart: chooseShippingResult,
+    //         },
+    //     },
+    // },
 ]);

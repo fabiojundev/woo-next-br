@@ -12,10 +12,10 @@ afterEach(cleanup);
 
 describe('CartItemsContainer', () => {
 
-    const customRender = (loadCart) => {
+    const customRender = (loadCart, withShipping) => {
         return render(
             <AppProvider>
-                <MockedProvider mocks={getGqlMocks(loadCart)} addTypename={false}>
+                <MockedProvider mocks={getGqlMocks(loadCart, withShipping)} addTypename={false}>
                     <CartItemsContainer />
                 </MockedProvider>
             </AppProvider>
@@ -119,6 +119,45 @@ describe('CartItemsContainer', () => {
 
         fireEvent.click(screen.getAllByText("-")[1]);
         expect(screen.getAllByText("R$1,10")).toHaveLength(2);
+    });
+
+    it('Calculate shipping cost', async () => {
+
+        customRender(true, true);
+
+        //get cart items after render
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText(/Carrinho vazio/i)).not.toBeInTheDocument();
+            expect(screen.queryAllByText(/Nome do Produto/i)).toHaveLength(2);
+        });
+
+        // expect(screen.queryByText(/Escolha o frete/i)).not.toBeInTheDocument();
+        fireEvent.change(
+            screen.getByTitle("CEP"), 
+            { target: { value: "01512-000" } }
+        );
+        fireEvent.click(screen.getByRole("button", { name: /Atualizar/i }));
+
+        screen.getAllByAltText("Carregando...");
+        //update shipping address
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 2));
+        });
+
+        //refetch cart
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 10));
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByAltText("Carregando...")).not.toBeInTheDocument();
+            expect(screen.queryByText(/Escolha o frete/i)).toBeInTheDocument();
+            expect(screen.queryByText(/Rua Conde de Sarzedas/i)).toBeInTheDocument();
+        });
     });
 });
 
