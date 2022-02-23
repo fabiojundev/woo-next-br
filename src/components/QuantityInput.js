@@ -80,7 +80,6 @@ const QuantityInput = (props) => {
 					min={min}
 					max={max}
 					value={value}
-					title={label}
 					autoComplete="off"
 					onChange={onChange}
 					className="input-text 

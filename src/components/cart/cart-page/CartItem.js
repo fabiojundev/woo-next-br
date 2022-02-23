@@ -106,7 +106,7 @@ const CartItem = ({
 					data-cart-key={item.cartKey}
 					value={productCount}
 					handleChange={(event) => handleQtyChange(event, item.cartKey)}
-					label="Quantidade"
+					title="Quantidade"
 				/>
 			</td>
 			<td className="woo-next-cart-element block text-center w-full sm:table-cell">
