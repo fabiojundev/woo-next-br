@@ -2,43 +2,13 @@ import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import CartItem from '../../../../src/components/cart/cart-page/CartItem';
 import { AppContext } from "../../../../src/components/context/AppContext";
+import { getProduct } from '../../../../__mocks__/product';
 
 afterEach(cleanup);
 
 describe('CartItem', () => {
-
-    const getProduct = (id, qty = 1) => ({
-        id: id,
-        qty: qty,
-        productId: id,
-        price: "R$10,00",
-        totalPrice: `R$${10 * qty},00`,
-        name: `Product ${id}`,
-        description: `Product ${id} description`,
-        type: "simple",
-        onSale: false,
-        slug: "product-" + id,
-        averageRating: 5,
-        reviewCount: 10,
-        image: {
-            id: "11",
-            sourceUrl: "https://via.placeholder.com/150",
-            altText: "Image alt for product " + id
-        },
-        galleryImages: {
-            nodes: [
-                {
-                    id: "111",
-                    sourceUrl: "https://via.placeholder.com/150",
-                    altText: "Gallery image alt for product " + id
-                },
-            ],
-        },
-
-    });
 
     const customRender = () => {
         render(

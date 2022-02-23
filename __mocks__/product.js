@@ -44,10 +44,14 @@ export const productNode = {
         reviewCount: 0,
         image: {
             id: "cG9zdDo0NjQ=",
-            sourceUrl: "", altText: "Alt text"
+            src: "https://via.placeholder.com/150",
+            sourceUrl: "https://via.placeholder.com/150", 
+            altText: "Alt text",
+            title: "Nome do Produto title",
+            srcSet: "",
         },
         galleryImages: {
             nodes: []
-        }
+        },
     }
 };
