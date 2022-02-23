@@ -67,15 +67,16 @@ const ChooseShipping = ({
 	};
 
 	const getShippingRates = (postcode) => {
-		console.log("getShippingRates", postcode.replace(/\D/g, ''));
-		if (postcode?.length >= 8) {
+		const zipcode = postcode?.replace(/\D/g, '');
+		// console.log("getShippingRates", zipcode);
+		if (zipcode?.length >= 8) {
 			updateShippingAddress({
 				variables: {
 					input: {
 						clientMutationId: v4(),
 						shipping: {
 							country: 'BR',
-							postcode: postcode.replace(/\D/g, ''),
+							postcode: zipcode,
 							// overwrite: true
 						},
 					}

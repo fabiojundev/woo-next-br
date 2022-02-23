@@ -121,7 +121,7 @@ describe('CartItemsContainer', () => {
         expect(screen.getAllByText("R$1,10")).toHaveLength(2);
     });
 
-    it('Calculate shipping cost', async () => {
+    it.only('Calculate shipping cost', async () => {
 
         customRender(true, true);
 
@@ -135,14 +135,24 @@ describe('CartItemsContainer', () => {
             expect(screen.queryAllByText(/Nome do Produto/i)).toHaveLength(2);
         });
 
-        // expect(screen.queryByText(/Escolha o frete/i)).not.toBeInTheDocument();
+        const postcodeInput = screen.getByTitle("CEP");
+
+        //invalid zip code
         fireEvent.change(
-            screen.getByTitle("CEP"), 
+            postcodeInput,
+            { target: { value: "01512-aaa" } }
+        );
+        fireEvent.click(screen.getByRole("button", { name: /Atualizar/i }));
+        expect(screen.queryAllByAltText("Carregando...")).toHaveLength(0);
+
+        //valid zip code
+        fireEvent.change(
+            postcodeInput,
             { target: { value: "01512-000" } }
         );
         fireEvent.click(screen.getByRole("button", { name: /Atualizar/i }));
-
         screen.getAllByAltText("Carregando...");
+
         //update shipping address
         act(() => {
             new Promise(resolve => setTimeout(resolve, 2));
@@ -176,7 +186,7 @@ describe('CartItemsContainer', () => {
             expect(screen.queryByText(/Rua Conde de Sarzedas/i)).toBeInTheDocument();
         });
 
-        fireEvent.click(screen.getByDisplayValue(/flat_rate/i ));
+        fireEvent.click(screen.getByDisplayValue(/flat_rate/i));
 
         act(() => {
             new Promise(resolve => setTimeout(resolve, 1));
@@ -186,7 +196,7 @@ describe('CartItemsContainer', () => {
             expect(screen.getByTitle(/Custo de Entrega/i)).toContainHTML("R$10,00");
         });
 
-        fireEvent.click(screen.getByDisplayValue(/PAC/i ));
+        fireEvent.click(screen.getByDisplayValue(/PAC/i));
 
         act(() => {
             new Promise(resolve => setTimeout(resolve, 1));
