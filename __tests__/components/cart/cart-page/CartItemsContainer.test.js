@@ -159,5 +159,44 @@ describe('CartItemsContainer', () => {
             expect(screen.queryByText(/Rua Conde de Sarzedas/i)).toBeInTheDocument();
         });
     });
+
+    it('Choose shipping method', async () => {
+
+        customRender(true, true);
+
+        //get cart items after render
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText(/Carrinho vazio/i)).not.toBeInTheDocument();
+            expect(screen.queryAllByText(/Nome do Produto/i)).toHaveLength(2);
+            expect(screen.queryByText(/Escolha o frete/i)).toBeInTheDocument();
+            expect(screen.queryByText(/Rua Conde de Sarzedas/i)).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByDisplayValue(/flat_rate/i ));
+
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.getByTitle(/Custo de Entrega/i)).toContainHTML("R$10,00");
+        });
+
+        fireEvent.click(screen.getByDisplayValue(/PAC/i ));
+
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.getByTitle(/Custo de Entrega/i)).toContainHTML("R$20,00");
+        });
+
+    });
+
 });
 

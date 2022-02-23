@@ -237,7 +237,7 @@ const CartItemsContainer = () => {
 								&& cart?.shippingMethod
 								&& <div className="flex justify-between">
 									<h3 className="text-xl">Entrega</h3>
-									<div className="font-bold">
+									<div className="font-bold" title="Custo de Entrega">
 										{formatCurrency(cart.shippingTotal)}
 									</div>
 								</div>
