@@ -347,11 +347,11 @@ const CheckoutForm = (props) => {
             await checkout();
         };
 
-        if (null !== orderData) {
+        if (null !== orderData && 0 < createdOrderData?.orderId) {
             doCheckout();
         }
 
-    }, [orderData, checkout]);
+    }, [orderData, checkout, createdOrderData?.orderId]);
 
     // Loading state
     const isOrderProcessing = checkoutLoading || isGatewayProcessing;
