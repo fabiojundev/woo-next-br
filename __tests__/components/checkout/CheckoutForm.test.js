@@ -104,5 +104,38 @@ describe('CheckoutForm', () => {
         // screen.debug(undefined, Infinity);
     });
 
+    it('Submit checkout form', async () => {
+
+        customRender(true, true);
+
+        //get cart items after render
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText(/Carrinho vazio/i)).not.toBeInTheDocument();
+            expect(screen.queryByText(/Adicionar Produtos/i)).not.toBeInTheDocument();
+        });
+
+        screen.debug(undefined, Infinity);
+        expect(screen.getAllByRole('radio')).toHaveLength(2);
+        screen.getByText("R$47,10");
+
+        fireEvent.click(screen.getByRole("button",{ name: /Finalizar Compra/i }));
+        waitFor(() => {
+            screen.getByText("Processando Pedido...");
+        });
+        
+        act(() => {
+            new Promise(resolve => setTimeout(resolve, 1));
+        });
+        
+        waitFor(() => {
+            expect(screen.queryByText("Processando Pedido...")).not.toBeInTheDocument();
+        });
+        // screen.debug(undefined, Infinity);
+    });
+
 });
 

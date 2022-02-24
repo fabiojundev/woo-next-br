@@ -450,12 +450,12 @@ const CheckoutForm = (props) => {
                                 {
                                     input.shipping?.errors 
                                         && Object.values(input.shipping.errors)?.map( (err, index) => (
-                                        <div 
+                                        <span 
                                             key={index}
-                                            className="pt-2"
+                                            className="pt-2 block"
                                         >
                                             Erro: {err}
-                                        </div>
+                                        </span>
                                     ))
                                 }
                             </p>

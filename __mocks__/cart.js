@@ -3,7 +3,7 @@ import UPDATE_CART from "../src/mutations/update-cart";
 import GET_CART from "../src/queries/get-cart";
 import { GET_CUSTOMER } from "../src/queries/get-customer";
 import UPDATE_SHIPPING_ADDRESS from "../src/mutations/update-shipping-address";
-import {UPDATE_SHIPPING_METHOD} from "../src/mutations/update-shipping-method";
+import { UPDATE_SHIPPING_METHOD } from "../src/mutations/update-shipping-method";
 import CLEAR_CART_MUTATION from "../src/mutations/clear-cart";
 import { productNode } from "./product";
 
@@ -162,9 +162,26 @@ export const getGqlMocks = (loadCart, withShipping) => ([
                     }
                 };
             }
-            // console.log("queryCalled", queryCalled, loadCart, withShipping, ret);
+            console.log("queryCalled", queryCalled, loadCart, withShipping, ret);
             queryCalled = true;
             return ret;
+        }),
+    },
+    {
+        request: {
+            query: GET_CART,
+            variables: {},
+        },
+        result: jest.fn(() => {
+            return {
+                data: {
+                    cart: loadedCartWithRates,
+                    customer: {
+                        email: "email@email.com",
+                        shipping
+                    }
+                }
+            };
         }),
     },
     {
@@ -273,7 +290,30 @@ export const getGqlMocks = (loadCart, withShipping) => ([
         },
         result: {
             data: {
-                cart: chooseShippingResult,
+                updateShippingMethod: {
+                    cart: chooseShippingResult,
+                },
+            },
+        },
+    },
+    {
+        request: {
+            query: UPDATE_SHIPPING_METHOD,
+            variables: {
+                shippingMethod: {
+                    clientMutationId: '123',
+                    shippingMethods: ['PAC'],
+                }
+            },
+        },
+        result: {
+            data: {
+                updateShippingMethod: {
+                    cart: {
+                        ...chooseShippingResult,
+                        chosenShippingMethods: ['PAC']
+                    },
+                },
             },
         },
     },
