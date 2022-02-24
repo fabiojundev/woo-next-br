@@ -1,18 +1,9 @@
-const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
 import { isEmpty } from 'lodash'
 import { getMercadoPagoPreference } from './mercado-pago/get-preference';
-
-const api = new WooCommerceRestApi({
-    url: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-    consumerKey: process.env.WC_CONSUMER_KEY,
-    consumerSecret: process.env.WC_CONSUMER_SECRET,
-    version: "wc/v3"
-});
+import { apiPost } from './woocommerce';
 
 /**
  * Create order endpoint.
- *
- * @see http://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#create-an-order
  *
  * @param {Object} req Request.
  * @param {Object} res Response.
@@ -37,10 +28,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { data } = await api.post(
-            'orders',
-            reqData
-        );
+        const data = await apiPost('orders', reqData);
 
         console.log("resp data", data);
         responseData.success = true;
