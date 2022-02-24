@@ -1,6 +1,6 @@
 import { buffer } from "micro";
 const Stripe = require('stripe');
-const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
+import { apiPut } from "./woocommerce";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2020-08-27'
@@ -12,13 +12,6 @@ export const config = {
         bodyParser: false,
     },
 };
-
-const api = new WooCommerceRestApi({
-    url: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-    consumerKey: process.env.WC_CONSUMER_KEY,
-    consumerSecret: process.env.WC_CONSUMER_SECRET,
-    version: "wc/v3"
-});
 
 /**
  * Update Order.
@@ -43,7 +36,7 @@ const updateOrder = async ( newStatus, orderId, transactionId = '' ) => {
     }
 
     try {
-        const {data} = await api.put( `orders/${ orderId }`, newOrderData );
+        const {data} = await apiPut( `orders/${ orderId }`, newOrderData );
         console.log( '✅ Order updated data', data );
     } catch (ex) {
         console.error('Order creation error', ex);

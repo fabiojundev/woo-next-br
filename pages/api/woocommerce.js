@@ -17,3 +17,8 @@ export const apiPost = async (path, data) => {
     const res = await axios.post(getFullUrl(path), data);
     return res.data;
 };
+
+export const apiPut = async (path, data) => {
+    const res = await axios.put(getFullUrl(path), data);
+    return res.data;
+};
