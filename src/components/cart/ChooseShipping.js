@@ -33,7 +33,7 @@ const ChooseShipping = ({
 	const requestDefaultOptions = {
 		onCompleted: () => {
 			console.log("completed, refetch");
-			refetchCart();
+			refetchCart('cart');
 		},
 		onError: (error) => {
 			if (error) {

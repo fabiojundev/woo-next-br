@@ -32,7 +32,7 @@ const YourOrder = ({
 							</tr>
 						</thead>
 						<tbody>
-							{cart.products.length && (
+							{cart?.products?.length && (
 								cart.products.map(item => (
 									<CheckoutCartItem 
 										key={item.productId} 

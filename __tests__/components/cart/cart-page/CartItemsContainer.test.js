@@ -121,7 +121,7 @@ describe('CartItemsContainer', () => {
         expect(screen.getAllByText("R$1,10")).toHaveLength(2);
     });
 
-    it.only('Calculate shipping cost', async () => {
+    it('Calculate shipping cost', async () => {
 
         customRender(true, true);
 

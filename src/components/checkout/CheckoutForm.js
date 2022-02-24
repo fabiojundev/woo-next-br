@@ -105,9 +105,14 @@ const CheckoutForm = (props) => {
         field = '',
         overwrite = false
     ) => {
-        let toUpdate = field
-            ? toUpdate = { ...cart?.customer[field] }
-            : { ...cart?.customer };
+
+        let toUpdate;
+        if( field && cart?.customer && cart?.customer[field]) {
+            toUpdate = { ...cart?.customer[field] };
+        }
+        else {
+            toUpdate = { ...cart?.customer };
+        }
 
         console.log("UPDATE Customer from cart", { field, input, overwrite, toUpdate });
         if (toUpdate) {
