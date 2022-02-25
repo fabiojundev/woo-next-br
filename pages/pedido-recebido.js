@@ -95,9 +95,7 @@ const PedidoRecebidoContent = () => {
                                                 orderData.shipping?.state,
                                                 orderData.shipping?.postcode,
                                                 formatCurrency(orderData?.shipping_total),
-                                            ].reduce( (prev, cur ) => 
-                                                cur ? `${prev} - ${cur}` : prev
-                                            , '' )
+                                            ].filter(n => n).join(' - ')
                                         }
                                     </td>
                                 </tr>
