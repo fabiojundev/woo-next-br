@@ -11,24 +11,23 @@ const handler = async (req, res) => {
     try {
         const data = await mercadopago.ipn.manage(req);
 
-        res.render('jsonOutput', {
-            result: data,
-        });
-
         let newOrderData = {
             transaction_id: req.query.id
         };
 
-        switch(data?.status) {
+        switch(data?.body?.status) {
             
             default:
             case 'approved':
+                newOrderData.status = 'processing';
+                break;
+
             case 'pending':
-                newOrderData.status = data.status;
+                newOrderData.status = 'pending';
                break;
 
             case 'in_process':
-                newOrderData.status = 'processing';
+                newOrderData.status = 'on-hold';
                 break;
             
             case 'rejected':
@@ -36,15 +35,15 @@ const handler = async (req, res) => {
                 break;
         }
         
-    
+        const orderId = data?.body?.external_reference;
         const updatedData = await apiPut(`orders/${orderId}`, newOrderData);
-        console.log('✅ Order updated data', updatedData, newOrderData);
+        // console.log('✅ Order updated data', orderId, updatedData, newOrderData);
 
-        res.status(200).end();
+        res.status(200).json({success: true});
 
     } catch (error) {
         console.log(error);
-        res.status(500).end(error);
+        res.status(500).json(error);
     }
 };
 
