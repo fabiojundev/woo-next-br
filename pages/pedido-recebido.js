@@ -7,6 +7,8 @@ import { AppContext } from "../src/components/context/AppContext";
 import Loading from "../src/components/icons/Loading";
 import ShoppingCart from "../src/components/icons/ShoppingCart";
 import { formatCurrency } from "../src/functions";
+import { getWCStatusDesc } from "../src/utils/order";
+
 
 const isBrowser = 'undefined' !== typeof window;
 
@@ -64,10 +66,10 @@ const PedidoRecebidoContent = () => {
                             <tbody>
                                 <tr>
                                     <td className="px-4 py-3">
-                                        Status#
+                                        Status
                                     </td>
                                     <td className="px-4 py-3">
-                                        {orderData?.status}
+                                        {getWCStatusDesc(orderData?.status)}
                                     </td>
                                 </tr>
                                 <tr>
@@ -89,7 +91,7 @@ const PedidoRecebidoContent = () => {
                                     <td className="px-4 py-3">
                                         {
                                             [
-                                                orderData.shipping?.address_1, 
+                                                orderData.shipping?.address_1,
                                                 orderData.shipping?.address_2,
                                                 orderData.shipping?.city,
                                                 orderData.shipping?.state,

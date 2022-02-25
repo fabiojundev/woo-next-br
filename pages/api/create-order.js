@@ -36,15 +36,18 @@ export default async function handler(req, res) {
         responseData.total = data.total;
         responseData.currency = data.currency;
 
-        const preferences = await getMercadoPagoPreference(data);
+        if(data.payment_method === 'woo-mercado-pago-basic') {
+            const preferences = await getMercadoPagoPreference(data);
+            console.log("MP preference: ", preferences);
+            
+            responseData.preference = {
+                id: preferences?.id,
+                init_point: preferences?.init_point,
+                sandbox_init_point: preferences?.sandbox_init_point,
+            };
+        }
 
-        responseData.preference = {
-            id: preferences?.id,
-            init_point: preferences?.init_point,
-            sandbox_init_point: preferences?.sandbox_init_point,
-        };
-
-        console.log("response data", responseData, preferences);
+        console.log("response data", responseData);
         res.json(responseData)
 
     } catch (error) {

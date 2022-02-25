@@ -147,3 +147,26 @@ export const createTheOrder = async (
     //console.log("create order response: ", response);
     return response;
 }
+
+export const getWCStatusDesc = (status) => {
+    switch (status) {
+        case 'approved':
+            return 'Aprovado';
+        case 'pending':
+            return 'Aguardando pagamento';
+        case 'processing':
+            return 'Processando';
+        case 'on-hold':
+            return 'Em análise';
+        case 'completed':
+            return 'Completo';
+        case 'cancelled':
+            return 'Cancelado';
+        case 'refunded':
+            return 'Reembolsado';
+        case 'failed':
+            return 'Erro';
+        default:
+            return status;
+    }
+}
