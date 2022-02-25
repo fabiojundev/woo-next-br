@@ -5,7 +5,7 @@ mercadopago.configure({
 });
 
 
-export const getMercadoPagoPreference = async (order) => {
+export const getMercadoPagoPreference = async (order, domain) => {
     let preference;
 
     if (order?.line_items) {
@@ -30,6 +30,9 @@ export const getMercadoPagoPreference = async (order) => {
         const preferences = {
             items: items,
             shipments,
+            metadata:{
+                orderId: order.id,
+            },
             payer: {
                 phone: {
                     area_code: phone.substring(0, 2),
@@ -61,7 +64,8 @@ export const getMercadoPagoPreference = async (order) => {
                 pending: process.env.NEXT_PUBLIC_MP_RETURN_URL,
                 failure: process.env.NEXT_PUBLIC_MP_RETURN_URL,
             },
-            notification_url: process.env.NEXT_PUBLIC_MP_IPN_URL,
+            // notification_url: process.env.NEXT_PUBLIC_MP_IPN_URL,
+            notification_url: `https://${domain}/api/mercado-pago-ipn/`,
             statement_descriptor: process.env.NEXT_PUBLIC_MP_STATEMENT_DESC,
             external_reference: order.id.toString(),
         };
