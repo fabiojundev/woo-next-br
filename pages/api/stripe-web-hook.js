@@ -1,6 +1,6 @@
 import { buffer } from "micro";
 const Stripe = require('stripe');
-import { apiPut } from "./woocommerce";
+import { apiPut } from '../../src/utils/woocommerce-api';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2020-08-27'

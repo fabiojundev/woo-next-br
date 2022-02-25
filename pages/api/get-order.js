@@ -1,6 +1,5 @@
 import { isEmpty } from 'lodash';
-import { apiGet } from './woocommerce';
-
+import { apiGet } from '../../src/utils/woocommerce-api';
 /**
  * Create order endpoint.
  *
@@ -28,7 +27,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { data } = await apiGet(
+        const data = await apiGet(
             'orders/' + orderId,
         );
 

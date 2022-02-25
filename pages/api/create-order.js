@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
-import { getMercadoPagoPreference } from './mercado-pago/get-preference';
-import { apiPost } from './woocommerce';
+import { getMercadoPagoPreference } from '../../src/utils/mercado-pago';
+import { apiPost } from '../../src/utils/woocommerce-api';
 
 /**
  * Create order endpoint.
