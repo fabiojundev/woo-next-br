@@ -8,17 +8,19 @@ import Loading from "../src/components/icons/Loading";
 import ShoppingCart from "../src/components/icons/ShoppingCart";
 import { formatCurrency } from "../src/functions";
 
+const isBrowser = 'undefined' !== typeof window;
+
 const PedidoRecebidoContent = () => {
     const [cart, setCart, saveCartLocal, deleteCartLocal] = useContext(AppContext);
     const [isFetchingOrder, setFetchingOrder] = useState(false);
     const [orderData, setOrderData] = useState({});
-    const orderId = process.browser ? Router.query.external_reference : null;
+    const orderId = isBrowser ? Router.query.external_reference : null;
 
 
     useEffect(() => {
         // console.log("Router", Router.query, orderId);
         setFetchingOrder(true);
-        if (process.browser) {
+        if (isBrowser) {
             deleteCartLocal();
             setCart(null);
 
