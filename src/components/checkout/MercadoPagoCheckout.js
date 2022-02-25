@@ -13,7 +13,7 @@ import { clearTheCart } from '../../utils/cart';
 * 1. Create Formatted Order data.
 * 2. Create Order using Next.js create-order endpoint.
 * 3. Clear the cart session.
-* 4. On success set show MercadoPago form to true
+* 4. On success set orderData state with MP preferences.
 *
 * @param input
 * @param products
@@ -31,71 +31,45 @@ export const handleMercadoPagoCheckout = async (
     setIsMercadoPagoOrderProcessing,
     setCreatedOrderData
 ) => {
+    // Show loading feedback.
     setIsMercadoPagoOrderProcessing(true);
+
+    // Create Formatted Order data.
     const orderData = getCreateOrderData(
         input,
         products
     );
-    const createCustomerOrder = await createTheOrder(
+    // Call create order endpoint with order data - create WC Order.
+    const wcOrder = await createTheOrder(
         orderData,
         setRequestError,
         ''
     );
+    // Clear the cart session.
     const cartCleared = await clearTheCart(
         clearCartMutation,
-        createCustomerOrder?.error
+        wcOrder?.error
     );
+    // Hide loading feedback.
     setIsMercadoPagoOrderProcessing(false);
 
-    //console.log("orderdata", orderData, createCustomerOrder, input )
-    if (!createCustomerOrder?.orderId) {
-        console.log('empty orderId ', createCustomerOrder?.orderId, isEmpty(createCustomerOrder?.orderId));
-        setRequestError('Create order failed');
+    //console.log("orderdata", orderData, wcOrder, input )
+
+    // Verify for errors.
+    if (!wcOrder?.orderId) {
+        console.log('empty orderId ', wcOrder?.orderId, isEmpty(wcOrder?.orderId));
+        setRequestError('Erro ao criar pedido. Tente novamente');
         return null;
     }
     if (cartCleared?.error) {
         console.log('error', cartCleared?.error);
-        setRequestError('Clear cart failed');
+        setRequestError('Erro ao limpar carrinho.');
         return null;
     }
 
-    // On success show MercadoPago form.
-    setCreatedOrderData(createCustomerOrder)
-    // await createCheckoutSessionAndRedirect(
-    //     products,
-    //     input,
-    //     createCustomerOrder?.orderId
-    // );
+    setCreatedOrderData(wcOrder);
 
-    return createCustomerOrder;
-}
-
-const createCheckoutSessionAndRedirect = async (
-    mercadopago,
-    products,
-    input,
-    orderId,
-    preference
-) => {
-
-    try {
-
-        if (mercadopago) {
-
-            const opt = {
-                preference: {
-                    id: preference?.id,
-                },
-                tokenizer: getMercadoPagoLineItems(products, input),
-            };
-
-            console.log(opt);
-            const checkout = mercadopago.checkout(opt);
-            console.log("checkout", checkout, checkout?.init_point);
-        }
-    } catch (error) {
-        console.log(error);
-    }
+    return wcOrder;
 }
 
 export const getMercadoPagoLineItems = (products, input) => {
@@ -108,7 +82,7 @@ export const getMercadoPagoLineItems = (products, input) => {
     }, 0);
     const shippingCost = parseFloat(input.shippingTotal);
 
-    console.log("totla", subtotal, products);
+    // console.log("total", subtotal, products);
     return {
         totalAmount: subtotal + shippingCost,
         summary: {
@@ -125,30 +99,8 @@ export const getMercadoPagoLineItems = (products, input) => {
     };
 }
 
-/**
- * Get meta data.
- *
- * @param input
- * @param {String} orderId Order Id.
- *
- * @returns {{lineItems: string, shipping: string, orderId, billing: string}}
- */
-const getMetaData = (input, orderId) => {
-
-    return {
-        billing: JSON.stringify(input?.billing),
-        shipping: JSON.stringify(input.billingDifferentThanShipping ? input?.billing?.email : input?.shipping?.email),
-        orderId,
-    };
-
-    // @TODO
-    // if ( customerId ) {
-    //     metadata.customerId = customerId;
-    // }
-
-}
-
 export const MercadoPagoCheckout = ({ products, orderId, input, preference }) => {
+
 
     const mercadopago = useMercadopago.v2(process.env.NEXT_PUBLIC_MP_PUBLIC_TOKEN, {
         locale: 'pt-BR'
@@ -157,24 +109,37 @@ export const MercadoPagoCheckout = ({ products, orderId, input, preference }) =>
     const router = useRouter();
 
     useEffect(() => {
-        if (mercadopago && orderId && !isEmpty(products)) {
+        if (mercadopago && orderId && !isEmpty(products) && preference?.id) {
             // console.log("useEffect checkout", orderId, mercadopago);
-            createCheckoutSessionAndRedirect(
-                mercadopago,
-                products,
-                input,
-                orderId,
-                preference
-            );
-            if (preference?.init_point) {
-                const redir = process.env.MP_SANDBOX
-                    ? preference?.sandbox_init_point
-                    : preference?.init_point;
-                console.log("redir to: ", redir);
-                router.push(redir);
+            try {
+
+                const opt = {
+                    preference: {
+                        id: preference?.id,
+                    },
+                    tokenizer: getMercadoPagoLineItems(products, input),
+                };
+
+                const mpCheckout = async () => {
+                    // console.log("checkout", preference, opt);
+                    await mercadopago.checkout(opt);
+
+                    if (preference?.init_point) {
+                        const redir = 'true' == process.env.NEXT_PUBLIC_MP_SANDBOX
+                            ? preference?.sandbox_init_point
+                            : preference?.init_point;
+                        // console.log("redir to: ", redir);
+                        router.push(redir);
+                    }
+                }
+
+                mpCheckout();
+    
+            } catch (error) {
+                console.log(error);
             }
         }
-    }, [mercadopago, orderId, products, input, preference, router]);
+    }, [mercadopago, orderId, products, input, preference?.id, router]);
 
     return (
         <>
