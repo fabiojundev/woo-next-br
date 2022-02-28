@@ -15,31 +15,33 @@ const handler = async (req, res) => {
             transaction_id: req.query.id
         };
 
-        switch(data?.body?.status) {
-            
-            default:
+        switch (data?.body?.status) {
+
             case 'approved':
                 newOrderData.status = 'processing';
                 break;
 
             case 'pending':
                 newOrderData.status = 'pending';
-               break;
+                break;
 
             case 'in_process':
                 newOrderData.status = 'on-hold';
                 break;
-            
+
             case 'rejected':
                 newOrderData.status = 'failed';
                 break;
         }
-        
-        const orderId = data?.body?.external_reference;
-        const updatedData = await apiPut(`orders/${orderId}`, newOrderData);
-        // console.log('✅ Order updated data', orderId, updatedData, newOrderData);
 
-        res.status(200).json({success: true});
+        const orderId = data?.body?.external_reference;
+        if (newOrderData.status) {
+            const updatedData = await apiPut(`orders/${orderId}`, newOrderData);
+            // console.log('✅ Order updated data', orderId, updatedData, newOrderData);
+            res.status(200).json({ success: true });
+        }
+
+        res.status(406).json({ status: 'status not found' });
 
     } catch (error) {
         console.log(error);
