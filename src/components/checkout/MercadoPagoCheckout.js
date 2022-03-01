@@ -139,6 +139,7 @@ export const MercadoPagoCheckout = ({ products, orderId, input, preference }) =>
                 console.log(error);
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mercadopago, orderId, products, input, preference?.id, router]);
 
     return (

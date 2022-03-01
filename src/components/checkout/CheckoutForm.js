@@ -167,6 +167,7 @@ const CheckoutForm = (props) => {
             setInput(toUpdate);
         }
         return toUpdate;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cart]);
 
     useEffect(() => {

@@ -29,7 +29,7 @@ const NavSearch = () => {
       />
     </div>
     ) : (
-      <div className="cursor-pointer block h-4 w-4 inline-block">
+      <div className="cursor-pointer h-4 w-4 inline-block">
         <SearchIcon onClick={onClick} className="h-4 w-4 fill-black"/>
       </div>
     )
