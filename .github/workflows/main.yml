@@ -30,7 +30,7 @@ jobs:
         cache: 'yarn'
 
     - name: Install dependencies
-    - run: yarn
+      run: yarn
 
     - name: Create env file
       run: |
@@ -39,7 +39,7 @@ jobs:
           cat .env
 
     - name: Run Unit and Integration Tests
-    - run: yarn test:ci
+      run: yarn test:ci
 
     - name: Run Cypress E2E tests
       run: yarn e2e:ci
