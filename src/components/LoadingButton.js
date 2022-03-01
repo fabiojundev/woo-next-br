@@ -1,9 +1,15 @@
 import cx from 'classnames';
-import Image from "./image";
 import LoadingImg from './LoadingImg';
 
 
-const LoadingButton = ( {loading, handleClick, label, type, ...props} ) => {
+const LoadingButton = ({
+	className,
+	loading,
+	handleClick,
+	label,
+	type,
+	...props
+}) => {
 
 	return (loading
 		? <LoadingImg />
@@ -11,7 +17,7 @@ const LoadingButton = ( {loading, handleClick, label, type, ...props} ) => {
 			{...props}
 			disabled={loading}
 			className={cx(
-				'bg-green-default',
+				'loading-button bg-green-default ' + ( className ?? '' ),
 				{ 'opacity-100 cursor-pointer': !loading },
 				{ 'opacity-50 cursor-not-allowed': loading }
 			)}
