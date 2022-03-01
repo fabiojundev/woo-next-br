@@ -28,11 +28,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+
+    - name: Install dependencies
     - run: yarn
+
     - name: Create env file
       run: |
           touch .env
           echo NEXT_PUBLIC_WORDPRESS_URL=${{ secrets.PUBLIC_WORDPRESS_URL }} >> .env
           cat .env
-#    - run: yarn lint
+
+    - name: Run Unit and Integration Tests
     - run: yarn test:ci
+
+    - name: Run Cypress E2E tests
+      run: yarn e2e:ci
