@@ -9,6 +9,10 @@
     "test": "jest --watch --detectOpenHandles",
     "test:ci": "jest --",
     "coverage": "jest --collectCoverage --",
+    "cypress": "cypress open",
+    "cypress:ci": "cypress run",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress",
+    "e2e:ci": "start-server-and-test start http://localhost:3000 cypress:ci",
     "lint": "next lint",
     "svg": "svgr -d src/components/icons src/components/icons/svgs"
   },
@@ -43,9 +47,11 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.0.2",
+    "cypress": "^9.5.1",
     "dompurify": "^2.3.4",
     "eslint": "8.9.0",
     "eslint-config-next": "12.0.10",
+    "eslint-plugin-cypress": "^2.12.1",
     "html-loader": "^3.1.0",
     "html-loader-jest": "^0.2.1",
     "install": "^0.13.0",
@@ -55,6 +61,7 @@
     "postcss-import": "^14.0.2",
     "postcss-preset-env": "^7.2.3",
     "precss": "^4.0.0",
+    "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.0.15"
   }
 }

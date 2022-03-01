@@ -11,3 +11,5 @@ dist/
 .env
 .now
 coverage/
+cypress/videos 
+cypress/screenshots
