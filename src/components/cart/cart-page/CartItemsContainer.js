@@ -251,6 +251,7 @@ const CartItemsContainer = () => {
 							</div>
 							<div className="flex flex-wrap justify-end ">
 								<LoadingButton
+									className={"checkout-btn"}
 									loading={updateCartProcessing}
 									handleClick={handleCheckout}
 									label={"Finalizar Compra"}

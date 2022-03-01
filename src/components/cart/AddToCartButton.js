@@ -111,7 +111,7 @@ const AddToCart = (props) => {
                             </button>
                             {showViewCart ? (
                                 <Link href="/carrinho" passHref>
-                                    <button>
+                                    <button className="view-cart">
                                         Ver Carrinho
                                     </button>
                                 </Link>

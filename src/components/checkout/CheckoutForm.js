@@ -436,6 +436,7 @@ const CheckoutForm = (props) => {
                             <div className="woo-next-place-order-btn-wrap mt-5">
                                 <LoadingButton
                                     label={"Finalizar Compra"}
+                                    className={"checkout-btn"}
                                     loading={isOrderProcessing}
                                     type="submit"
                                 />

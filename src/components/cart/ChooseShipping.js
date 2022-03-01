@@ -139,6 +139,7 @@ const ChooseShipping = ({
 									title="CEP"
 								/>
 								<LoadingButton
+									id="calc-shipping"
 									label={"Atualizar"}
 									loading={updatingShippinZipcode || loadingCart}
 									type="button"
