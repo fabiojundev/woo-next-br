@@ -38,11 +38,11 @@ jobs:
           echo NEXT_PUBLIC_WORDPRESS_URL=${{ secrets.PUBLIC_WORDPRESS_URL }} >> .env
           cat .env
 
-    - name: build
-      run: yarn build
-
     - name: Run Unit and Integration Tests
       run: yarn test:ci
 
-    - name: Run Cypress E2E tests
-      run: yarn e2e:ci
+    # - name: Build and Lint
+    #   run: yarn build
+
+    # - name: Run Cypress E2E tests
+    #   run: yarn e2e:ci
