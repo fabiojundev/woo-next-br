@@ -9,7 +9,7 @@ export const getMercadoPagoPreference = async (order, domain) => {
     let preference;
 
     if (order?.line_items) {
-        console.log("ORDER", order);
+//        console.log("ORDER MP", order);
         const billing = order?.billing;
         const phone = billing?.phone?.replace(/\D/g, '');
         const items = order?.line_items.map(item => ({
@@ -36,18 +36,18 @@ export const getMercadoPagoPreference = async (order, domain) => {
             payer: {
                 phone: {
                     area_code: phone.substring(0, 2),
-                    number: parseInt(phone.substring(2)),
+                    number: parseInt(phone.substring(2), 10),
                 },
                 address: {
                     street_name: billing?.address_1,
-                    street_number: billing?.number,
+                    street_number: parseInt( billing?.number, 10 ),
                     zip_code: billing?.postcode,
                 },
                 email: billing?.email,
-                // identification: {
-                //     type: billing.person_type == 1 ? 'CPF' : 'CNPJ',
-                //     number: billing.person_type == 1 ? billing.cpf : billing.cnpj,
-                // },
+                identification: {
+                    type: billing.persontype != '1' ? 'CNPJ' : 'CPF',
+                    number: billing.persontype != '1' ? billing.cnpj : billing.cpf,
+                },
                 name: billing.first_name,
                 surname: billing.last_name,
                 date_created: null,
