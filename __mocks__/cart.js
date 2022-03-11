@@ -8,8 +8,10 @@ import CLEAR_CART_MUTATION from "../src/mutations/clear-cart";
 import { productNode } from "./product";
 
 export const shipping = {
-    address1: "Rua Conde de Sarzedas, 123",
+    address1: "Rua Conde de Sarzedas",
     address2: "Apt 1",
+    number: "123",
+    cpf: "12345678901",
     city: "Sao Paulo",
     state: "SP",
     country: "BRA",
@@ -24,6 +26,8 @@ export const shipping = {
 export const emptyShipping = {
     address1: "",
     address2: "",
+    number: "",
+    cpf: "",
     city: "",
     state: "",
     country: "",

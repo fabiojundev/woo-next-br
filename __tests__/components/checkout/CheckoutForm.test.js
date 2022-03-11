@@ -61,6 +61,7 @@ describe('CheckoutForm', () => {
         expect(screen.getByLabelText(/CEP/)).toHaveValue('01512-000');
         expect(screen.getByPlaceholderText(/Nome da rua/)).toHaveValue('Rua Conde de Sarzedas');
         expect(screen.getByLabelText(/Número/)).toHaveValue('123');
+        expect(screen.getByLabelText(/CPF/)).toHaveValue('123.456.789-01');
         expect(screen.getByLabelText(/Complemento/)).toHaveValue('Apt 1');
         expect(screen.getByLabelText(/Cidade/)).toHaveValue('Sao Paulo');
         expect(screen.getByLabelText(/Estado/)).toHaveValue('SP');
