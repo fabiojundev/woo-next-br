@@ -30,13 +30,18 @@ export default async function handler(req, res) {
     try {
         const data = await apiPost('orders', reqData);
 
-        console.log("resp data", data);
+        // console.log("resp data", data);
+        // console.log('reqData',reqData);
+
         responseData.success = true;
         responseData.orderId = data.id;
         responseData.total = data.total;
         responseData.currency = data.currency;
 
         if(data.payment_method === 'woo-mercado-pago-basic') {
+            //TODO remove
+            data.billing = reqData.billing;
+            data.shipping = reqData.shipping;
             const preferences = await getMercadoPagoPreference(
                 data,
                 req.headers.host
