@@ -47,18 +47,18 @@ const Address = ({
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
                 />
             </div>
-            <InputField
-                name="email"
-                type="email"
-                inputValue={input?.email ?? ''}
-                required
-                handleOnChange={handleOnChange}
-                label="Email"
-                errors={errors}
-                isShipping={isShipping}
-                containerClassNames="mb-4"
-            />
             <div className="flex flex-wrap overflow-hidden sm:-mx-3">
+                <InputField
+                    name="email"
+                    type="email"
+                    inputValue={input?.email ?? ''}
+                    required
+                    handleOnChange={handleOnChange}
+                    label="Email"
+                    errors={errors}
+                    isShipping={isShipping}
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                />
                 <InputField
                     name="phone"
                     inputValue={input?.phone ?? ''}
@@ -68,6 +68,19 @@ const Address = ({
                     errors={errors}
                     isShipping={isShipping}
                     mask="(99) 99999-9999"
+                    containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
+                />
+            </div>
+            <div className="flex flex-wrap overflow-hidden sm:-mx-3">
+                <InputField
+                    name="cpf"
+                    inputValue={input?.cpf ?? ''}
+                    required
+                    handleOnChange={handleOnChange}
+                    label="CPF"
+                    errors={errors}
+                    isShipping={isShipping}
+                    mask="999.999.999-99"
                     containerClassNames="w-full overflow-hidden sm:my-2 sm:px-2 md:w-1/2"
                 />
                 {isShipping

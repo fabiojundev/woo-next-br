@@ -17,6 +17,7 @@ const validateAndSanitizeCheckoutForm = ( data, hasStates = true ) => {
 	data.lastName = ( ! isEmpty( data.lastName ) ) ? data.lastName : '';
 	data.company = ( ! isEmpty( data.company ) ) ? data.company : '';
 	data.country = ( ! isEmpty( data.country ) ) ? data.country : '';
+	data.cpf = ( ! isEmpty( data.cpf ) ) ? data.cpf : '';
 	data.address1 = ( ! isEmpty( data.address1 ) ) ? data.address1 : '';
 	data.address2 = ( ! isEmpty( data.address2 ) ) ? data.address2 : '';
 	data.number = ( ! isEmpty( data.number ) ) ? data.number : '';
@@ -76,6 +77,7 @@ const validateAndSanitizeCheckoutForm = ( data, hasStates = true ) => {
 	addErrorAndSanitizedData( 'lastName', 'Sobrenome', 2, 35, 'string', true );
 	addErrorAndSanitizedData( 'company', 'Empresa', 0, 35, 'string', false );
 	addErrorAndSanitizedData( 'country', 'País', 2, 55, 'string', true );
+	addErrorAndSanitizedData( 'cpf', 'CPF', 0, 14, 'string', true );
 	addErrorAndSanitizedData( 'address1', 'Endereço', 12, 100,'string',true );
 	addErrorAndSanitizedData( 'address2', '', 0, 254, 'string', false );
 	addErrorAndSanitizedData( 'number', 'Número', 0, 35, 'string', true );

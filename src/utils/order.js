@@ -48,8 +48,9 @@ export const getCreateOrderData = (
         shipping: {
             first_name: order?.shipping?.firstName,
             last_name: order?.shipping?.lastName,
-            address_1: order?.shipping?.address1
-                + ',' + order?.shipping?.number,
+            cpf: order?.shipping?.cpf,
+            address_1: order?.shipping?.address1,
+            number: order?.shipping?.number,
             address_2: order?.shipping?.address2,
             city: order?.shipping?.city,
             country: order?.shipping?.country,
@@ -62,8 +63,9 @@ export const getCreateOrderData = (
         billing: {
             first_name: billingData?.firstName,
             last_name: billingData?.lastName,
-            address_1: billingData?.address1
-                + ',' + billingData?.number,
+            cpf: billingData?.cpf,
+            address_1: billingData?.address1,
+            number: billingData?.number,
             address_2: billingData?.address2,
             city: billingData?.city,
             country: billingData?.country,
@@ -72,7 +74,7 @@ export const getCreateOrderData = (
             email: billingData?.email,
             phone: billingData?.phone,
             company: billingData?.company,
-            persontype: 1,
+            persontype: '1',
             // person_type: 1,
         },
         shipping_lines: order.shippingMethod

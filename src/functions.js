@@ -283,14 +283,14 @@ export const getFormattedCart = (data) => {
 		};
 		// Object.assign(customer, data?.customer);
 		// console.log(customer);
-		if (customer.shipping?.address1) {
-			customer.shipping.number = '';
-			const number = customer.shipping.address1.match(/,?\s*(\d*)\s?$/);
-			if (number.length >= 2) {
-				customer.shipping.address1 = customer.shipping.address1.replace(number[0], '');
-				customer.shipping.number = number[1];
-			}
-		}
+		// if (customer.shipping?.address1) {
+		// 	customer.shipping.number = '';
+		// 	const number = customer.shipping.address1.match(/,?\s*(\d*)\s?$/);
+		// 	if (number.length >= 2) {
+		// 		customer.shipping.address1 = customer.shipping.address1.replace(number[0], '');
+		// 		customer.shipping.number = number[1];
+		// 	}
+		// }
 		formattedCart.customer = customer;
 	}
 
@@ -332,8 +332,9 @@ export const createCheckoutData = (order) => {
 		shipping: {
 			firstName: order?.shipping?.firstName,
 			lastName: order?.shipping?.lastName,
-			address1: order?.shipping?.address1
-				+ ',' + order?.shipping?.number,
+			cpf:  order?.shipping?.cpf,
+			address1: order?.shipping?.address1,
+			number:  order?.shipping?.number,
 			address2: order?.shipping?.address2,
 			city: order?.shipping?.city,
 			country: order?.shipping?.country,
@@ -346,8 +347,9 @@ export const createCheckoutData = (order) => {
 		billing: {
 			firstName: billingData?.firstName,
 			lastName: billingData?.lastName,
-			address1: billingData?.address1
-				+ ',' + billingData?.number,
+			cpf: billingData?.cpf,
+			address1: billingData?.address1,
+			number: billingData?.number,
 			address2: billingData?.address2,
 			city: billingData?.city,
 			country: billingData?.country,
