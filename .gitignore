@@ -13,3 +13,5 @@ dist/
 coverage/
 cypress/videos 
 cypress/screenshots
+.vscode/
+launch.json
