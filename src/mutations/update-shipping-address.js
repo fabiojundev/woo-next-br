@@ -12,6 +12,8 @@ mutation UPDATE_SHIPPING_ADDRESS ($input: UpdateCustomerInput!) {
       shipping {
         address1
         address2
+        number
+        cpf
         city
         state
         postcode
