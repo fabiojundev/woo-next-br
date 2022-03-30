@@ -8,8 +8,11 @@ import { gql } from "@apollo/client";
 const UPDATE_SHIPPING_ADDRESS = gql`
 mutation UPDATE_SHIPPING_ADDRESS ($input: UpdateCustomerInput!) {
   updateCustomer(input: $input) {
+    clientMutationId
     customer {
       shipping {
+        cpf
+        number
         address1
         address2
         city

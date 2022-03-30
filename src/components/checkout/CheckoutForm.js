@@ -9,7 +9,9 @@ import { getFormattedCart, createCheckoutData, } from "../../functions";
 import OrderSuccess from "./OrderSuccess";
 import GET_CART from "../../queries/get-cart";
 import CHECKOUT_MUTATION from "../../mutations/checkout";
+import UPDATE_SHIPPING_ADDRESS from '../../mutations/update-shipping-address';
 import Address from "./Address";
+import { v4 } from 'uuid';
 import {
     MercadoPagoCheckout,
     handleMercadoPagoCheckout
@@ -25,11 +27,11 @@ const defaultCustomerInfo = {
     lastName: '',
     persontype: '1',
     cpf: '',
-    cnpj: '',
+    // cnpj: '',
     address1: '',
     address2: '',
     number: '',
-    neighborhood: '',
+    // neighborhood: '',
     city: '',
     country: 'BR',
     state: '',
@@ -102,6 +104,14 @@ const CheckoutForm = (props) => {
         }
     };
 
+    // Update Shipping Zipcode.
+	const [updateShippingAddress, {
+		data: updatedShippingData,
+		loading: updatingShippinZipcode,
+		error: updateShippingAddressError
+	}] = useMutation(UPDATE_SHIPPING_ADDRESS);
+
+
     const updateCustomerFromCart = useCallback ((
         field = '',
         overwrite = false
@@ -130,6 +140,8 @@ const CheckoutForm = (props) => {
                                     'phone',
                                     'address2',
                                     'number',
+                                    'postcode',
+                                    'cpf'
                                 ].find(el => el == k)) {
                                     val = (field && input[field][k])
                                         ? [k, input[field][k]]
@@ -252,13 +264,35 @@ const CheckoutForm = (props) => {
         handlePayment(input, cart);
 
 
-        const checkOutData = createCheckoutData(input);
+        // const checkOutData = createCheckoutData(input);
         setRequestError(null);
         /**
          *  When order data is set, checkout mutation will automatically be called,
          *  because 'orderData' is added in useEffect as a dependency.
          */
-        setOrderData(checkOutData);
+        // setOrderData(checkOutData);
+        updateShippingAddress({
+            variables: {
+                input: {
+                    clientMutationId: v4(),
+                    shipping: {
+                        cpf: input.shipping.cpf,
+                        number: input.shipping.number,
+                    },
+                    metaData: [
+                        {
+                            key: '_shipping_cpf',
+                            value: input.shipping.cpf,
+                        },
+                        {
+                            key: '_shipping_number',
+                            value: input.shipping.number,
+                        },
+                    ],
+                    // billing: input.billing,
+                }
+            },
+        });
     };
 
     const handlePayment = async (input, cart) => {
