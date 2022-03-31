@@ -30,17 +30,17 @@ describe('Buy a product', () => {
         cy.get('.quantity > input[type="text"]').should('have.value', '2');
         cy.get('button').contains('Comprar').click();
         //Add to cart results
-        cy.get('.cart-items-qty', { timeout: 30000 }).should('have.text', '(2)');
+        cy.get('.cart-items-qty', { timeout: 60000 }).should('have.text', '(2)', { timeout: 60000 });
 
         //View cart page
-        cy.get('.view-cart').click();
+        cy.get('.view-cart', { timeout: 60000 }).click();
         cy.location('pathname', { timeout: 30000 })
             .should('include', '/carrinho/');
 
         cy.contains("Você possui 2 itens no Carrinho", { timeout: 30000 });
 
         //Select another shipping method
-        cy.get('#calc-shipping').contains('Atualizar', { timeout: 30000 });
+        cy.get('#calc-shipping', { timeout: 50000 }).contains('Atualizar');
         cy.get('input[name="chosenShippingMethod"]').should('have.value', 'correios-pac3');
         cy.get('input[name="chosenShippingMethod"]').check('correios-sedex4');
         cy.get('input[name="chosenShippingMethod"]:checked')
@@ -55,8 +55,10 @@ describe('Buy a product', () => {
         cy.location('pathname', { timeout: 30000 })
             .should('include', '/finalizar-compra');
 
-        cy.contains('FINALIZAR COMPRA', {timeout: 30000});
+        cy.contains('FINALIZAR COMPRA', { timeout: 30000 });
         cy.get('.checkout-btn').click();
+        cy.get('.checkout-btn').click();
+
         cy.get('input[name="firstName"]')
             .should('have.value', '');
         cy.contains('Erro: Nome é um campo obrigatório', { timeout: 9000 });
@@ -74,6 +76,9 @@ describe('Buy a product', () => {
         cy.get('input[name="phone"]')
             .type('11-98765-4321')
             .should('have.value', '(11) 98765-4321');
+        cy.get('input[name="cpf"]')
+            .type('12345678901')
+            .should('have.value', '123.456.789-01');
         cy.get('input[name="postcode"]')
             .should('have.value', '01512-000');
         cy.get('input[name="address1"]')
@@ -96,7 +101,7 @@ describe('Buy a product', () => {
 
         //Go to Mercado Pago checkout
         cy.get('.checkout-btn').click();
-        cy.contains('Como você prefere pagar?', { timeout: 30000 });    
+        cy.contains('Como você prefere pagar?', { timeout: 30000 });
         cy.contains('Mercado Pago', { timeout: 30000 });
 
     });
