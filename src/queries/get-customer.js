@@ -4,9 +4,7 @@ export const GetCustomer = `
 customer {
   email
   shipping {
-    cpf
     address1
-    number
     address2
     city
     company
