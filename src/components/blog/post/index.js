@@ -17,7 +17,7 @@ const Post = ({ post }) => {
 							layout="fill"
 							containerClassNames="w-96 sm:-w-600px md:w-400px h-56 sm:h-338px md:h-225px"
 							title={post?.title ?? ''}
-							alt={post?.featuredImage.node?.altText ?? ''}
+							alt={post?.featuredImage?.node?.altText ?? ''}
 						/>
 					</figure>
 					<h2 className="font-bold mb-3 text-lg hover:text-blue-500" dangerouslySetInnerHTML={{ __html: sanitize(post?.title ?? '') }} />
