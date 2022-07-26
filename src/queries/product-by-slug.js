@@ -18,9 +18,6 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
           count
         }
       }
-	  seo {
-		...SeoFragment
-	  }
 	  galleryImages {
           nodes {
             id
@@ -41,11 +38,13 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 		price
 		id
 		regularPrice
+		${SeoFragment}
 	  }
 	  ... on VariableProduct {
 		price
 		id
 		regularPrice
+		${SeoFragment}
 	  }
 	  ... on ExternalProduct {
 		price
@@ -68,7 +67,7 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 	}
   }
   ${MenuFragment}
-  ${SeoFragment}	
+  
 `;
 
 export const PRODUCT_SLUGS = gql` query Products {

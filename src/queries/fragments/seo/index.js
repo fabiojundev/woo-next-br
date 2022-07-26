@@ -1,5 +1,5 @@
 const SeoFragment = `
-fragment SeoFragment on PostTypeSEO {
+seo {
       breadcrumbs {
         text
         url
