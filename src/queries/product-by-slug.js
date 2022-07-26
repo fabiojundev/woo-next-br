@@ -38,19 +38,26 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 		price
 		id
 		regularPrice
-		${SeoFragment}
+		seo {
+			...SeoFragment
+		}	
 	  }
 	  ... on VariableProduct {
 		price
 		id
 		regularPrice
-		${SeoFragment}
+		seo {
+			...SeoFragment
+		}
 	  }
 	  ... on ExternalProduct {
 		price
 		id
 		regularPrice
 		externalUrl
+		seo {
+			...SeoFragment
+		}
 	  }
 	  ... on GroupProduct {
 		products {
@@ -59,6 +66,9 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 			  id
 			  price
 			  regularPrice
+			  seo {
+					...SeoFragment
+				}
 			}
 		  }
 		}
@@ -67,7 +77,7 @@ export const PRODUCT_BY_SLUG_QUERY = gql` query Product($slug: ID!) {
 	}
   }
   ${MenuFragment}
-  
+  ${SeoFragment}	
 `;
 
 export const PRODUCT_SLUGS = gql` query Products {
