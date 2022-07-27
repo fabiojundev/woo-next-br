@@ -1,6 +1,7 @@
 import axios from 'axios';
 import OAuth  from 'oauth-1.0a'
 import CryptoJS from 'crypto-js'
+import {sanitize} from './miscellaneous';
 
 const oauth = OAuth({
     consumer: {
@@ -26,6 +27,7 @@ const getParams = (url, method, data) => {
 
 export const getFullUrl = (path) => {
 
+    path = sanitize(path);
     let url = `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wc/v3/${path}`;
 
     // url += `?consumer_key=${process.env.WC_CONSUMER_KEY}`;
