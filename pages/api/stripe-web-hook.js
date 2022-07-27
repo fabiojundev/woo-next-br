@@ -1,6 +1,7 @@
 import { buffer } from "micro";
 const Stripe = require('stripe');
 import { apiPut } from '../../src/utils/woocommerce-api';
+import validator from 'validator';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2020-08-27'
@@ -55,7 +56,7 @@ const handler = async (req, res) => {
             stripeEvent = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
             console.log( 'stripeEvent', stripeEvent );
         } catch (err) {
-            res.status(400).send(`Webhook Error: ${err.message}`);
+            res.status(400).send(`Webhook Error: ${validator.escape(err.message)}`);
             return;
         }
 
