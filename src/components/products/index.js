@@ -20,7 +20,8 @@ const Products = ({
 					lg:grid-cols-3 
 					xl:grid-cols-4
 					justify-items-center
-					gap-4"
+					gap-4 
+					pl-2"
 			>
 				{products.length ? (
 					products.map(product =>
