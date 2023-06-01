@@ -3,7 +3,7 @@ import * as React from "react";
 function Email(props) {
   return (
     <svg 
-      fill="#00aa4e" 
+      fill="#74975d" 
       xmlns="http://www.w3.org/2000/svg" 
       width="18" 
       height="18" 

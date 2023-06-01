@@ -7,7 +7,7 @@ function SvgInstagram(props) {
       width="18"
       height="18"
       viewBox="0 0 18 18"
-      fill="#00aa4e"
+      fill="#74975d"
       {...props}
     >
       <g>
