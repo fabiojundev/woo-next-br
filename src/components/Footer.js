@@ -85,7 +85,7 @@ const Footer = () => (
 			</div>
 		</div>
 		<div className="p-6 border border-gray-800 bg-gray-900 text-gray-700 text-sm">
-			© 2018-2022 camadecultivo.com.br
+			© 2018-2023 camadecultivo.com.br - CNPJ 51.075.013/0001-60
 		</div>
 	</>
 );
