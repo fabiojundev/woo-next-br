@@ -20,7 +20,7 @@
     "@apollo/client": "^3.5.7",
     "@stripe/stripe-js": "^1.22.0",
     "@svgr/cli": "^6.2.0",
-    "axios": "^0.25.0",
+    "axios": "^0.30.3",
     "classnames": "^2.3.1",
     "cookie": "^0.4.1",
     "crypto-js": "^4.1.1",
