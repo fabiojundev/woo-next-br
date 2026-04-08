@@ -18,7 +18,7 @@ const Nav = ({ slug }) => {
 					<Link href="/">
 						<a>
 							<Image 
-								src="/logo-75x75.jpg" 
+								src="/logo-500x400.png" 
 								alt="Cama de Cultivo - logo" 
 								width="75" 
 								height="75" 
