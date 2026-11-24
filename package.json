@@ -43,7 +43,7 @@
     "sharp": "^0.35.4",
     "stripe": "^8.199.0",
     "uuid": "^14.0.0",
-    "validator": "^13.7.0"
+    "validator": "^13.15.22"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
